@@ -20,7 +20,8 @@ public class ResponseData<T> implements Serializable {
     String message;
     @Builder.Default
     Date timestamp = new Date();
-    String path;
+    @Builder.Default
+    String path = SecurityContextHolder.getPath();
 
     public ResponseData(int status, T data, String error, String message) {
         this.status = status;

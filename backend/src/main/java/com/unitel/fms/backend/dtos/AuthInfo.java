@@ -21,7 +21,6 @@ public class AuthInfo {
     String phone;
     List<AuthUserRoleDto> authUserRoles = new ArrayList<>();
 
-
     public static AuthInfo fromEntity(User user) {
         UUID orgId = user.getOrg() != null ? user.getOrg().getId() : null;
         return AuthInfo.builder()
@@ -31,16 +30,15 @@ public class AuthInfo {
                 .username(user.getUsername())
                 .phone(user.getPhone())
                 .authUserRoles(
-                        user.getUserRoles().stream().map(AuthUserRoleDto ::fromEntity).toList()
-                )
+                        user.getUserRoles().stream().map(AuthUserRoleDto::fromEntity).toList())
                 .build();
     }
 
-    public Set<String> getRoles(){
+    public Set<String> getRoles() {
         return this.authUserRoles.stream().map(AuthUserRoleDto::getRoleCode).collect(Collectors.toSet());
     }
 
-    public boolean hasAnyRole(String... roles){
+    public boolean hasAnyRole(String... roles) {
         Set<String> rolesOfUser = getRoles();
         for (String role : roles) {
             if (rolesOfUser.contains(role)) {
@@ -50,7 +48,7 @@ public class AuthInfo {
         return false;
     }
 
-    public boolean hasAllRoles(String... roles){
+    public boolean hasAllRoles(String... roles) {
         Set<String> rolesOfUser = getRoles();
         for (String role : roles) {
             if (!rolesOfUser.contains(role)) {
@@ -61,7 +59,8 @@ public class AuthInfo {
     }
 
     public boolean inWorkspace(UUID orgId) {
-        if(this.orgId.equals(orgId)) return true;
+        if (this.orgId.equals(orgId))
+            return true;
         for (AuthUserRoleDto userRole : getAuthUserRoles()) {
             if (userRole.getOrgId().equals(orgId)) {
                 return true;
@@ -74,7 +73,7 @@ public class AuthInfo {
         List<String> listRole = Arrays.stream(roles).toList();
         for (AuthUserRoleDto userRole : getAuthUserRoles()) {
             if (userRole.getOrgId().equals(orgId)) {
-                if(listRole.contains(userRole.getRoleCode())) {
+                if (listRole.contains(userRole.getRoleCode())) {
                     return true;
                 }
             }
@@ -88,7 +87,7 @@ public class AuthInfo {
         for (AuthUserRoleDto userRole : getAuthUserRoles()) {
             if (userRole.getOrgId().equals(orgId)) {
                 inWorkspace = true;
-                if(!listRole.contains(userRole.getRoleCode())) {
+                if (!listRole.contains(userRole.getRoleCode())) {
                     return false;
                 }
             }
