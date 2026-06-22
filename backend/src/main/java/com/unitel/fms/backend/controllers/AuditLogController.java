@@ -28,13 +28,13 @@ public class AuditLogController {
     @RequireAuth(roles = {RoleType.SYSTEM_ADMIN, RoleType.OPS_MANAGER}, rolesLogic = RequireAuth.LogicType.OR, inWorkspace = true)
     public ResponseData<List<AuditLogResponse>> getAll() {
         List<AuditLogResponse> list = auditLogService.getAll().stream().map(auditLogMapper::toResponse).collect(Collectors.toList());
-        return ResponseData.<List<AuditLogResponse>>builder().status(200).message("Thành công").data(list).build();
+        return ResponseData.<List<AuditLogResponse>>builder().status(200).messageCode("SUCCESS").data(list).build();
     }
 
     @PostMapping("/audit-logs/filter")
     @RequireAuth(roles = {RoleType.SYSTEM_ADMIN, RoleType.OPS_MANAGER}, rolesLogic = RequireAuth.LogicType.OR, inWorkspace = true)
     public ResponseData<Page<AuditLogResponse>> filter(@RequestBody BaseFilterRequest filter) {
         Page<AuditLogResponse> page = auditLogService.filter(filter).map(auditLogMapper::toResponse);
-        return ResponseData.<Page<AuditLogResponse>>builder().status(200).message("Thành công").data(page).build();
+        return ResponseData.<Page<AuditLogResponse>>builder().status(200).messageCode("SUCCESS").data(page).build();
     }
 }

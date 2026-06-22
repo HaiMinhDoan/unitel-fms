@@ -29,7 +29,7 @@ public class TripController {
     public ResponseEntity<ResponseData<TripResponse>> get(@PathVariable UUID id) {
         Trip entity = tripService.getOne(id).orElseThrow();
         return ResponseEntity.ok(ResponseData.<TripResponse>builder()
-                .status(200).message("Success").data(tripMapper.toResponse(entity)).build());
+                .status(200).messageCode("SUCCESS").data(tripMapper.toResponse(entity)).build());
     }
 
     @RequireAuth(roles = {"OPS_MANAGER", "DISPATCHER", "DRIVER"}, inWorkspace = true)
@@ -37,7 +37,7 @@ public class TripController {
     public ResponseEntity<ResponseData<TripResponse>> updateStatus(@PathVariable UUID id, @RequestParam String status) {
         Trip updated = tripService.changeStatus(id, status);
         return ResponseEntity.ok(ResponseData.<TripResponse>builder()
-                .status(200).message("Status updated").data(tripMapper.toResponse(updated)).build());
+                .status(200).messageCode("STATUS_UPDATED").data(tripMapper.toResponse(updated)).build());
     }
 
     @RequireAuth(roles = {"OPS_MANAGER", "DISPATCHER", "SYSTEM_ADMIN"}, inWorkspace = true)
@@ -45,6 +45,6 @@ public class TripController {
     public ResponseEntity<ResponseData<List<GpsPosition>>> replay(@PathVariable UUID id) {
         List<GpsPosition> positions = tripService.replay(id);
         return ResponseEntity.ok(ResponseData.<List<GpsPosition>>builder()
-                .status(200).message("Success").data(positions).build());
+                .status(200).messageCode("SUCCESS").data(positions).build());
     }
 }

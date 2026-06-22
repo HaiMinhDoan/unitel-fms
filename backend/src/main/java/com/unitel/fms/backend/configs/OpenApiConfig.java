@@ -48,10 +48,11 @@ public class OpenApiConfig {
     }
 
     @Bean
-    public GroupedOpenApi allApi() {
+    public GroupedOpenApi allApi(RequireAuthOperationCustomizer customizer) {
         return GroupedOpenApi.builder()
                 .group("all")
                 .packagesToScan("com.unitel.fms.backend.controllers")
+                .addOperationCustomizer(customizer)
                 .build();
     }
 

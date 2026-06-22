@@ -37,16 +37,16 @@ public class AuthController {
         Optional<User> userOpt = userRepository.findByUsername(request.getUsername());
         
         if (userOpt.isEmpty()) {
-            return ResponseData.<LoginResponse>builder().status(401).message("Sai tên đăng nhập hoặc mật khẩu").build();
+            return ResponseData.<LoginResponse>builder().status(401).messageCode("INVALID_CREDENTIALS").build();
         }
 
         User user = userOpt.get();
         if (!"active".equals(user.getStatus())) {
-            return ResponseData.<LoginResponse>builder().status(403).message("Tài khoản đang bị khóa").build();
+            return ResponseData.<LoginResponse>builder().status(403).messageCode("ACCOUNT_LOCKED").build();
         }
 
         if (user.getPasswordHash() == null || !passwordEncoder.matches(request.getPassword(), user.getPasswordHash())) {
-            return ResponseData.<LoginResponse>builder().status(401).message("Sai tên đăng nhập hoặc mật khẩu").build();
+            return ResponseData.<LoginResponse>builder().status(401).messageCode("INVALID_CREDENTIALS").build();
         }
 
         AuthInfo authInfo = AuthInfo.fromEntity(user);
@@ -70,7 +70,7 @@ public class AuthController {
                 .orgId(user.getOrg() != null ? user.getOrg().getId() : null)
                 .build();
 
-        return ResponseData.<LoginResponse>builder().status(200).message("Đăng nhập thành công").data(response).build();
+        return ResponseData.<LoginResponse>builder().status(200).messageCode("LOGIN_SUCCESS").data(response).build();
     }
 
     @PostMapping("/refresh")
@@ -78,17 +78,17 @@ public class AuthController {
         String refreshToken = request.getRefreshToken();
         
         if (jwtService.isTokenExpired(refreshToken)) {
-            return ResponseData.<LoginResponse>builder().status(401).message("Refresh token đã hết hạn").build();
+            return ResponseData.<LoginResponse>builder().status(401).messageCode("REFRESH_TOKEN_EXPIRED").build();
         }
 
         String rtKey = redisService.buildKey("refresh-token", refreshToken);
         if (!redisService.exists(rtKey)) {
-            return ResponseData.<LoginResponse>builder().status(401).message("Refresh token không hợp lệ hoặc đã bị thu hồi").build();
+            return ResponseData.<LoginResponse>builder().status(401).messageCode("REFRESH_TOKEN_INVALID").build();
         }
 
         AuthInfo authInfo = jwtService.getAuthInfoFromToken(refreshToken);
         if (authInfo == null) {
-            return ResponseData.<LoginResponse>builder().status(401).message("Token không hợp lệ").build();
+            return ResponseData.<LoginResponse>builder().status(401).messageCode("INVALID_TOKEN").build();
         }
 
         // Generate new tokens
@@ -112,7 +112,7 @@ public class AuthController {
                 .orgId(authInfo.getOrgId())
                 .build();
 
-        return ResponseData.<LoginResponse>builder().status(200).message("Refresh thành công").data(response).build();
+        return ResponseData.<LoginResponse>builder().status(200).messageCode("REFRESH_SUCCESS").data(response).build();
     }
 
     @PostMapping("/logout")
@@ -126,6 +126,6 @@ public class AuthController {
             redisService.set(blacklistKey, "revoked", 24 * 3600);
         }
         
-        return ResponseData.<Void>builder().status(200).message("Đăng xuất thành công").build();
+        return ResponseData.<Void>builder().status(200).messageCode("LOGOUT_SUCCESS").build();
     }
 }

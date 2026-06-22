@@ -47,7 +47,7 @@ public class VehicleService extends BaseServiceImpl<Vehicle, UUID> {
     @Transactional
     public Vehicle create(Vehicle entity) {
         if (vehicleRepository.existsByPlateNumber(entity.getPlateNumber())) {
-            throw new ConflictException("Biển số xe '" + entity.getPlateNumber() + "' đã tồn tại trong hệ thống");
+            throw new ConflictException("VEHICLE_EXISTS");
         }
         return super.create(entity);
     }
@@ -60,7 +60,7 @@ public class VehicleService extends BaseServiceImpl<Vehicle, UUID> {
         if (updates.containsKey("currentOdometer")) {
             BigDecimal newOdo = new BigDecimal(updates.get("currentOdometer").toString());
             if (vehicle.getCurrentOdometer() != null && newOdo.compareTo(vehicle.getCurrentOdometer()) < 0) {
-                throw new InvalidFieldException("Số km mới không được nhỏ hơn số km hiện tại");
+                throw new InvalidFieldException("INVALID_ODOMETER_VALUE");
             }
         }
         return super.updateFromMap(id, updates);

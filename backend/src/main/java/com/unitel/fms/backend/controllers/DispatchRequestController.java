@@ -34,7 +34,7 @@ public class DispatchRequestController {
         DispatchRequest entity = dispatchRequestMapper.toEntity(request);
         DispatchRequest saved = dispatchRequestService.create(entity);
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseData.<DispatchRequestResponse>builder()
-                .status(201).message("Created").data(dispatchRequestMapper.toResponse(saved)).build());
+                .status(201).messageCode("CREATED").data(dispatchRequestMapper.toResponse(saved)).build());
     }
 
     @RequireAuth(roles = {"OPS_MANAGER", "DISPATCHER", "SYSTEM_ADMIN"}, inWorkspace = true)
@@ -42,7 +42,7 @@ public class DispatchRequestController {
     public ResponseEntity<ResponseData<DispatchRequestResponse>> get(@PathVariable UUID id) {
         DispatchRequest entity = dispatchRequestService.getOne(id).orElseThrow();
         return ResponseEntity.ok(ResponseData.<DispatchRequestResponse>builder()
-                .status(200).message("Success").data(dispatchRequestMapper.toResponse(entity)).build());
+                .status(200).messageCode("SUCCESS").data(dispatchRequestMapper.toResponse(entity)).build());
     }
 
     @RequireAuth(roles = {"OPS_MANAGER", "DISPATCHER"}, inWorkspace = true)
@@ -52,7 +52,7 @@ public class DispatchRequestController {
         dispatchRequestMapper.updateEntity(request, entity);
         DispatchRequest updated = dispatchRequestService.update(id, entity);
         return ResponseEntity.ok(ResponseData.<DispatchRequestResponse>builder()
-                .status(200).message("Updated").data(dispatchRequestMapper.toResponse(updated)).build());
+                .status(200).messageCode("UPDATED").data(dispatchRequestMapper.toResponse(updated)).build());
     }
 
     @RequireAuth(roles = {"OPS_MANAGER", "DISPATCHER"}, inWorkspace = true)
@@ -60,7 +60,7 @@ public class DispatchRequestController {
     public ResponseEntity<ResponseData<Void>> delete(@PathVariable UUID id) {
         dispatchRequestService.delete(id);
         return ResponseEntity.ok(ResponseData.<Void>builder()
-                .status(200).message("Deleted").build());
+                .status(200).messageCode("DELETED").build());
     }
 
     @RequireAuth(roles = {"OPS_MANAGER", "DISPATCHER"}, inWorkspace = true)
@@ -69,7 +69,7 @@ public class DispatchRequestController {
         List<DispatchRequest> queue = dispatchRequestService.getQueue(orgId);
         List<DispatchRequestResponse> data = queue.stream().map(dispatchRequestMapper::toResponse).collect(Collectors.toList());
         return ResponseEntity.ok(ResponseData.<List<DispatchRequestResponse>>builder()
-                .status(200).message("Success").data(data).build());
+                .status(200).messageCode("SUCCESS").data(data).build());
     }
 
     @RequireAuth(roles = {"OPS_MANAGER", "DISPATCHER"}, inWorkspace = true)
@@ -78,6 +78,6 @@ public class DispatchRequestController {
         List<DispatchRequest> updated = dispatchRequestService.bulkUpdate(items);
         List<DispatchRequestResponse> data = updated.stream().map(dispatchRequestMapper::toResponse).collect(Collectors.toList());
         return ResponseEntity.ok(ResponseData.<List<DispatchRequestResponse>>builder()
-                .status(200).message("Updated").data(data).build());
+                .status(200).messageCode("UPDATED").data(data).build());
     }
 }

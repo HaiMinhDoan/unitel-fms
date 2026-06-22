@@ -57,7 +57,7 @@ public class VehicleTypeService extends BaseServiceImpl<VehicleType, UUID> {
     @Transactional
     public VehicleType create(VehicleType entity) {
         if (vehicleTypeRepository.existsByCode(entity.getCode())) {
-            throw new ConflictException("Mã loại phương tiện '" + entity.getCode() + "' đã tồn tại");
+            throw new ConflictException("VEHICLE_TYPE_EXISTS");
         }
         return super.create(entity);
     }

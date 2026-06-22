@@ -22,13 +22,20 @@ public class AuthInterceptor implements HandlerInterceptor {
     private com.unitel.fms.backend.services.RedisService redisService;
 
     @Override
-    public boolean preHandle(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler) throws Exception {
+    public boolean preHandle(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
+            @NonNull Object handler) throws Exception {
         SecurityContextHolder.setPath(request.getRequestURI());
 
         String authHeader = request.getHeader("Authorization");
+        String lang = request.getHeader("lang");
+        if (lang != null) {
+            SecurityContextHolder.setLang(lang);
+        } else {
+            SecurityContextHolder.setLang("en");
+        }
         if (authHeader != null) {
             String token = jwtService.getTokenFromAuthHeader(authHeader);
-            
+
             if (token != null) {
                 String blacklistKey = redisService.buildKey("token-blacklist", token);
                 if (redisService.exists(blacklistKey)) {
@@ -57,7 +64,8 @@ public class AuthInterceptor implements HandlerInterceptor {
     }
 
     @Override
-    public void afterCompletion(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler, Exception ex) {
+    public void afterCompletion(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
+            @NonNull Object handler, Exception ex) {
         SecurityContextHolder.clear();
     }
 }

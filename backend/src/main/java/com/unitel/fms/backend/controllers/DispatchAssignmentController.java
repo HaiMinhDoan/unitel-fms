@@ -32,7 +32,7 @@ public class DispatchAssignmentController {
         DispatchAssignment entity = dispatchAssignmentMapper.toEntity(request);
         DispatchAssignment saved = dispatchAssignmentService.create(entity);
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseData.<DispatchAssignmentResponse>builder()
-                .status(201).message("Created").data(dispatchAssignmentMapper.toResponse(saved)).build());
+                .status(201).messageCode("CREATED").data(dispatchAssignmentMapper.toResponse(saved)).build());
     }
 
     @RequireAuth(roles = {"OPS_MANAGER", "DISPATCHER", "SYSTEM_ADMIN", "DRIVER"}, inWorkspace = true)
@@ -40,7 +40,7 @@ public class DispatchAssignmentController {
     public ResponseEntity<ResponseData<DispatchAssignmentResponse>> get(@PathVariable UUID id) {
         DispatchAssignment entity = dispatchAssignmentService.getOne(id).orElseThrow();
         return ResponseEntity.ok(ResponseData.<DispatchAssignmentResponse>builder()
-                .status(200).message("Success").data(dispatchAssignmentMapper.toResponse(entity)).build());
+                .status(200).messageCode("SUCCESS").data(dispatchAssignmentMapper.toResponse(entity)).build());
     }
 
     @RequireAuth(roles = {"OPS_MANAGER"}, inWorkspace = true)
@@ -48,6 +48,6 @@ public class DispatchAssignmentController {
     public ResponseEntity<ResponseData<DispatchAssignmentResponse>> override(@PathVariable UUID id, @Valid @RequestBody OverrideRequest request) {
         DispatchAssignment overridden = dispatchAssignmentService.applyOverride(id, request.getOverrideReason());
         return ResponseEntity.ok(ResponseData.<DispatchAssignmentResponse>builder()
-                .status(200).message("Overridden").data(dispatchAssignmentMapper.toResponse(overridden)).build());
+                .status(200).messageCode("OVERRIDDEN").data(dispatchAssignmentMapper.toResponse(overridden)).build());
     }
 }

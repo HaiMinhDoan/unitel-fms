@@ -28,20 +28,20 @@ public class PartnerVehicleController {
         List<PartnerVehicleResponse> responses = partnerVehicleService.getAll().stream()
                 .map(partnerVehicleMapper::toResponse)
                 .collect(Collectors.toList());
-        return ResponseData.<List<PartnerVehicleResponse>>builder().status(200).message("Thành công").data(responses).build();
+        return ResponseData.<List<PartnerVehicleResponse>>builder().status(200).messageCode("SUCCESS").data(responses).build();
     }
 
     @GetMapping("/{id}")
     public ResponseData<PartnerVehicleResponse> getById(@PathVariable UUID id) {
         PartnerVehicle partnerVehicle = partnerVehicleService.getOne(id).orElseThrow(() -> new RuntimeException("PartnerVehicle not found"));
-        return ResponseData.<PartnerVehicleResponse>builder().status(200).message("Thành công").data(partnerVehicleMapper.toResponse(partnerVehicle)).build();
+        return ResponseData.<PartnerVehicleResponse>builder().status(200).messageCode("SUCCESS").data(partnerVehicleMapper.toResponse(partnerVehicle)).build();
     }
 
     @PostMapping
     public ResponseData<PartnerVehicleResponse> create(@RequestBody @Valid PartnerVehicleRequest request) {
         PartnerVehicle entity = partnerVehicleMapper.toEntity(request);
         PartnerVehicle saved = partnerVehicleService.create(entity);
-        return ResponseData.<PartnerVehicleResponse>builder().status(200).message("Thành công").data(partnerVehicleMapper.toResponse(saved)).build();
+        return ResponseData.<PartnerVehicleResponse>builder().status(200).messageCode("SUCCESS").data(partnerVehicleMapper.toResponse(saved)).build();
     }
 
     @PutMapping("/{id}")
@@ -49,12 +49,12 @@ public class PartnerVehicleController {
         PartnerVehicle entity = partnerVehicleService.getOne(id).orElseThrow(() -> new RuntimeException("PartnerVehicle not found"));
         partnerVehicleMapper.updateEntityFromRequest(request, entity);
         PartnerVehicle saved = partnerVehicleService.update(entity);
-        return ResponseData.<PartnerVehicleResponse>builder().status(200).message("Thành công").data(partnerVehicleMapper.toResponse(saved)).build();
+        return ResponseData.<PartnerVehicleResponse>builder().status(200).messageCode("SUCCESS").data(partnerVehicleMapper.toResponse(saved)).build();
     }
 
     @DeleteMapping("/{id}")
     public ResponseData<Void> delete(@PathVariable UUID id) {
         partnerVehicleService.delete(id);
-        return ResponseData.<Void>builder().status(200).message("Thành công").data(null).build();
+        return ResponseData.<Void>builder().status(200).messageCode("SUCCESS").data(null).build();
     }
 }

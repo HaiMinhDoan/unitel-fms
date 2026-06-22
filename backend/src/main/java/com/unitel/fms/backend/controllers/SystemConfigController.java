@@ -32,7 +32,7 @@ public class SystemConfigController {
     public ResponseData<SystemConfigResponse> create(@RequestBody SystemConfigRequest request) {
         SystemConfig entity = systemConfigMapper.toEntity(request);
         SystemConfig saved = systemConfigService.create(entity);
-        return ResponseData.<SystemConfigResponse>builder().status(200).message("Thành công").data(systemConfigMapper.toResponse(saved)).build();
+        return ResponseData.<SystemConfigResponse>builder().status(200).messageCode("SUCCESS").data(systemConfigMapper.toResponse(saved)).build();
     }
 
     @PutMapping("/system-config/update/{id}")
@@ -40,7 +40,7 @@ public class SystemConfigController {
     public ResponseData<SystemConfigResponse> update(@PathVariable UUID id, @RequestBody SystemConfigRequest request) {
         SystemConfig entity = systemConfigMapper.toEntity(request);
         SystemConfig updated = systemConfigService.update(id, entity);
-        return ResponseData.<SystemConfigResponse>builder().status(200).message("Thành công").data(systemConfigMapper.toResponse(updated)).build();
+        return ResponseData.<SystemConfigResponse>builder().status(200).messageCode("SUCCESS").data(systemConfigMapper.toResponse(updated)).build();
     }
 
     @PatchMapping("/system-config/update-partial/{id}")
@@ -49,48 +49,48 @@ public class SystemConfigController {
         SystemConfig existing = systemConfigService.getOne(id).orElseThrow(() -> new RuntimeException("Not found"));
         systemConfigMapper.updateEntity(request, existing);
         SystemConfig updated = systemConfigService.update(existing);
-        return ResponseData.<SystemConfigResponse>builder().status(200).message("Thành công").data(systemConfigMapper.toResponse(updated)).build();
+        return ResponseData.<SystemConfigResponse>builder().status(200).messageCode("SUCCESS").data(systemConfigMapper.toResponse(updated)).build();
     }
 
     @GetMapping("/system-config/get-by-key")
     @RequireAuth(roles = {RoleType.ALL})
     public ResponseData<SystemConfigResponse> getByKey(@RequestParam String key) {
         SystemConfig entity = systemConfigService.getByKeyCached(key);
-        return ResponseData.<SystemConfigResponse>builder().status(200).message("Thành công").data(systemConfigMapper.toResponse(entity)).build();
+        return ResponseData.<SystemConfigResponse>builder().status(200).messageCode("SUCCESS").data(systemConfigMapper.toResponse(entity)).build();
     }
 
     @GetMapping("/system-configs/get-all")
     @RequireAuth(roles = {RoleType.SYSTEM_ADMIN})
     public ResponseData<List<SystemConfigResponse>> getAll() {
         List<SystemConfigResponse> list = systemConfigService.getAll().stream().map(systemConfigMapper::toResponse).collect(Collectors.toList());
-        return ResponseData.<List<SystemConfigResponse>>builder().status(200).message("Thành công").data(list).build();
+        return ResponseData.<List<SystemConfigResponse>>builder().status(200).messageCode("SUCCESS").data(list).build();
     }
 
     @PostMapping("/system-configs/filter")
     @RequireAuth(roles = {RoleType.SYSTEM_ADMIN})
     public ResponseData<Page<SystemConfigResponse>> filter(@RequestBody BaseFilterRequest filter) {
         Page<SystemConfigResponse> page = systemConfigService.filter(filter).map(systemConfigMapper::toResponse);
-        return ResponseData.<Page<SystemConfigResponse>>builder().status(200).message("Thành công").data(page).build();
+        return ResponseData.<Page<SystemConfigResponse>>builder().status(200).messageCode("SUCCESS").data(page).build();
     }
 
     @PatchMapping("/system-config/change-status/{id}")
     @RequireAuth(roles = {RoleType.SYSTEM_ADMIN})
     public ResponseData<SystemConfigResponse> changeStatus(@PathVariable UUID id, @RequestParam String status) {
         SystemConfig updated = systemConfigService.changeStatus(id, status);
-        return ResponseData.<SystemConfigResponse>builder().status(200).message("Thành công").data(systemConfigMapper.toResponse(updated)).build();
+        return ResponseData.<SystemConfigResponse>builder().status(200).messageCode("SUCCESS").data(systemConfigMapper.toResponse(updated)).build();
     }
 
     @DeleteMapping("/system-config/soft-delete/{id}")
     @RequireAuth(roles = {RoleType.SYSTEM_ADMIN})
     public ResponseData<Void> softDelete(@PathVariable UUID id) {
         systemConfigService.changeStatus(id, "deleted");
-        return ResponseData.<Void>builder().status(200).message("Thành công").build();
+        return ResponseData.<Void>builder().status(200).messageCode("SUCCESS").build();
     }
 
     @DeleteMapping("/system-config/hard-delete/{id}")
     @RequireAuth(roles = {RoleType.SYSTEM_ADMIN})
     public ResponseData<Void> hardDelete(@PathVariable UUID id) {
         systemConfigService.hardDelete(id);
-        return ResponseData.<Void>builder().status(200).message("Thành công").build();
+        return ResponseData.<Void>builder().status(200).messageCode("SUCCESS").build();
     }
 }

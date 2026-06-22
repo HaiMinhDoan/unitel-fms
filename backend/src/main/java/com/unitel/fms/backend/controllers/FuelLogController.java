@@ -31,7 +31,7 @@ public class FuelLogController {
         FuelLog entity = fuelLogMapper.toEntity(request);
         FuelLog saved = fuelLogService.create(entity);
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseData.<FuelLogResponse>builder()
-                .status(201).message("Created").data(fuelLogMapper.toResponse(saved)).build());
+                .status(201).messageCode("CREATED").data(fuelLogMapper.toResponse(saved)).build());
     }
 
     @RequireAuth(roles = {"OPS_MANAGER", "DISPATCHER", "FLEET_MANAGER", "SYSTEM_ADMIN"}, inWorkspace = true)
@@ -39,6 +39,6 @@ public class FuelLogController {
     public ResponseEntity<ResponseData<FuelLogResponse>> get(@PathVariable UUID id) {
         FuelLog entity = fuelLogService.getOne(id).orElseThrow();
         return ResponseEntity.ok(ResponseData.<FuelLogResponse>builder()
-                .status(200).message("Success").data(fuelLogMapper.toResponse(entity)).build());
+                .status(200).messageCode("SUCCESS").data(fuelLogMapper.toResponse(entity)).build());
     }
 }

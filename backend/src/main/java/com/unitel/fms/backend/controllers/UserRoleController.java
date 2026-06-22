@@ -28,13 +28,13 @@ public class UserRoleController {
     public ResponseData<UserRoleResponse> create(@RequestBody UserRoleRequest request) {
         UserRole entity = userRoleMapper.toEntity(request);
         UserRole saved = userRoleService.create(entity);
-        return ResponseData.<UserRoleResponse>builder().status(200).message("Thành công").data(userRoleMapper.toResponse(saved)).build();
+        return ResponseData.<UserRoleResponse>builder().status(200).messageCode("SUCCESS").data(userRoleMapper.toResponse(saved)).build();
     }
 
     @DeleteMapping("/user-role/hard-delete/{id}")
     @RequireAuth(roles = {RoleType.SYSTEM_ADMIN, RoleType.OPS_MANAGER}, rolesLogic = RequireAuth.LogicType.OR)
     public ResponseData<Void> hardDelete(@PathVariable UUID id) {
         userRoleService.hardDelete(id);
-        return ResponseData.<Void>builder().status(200).message("Thành công").build();
+        return ResponseData.<Void>builder().status(200).messageCode("SUCCESS").build();
     }
 }

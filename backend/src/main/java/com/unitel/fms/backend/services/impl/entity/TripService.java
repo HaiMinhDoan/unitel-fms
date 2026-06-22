@@ -78,7 +78,7 @@ public class TripService extends BaseServiceImpl<Trip, UUID> {
             Driver currentDriver = driverRepository.findByUserId(authInfo.getId())
                     .orElseThrow(() -> new AccessDeniedException("Tài khoản chưa liên kết tài xế"));
             if (!currentDriver.getId().equals(driverIdOfTrip)) {
-                throw new AccessDeniedException("Không có quyền với chuyến này");
+                throw new AccessDeniedException("NO_PERMISSION_FOR_TRIP");
             }
         }
 

@@ -32,7 +32,7 @@ public class VehicleDocumentController {
     public ResponseData<VehicleDocumentResponse> create(@RequestBody VehicleDocumentRequest request) {
         VehicleDocument entity = vehicleDocumentMapper.toEntity(request);
         VehicleDocument saved = vehicleDocumentService.create(entity);
-        return ResponseData.<VehicleDocumentResponse>builder().status(200).message("Thành công").data(vehicleDocumentMapper.toResponse(saved)).build();
+        return ResponseData.<VehicleDocumentResponse>builder().status(200).messageCode("SUCCESS").data(vehicleDocumentMapper.toResponse(saved)).build();
     }
 
     @PutMapping("/vehicle-document/update/{id}")
@@ -40,49 +40,49 @@ public class VehicleDocumentController {
     public ResponseData<VehicleDocumentResponse> update(@PathVariable UUID id, @RequestBody VehicleDocumentRequest request) {
         VehicleDocument entity = vehicleDocumentMapper.toEntity(request);
         VehicleDocument updated = vehicleDocumentService.update(id, entity);
-        return ResponseData.<VehicleDocumentResponse>builder().status(200).message("Thành công").data(vehicleDocumentMapper.toResponse(updated)).build();
+        return ResponseData.<VehicleDocumentResponse>builder().status(200).messageCode("SUCCESS").data(vehicleDocumentMapper.toResponse(updated)).build();
     }
 
     @PatchMapping("/vehicle-document/update-partial/{id}")
     @RequireAuth(roles = {RoleType.SYSTEM_ADMIN, RoleType.FLEET_MANAGER}, rolesLogic = RequireAuth.LogicType.OR, inWorkspace = true)
     public ResponseData<VehicleDocumentResponse> updatePartial(@PathVariable UUID id, @RequestBody Map<String, Object> updates) {
         VehicleDocument updated = vehicleDocumentService.updateFromMap(id, updates);
-        return ResponseData.<VehicleDocumentResponse>builder().status(200).message("Thành công").data(vehicleDocumentMapper.toResponse(updated)).build();
+        return ResponseData.<VehicleDocumentResponse>builder().status(200).messageCode("SUCCESS").data(vehicleDocumentMapper.toResponse(updated)).build();
     }
 
     @GetMapping("/vehicle-document/get-by-id/{id}")
     @RequireAuth(roles = {RoleType.ALL}, inWorkspace = true)
     public ResponseData<VehicleDocumentResponse> getById(@PathVariable UUID id) {
         VehicleDocument entity = vehicleDocumentService.getOne(id).orElse(null);
-        return ResponseData.<VehicleDocumentResponse>builder().status(200).message("Thành công").data(entity != null ? vehicleDocumentMapper.toResponse(entity) : null).build();
+        return ResponseData.<VehicleDocumentResponse>builder().status(200).messageCode("SUCCESS").data(entity != null ? vehicleDocumentMapper.toResponse(entity) : null).build();
     }
 
     @PostMapping("/vehicle-documents/filter")
     @RequireAuth(roles = {RoleType.ALL}, inWorkspace = true)
     public ResponseData<Page<VehicleDocumentResponse>> filter(@RequestBody BaseFilterRequest filter) {
         Page<VehicleDocumentResponse> page = vehicleDocumentService.filter(filter).map(vehicleDocumentMapper::toResponse);
-        return ResponseData.<Page<VehicleDocumentResponse>>builder().status(200).message("Thành công").data(page).build();
+        return ResponseData.<Page<VehicleDocumentResponse>>builder().status(200).messageCode("SUCCESS").data(page).build();
     }
 
     @PatchMapping("/vehicle-document/change-status/{id}")
     @RequireAuth(roles = {RoleType.SYSTEM_ADMIN, RoleType.FLEET_MANAGER}, rolesLogic = RequireAuth.LogicType.OR, inWorkspace = true)
     public ResponseData<VehicleDocumentResponse> changeStatus(@PathVariable UUID id, @RequestParam String status) {
         VehicleDocument updated = vehicleDocumentService.changeStatus(id, status);
-        return ResponseData.<VehicleDocumentResponse>builder().status(200).message("Thành công").data(vehicleDocumentMapper.toResponse(updated)).build();
+        return ResponseData.<VehicleDocumentResponse>builder().status(200).messageCode("SUCCESS").data(vehicleDocumentMapper.toResponse(updated)).build();
     }
 
     @DeleteMapping("/vehicle-document/soft-delete/{id}")
     @RequireAuth(roles = {RoleType.SYSTEM_ADMIN, RoleType.FLEET_MANAGER}, rolesLogic = RequireAuth.LogicType.OR, inWorkspace = true)
     public ResponseData<Void> softDelete(@PathVariable UUID id) {
         vehicleDocumentService.changeStatus(id, "deleted");
-        return ResponseData.<Void>builder().status(200).message("Thành công").build();
+        return ResponseData.<Void>builder().status(200).messageCode("SUCCESS").build();
     }
 
     @DeleteMapping("/vehicle-document/hard-delete/{id}")
     @RequireAuth(roles = {RoleType.SYSTEM_ADMIN}, inWorkspace = true)
     public ResponseData<Void> hardDelete(@PathVariable UUID id) {
         vehicleDocumentService.delete(id);
-        return ResponseData.<Void>builder().status(200).message("Thành công").build();
+        return ResponseData.<Void>builder().status(200).messageCode("SUCCESS").build();
     }
 
     @GetMapping("/vehicle-documents/get-by-vehicle/{vehicleId}")
@@ -97,7 +97,7 @@ public class VehicleDocumentController {
                 .build());
         List<VehicleDocumentResponse> list = vehicleDocumentService.filter(filter).getContent().stream()
                 .map(vehicleDocumentMapper::toResponse).toList();
-        return ResponseData.<List<VehicleDocumentResponse>>builder().status(200).message("Thành công").data(list).build();
+        return ResponseData.<List<VehicleDocumentResponse>>builder().status(200).messageCode("SUCCESS").data(list).build();
     }
 
     @GetMapping("/vehicle-documents/get-expiring-soon")
@@ -106,6 +106,6 @@ public class VehicleDocumentController {
         UUID orgId = com.unitel.fms.backend.contexts.SecurityContextHolder.getAuthInfo().getOrgId();
         List<VehicleDocumentResponse> list = vehicleDocumentService.getExpiringSoon(orgId).stream()
                 .map(vehicleDocumentMapper::toResponse).toList();
-        return ResponseData.<List<VehicleDocumentResponse>>builder().status(200).message("Thành công").data(list).build();
+        return ResponseData.<List<VehicleDocumentResponse>>builder().status(200).messageCode("SUCCESS").data(list).build();
     }
 }

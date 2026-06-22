@@ -31,7 +31,7 @@ public class RoleController {
     public ResponseData<RoleResponse> create(@RequestBody RoleRequest request) {
         Role entity = roleMapper.toEntity(request);
         Role saved = roleService.create(entity);
-        return ResponseData.<RoleResponse>builder().status(200).message("Thành công").data(roleMapper.toResponse(saved)).build();
+        return ResponseData.<RoleResponse>builder().status(200).messageCode("SUCCESS").data(roleMapper.toResponse(saved)).build();
     }
 
     @PutMapping("/role/update/{id}")
@@ -39,7 +39,7 @@ public class RoleController {
     public ResponseData<RoleResponse> update(@PathVariable UUID id, @RequestBody RoleRequest request) {
         Role entity = roleMapper.toEntity(request);
         Role updated = roleService.update(id, entity);
-        return ResponseData.<RoleResponse>builder().status(200).message("Thành công").data(roleMapper.toResponse(updated)).build();
+        return ResponseData.<RoleResponse>builder().status(200).messageCode("SUCCESS").data(roleMapper.toResponse(updated)).build();
     }
 
     @PatchMapping("/role/update-partial/{id}")
@@ -48,48 +48,48 @@ public class RoleController {
         Role existing = roleService.getOne(id).orElseThrow(() -> new RuntimeException("Not found"));
         roleMapper.updateEntity(request, existing);
         Role updated = roleService.update(existing);
-        return ResponseData.<RoleResponse>builder().status(200).message("Thành công").data(roleMapper.toResponse(updated)).build();
+        return ResponseData.<RoleResponse>builder().status(200).messageCode("SUCCESS").data(roleMapper.toResponse(updated)).build();
     }
 
     @GetMapping("/role/get-by-id/{id}")
     @RequireAuth(roles = {RoleType.ALL})
     public ResponseData<RoleResponse> getById(@PathVariable UUID id) {
         Role entity = roleService.getByIdCached(id);
-        return ResponseData.<RoleResponse>builder().status(200).message("Thành công").data(roleMapper.toResponse(entity)).build();
+        return ResponseData.<RoleResponse>builder().status(200).messageCode("SUCCESS").data(roleMapper.toResponse(entity)).build();
     }
 
     @GetMapping("/roles/get-all")
     @RequireAuth(roles = {RoleType.ALL})
     public ResponseData<List<RoleResponse>> getAll() {
         List<RoleResponse> list = roleService.getAllCached().stream().map(roleMapper::toResponse).collect(Collectors.toList());
-        return ResponseData.<List<RoleResponse>>builder().status(200).message("Thành công").data(list).build();
+        return ResponseData.<List<RoleResponse>>builder().status(200).messageCode("SUCCESS").data(list).build();
     }
 
     @PostMapping("/roles/filter")
     @RequireAuth(roles = {RoleType.SYSTEM_ADMIN})
     public ResponseData<Page<RoleResponse>> filter(@RequestBody BaseFilterRequest filter) {
         Page<RoleResponse> page = roleService.filter(filter).map(roleMapper::toResponse);
-        return ResponseData.<Page<RoleResponse>>builder().status(200).message("Thành công").data(page).build();
+        return ResponseData.<Page<RoleResponse>>builder().status(200).messageCode("SUCCESS").data(page).build();
     }
 
     @PatchMapping("/role/change-status/{id}")
     @RequireAuth(roles = {RoleType.SYSTEM_ADMIN})
     public ResponseData<RoleResponse> changeStatus(@PathVariable UUID id, @RequestParam String status) {
         Role updated = roleService.changeStatus(id, status);
-        return ResponseData.<RoleResponse>builder().status(200).message("Thành công").data(roleMapper.toResponse(updated)).build();
+        return ResponseData.<RoleResponse>builder().status(200).messageCode("SUCCESS").data(roleMapper.toResponse(updated)).build();
     }
 
     @DeleteMapping("/role/soft-delete/{id}")
     @RequireAuth(roles = {RoleType.SYSTEM_ADMIN})
     public ResponseData<Void> softDelete(@PathVariable UUID id) {
         roleService.changeStatus(id, "deleted");
-        return ResponseData.<Void>builder().status(200).message("Thành công").build();
+        return ResponseData.<Void>builder().status(200).messageCode("SUCCESS").build();
     }
 
     @DeleteMapping("/role/hard-delete/{id}")
     @RequireAuth(roles = {RoleType.SYSTEM_ADMIN})
     public ResponseData<Void> hardDelete(@PathVariable UUID id) {
         roleService.hardDelete(id);
-        return ResponseData.<Void>builder().status(200).message("Thành công").build();
+        return ResponseData.<Void>builder().status(200).messageCode("SUCCESS").build();
     }
 }

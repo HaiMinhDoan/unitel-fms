@@ -28,20 +28,20 @@ public class PartnerPerformanceController {
         List<PartnerPerformanceResponse> responses = partnerPerformanceService.getAll().stream()
                 .map(partnerPerformanceMapper::toResponse)
                 .collect(Collectors.toList());
-        return ResponseData.<List<PartnerPerformanceResponse>>builder().status(200).message("Thành công").data(responses).build();
+        return ResponseData.<List<PartnerPerformanceResponse>>builder().status(200).messageCode("SUCCESS").data(responses).build();
     }
 
     @GetMapping("/{id}")
     public ResponseData<PartnerPerformanceResponse> getById(@PathVariable UUID id) {
         PartnerPerformance partnerPerformance = partnerPerformanceService.getOne(id).orElseThrow(() -> new RuntimeException("PartnerPerformance not found"));
-        return ResponseData.<PartnerPerformanceResponse>builder().status(200).message("Thành công").data(partnerPerformanceMapper.toResponse(partnerPerformance)).build();
+        return ResponseData.<PartnerPerformanceResponse>builder().status(200).messageCode("SUCCESS").data(partnerPerformanceMapper.toResponse(partnerPerformance)).build();
     }
 
     @PostMapping
     public ResponseData<PartnerPerformanceResponse> create(@RequestBody @Valid PartnerPerformanceRequest request) {
         PartnerPerformance entity = partnerPerformanceMapper.toEntity(request);
         PartnerPerformance saved = partnerPerformanceService.create(entity);
-        return ResponseData.<PartnerPerformanceResponse>builder().status(200).message("Thành công").data(partnerPerformanceMapper.toResponse(saved)).build();
+        return ResponseData.<PartnerPerformanceResponse>builder().status(200).messageCode("SUCCESS").data(partnerPerformanceMapper.toResponse(saved)).build();
     }
 
     @PutMapping("/{id}")
@@ -49,18 +49,18 @@ public class PartnerPerformanceController {
         PartnerPerformance entity = partnerPerformanceService.getOne(id).orElseThrow(() -> new RuntimeException("PartnerPerformance not found"));
         partnerPerformanceMapper.updateEntityFromRequest(request, entity);
         PartnerPerformance saved = partnerPerformanceService.update(entity);
-        return ResponseData.<PartnerPerformanceResponse>builder().status(200).message("Thành công").data(partnerPerformanceMapper.toResponse(saved)).build();
+        return ResponseData.<PartnerPerformanceResponse>builder().status(200).messageCode("SUCCESS").data(partnerPerformanceMapper.toResponse(saved)).build();
     }
 
     @DeleteMapping("/{id}")
     public ResponseData<Void> delete(@PathVariable UUID id) {
         partnerPerformanceService.delete(id);
-        return ResponseData.<Void>builder().status(200).message("Thành công").data(null).build();
+        return ResponseData.<Void>builder().status(200).messageCode("SUCCESS").data(null).build();
     }
 
     @PostMapping("/recalculate")
     public ResponseData<PartnerPerformanceResponse> recalculate(@RequestParam UUID partnerId, @RequestParam String periodMonth) {
         PartnerPerformance pp = partnerPerformanceService.recalculateForPartnerAndMonth(partnerId, periodMonth);
-        return ResponseData.<PartnerPerformanceResponse>builder().status(200).message("Thành công").data(partnerPerformanceMapper.toResponse(pp)).build();
+        return ResponseData.<PartnerPerformanceResponse>builder().status(200).messageCode("SUCCESS").data(partnerPerformanceMapper.toResponse(pp)).build();
     }
 }

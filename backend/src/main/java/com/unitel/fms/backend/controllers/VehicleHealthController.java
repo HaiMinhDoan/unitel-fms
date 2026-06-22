@@ -31,7 +31,7 @@ public class VehicleHealthController {
     public ResponseData<VehicleHealthResponse> create(@RequestBody VehicleHealthRequest request) {
         VehicleHealth entity = vehicleHealthMapper.toEntity(request);
         VehicleHealth saved = vehicleHealthService.create(entity);
-        return ResponseData.<VehicleHealthResponse>builder().status(200).message("Thành công").data(vehicleHealthMapper.toResponse(saved)).build();
+        return ResponseData.<VehicleHealthResponse>builder().status(200).messageCode("SUCCESS").data(vehicleHealthMapper.toResponse(saved)).build();
     }
 
     @PutMapping("/vehicle-health/update/{id}")
@@ -39,56 +39,56 @@ public class VehicleHealthController {
     public ResponseData<VehicleHealthResponse> update(@PathVariable UUID id, @RequestBody VehicleHealthRequest request) {
         VehicleHealth entity = vehicleHealthMapper.toEntity(request);
         VehicleHealth updated = vehicleHealthService.update(id, entity);
-        return ResponseData.<VehicleHealthResponse>builder().status(200).message("Thành công").data(vehicleHealthMapper.toResponse(updated)).build();
+        return ResponseData.<VehicleHealthResponse>builder().status(200).messageCode("SUCCESS").data(vehicleHealthMapper.toResponse(updated)).build();
     }
 
     @PatchMapping("/vehicle-health/update-partial/{id}")
     @RequireAuth(roles = {RoleType.SYSTEM_ADMIN, RoleType.FLEET_MANAGER}, rolesLogic = RequireAuth.LogicType.OR, inWorkspace = true)
     public ResponseData<VehicleHealthResponse> updatePartial(@PathVariable UUID id, @RequestBody Map<String, Object> updates) {
         VehicleHealth updated = vehicleHealthService.updateFromMap(id, updates);
-        return ResponseData.<VehicleHealthResponse>builder().status(200).message("Thành công").data(vehicleHealthMapper.toResponse(updated)).build();
+        return ResponseData.<VehicleHealthResponse>builder().status(200).messageCode("SUCCESS").data(vehicleHealthMapper.toResponse(updated)).build();
     }
 
     @GetMapping("/vehicle-health/get-by-id/{id}")
     @RequireAuth(roles = {RoleType.ALL}, inWorkspace = true)
     public ResponseData<VehicleHealthResponse> getById(@PathVariable UUID id) {
         VehicleHealth entity = vehicleHealthService.getOne(id).orElse(null);
-        return ResponseData.<VehicleHealthResponse>builder().status(200).message("Thành công").data(entity != null ? vehicleHealthMapper.toResponse(entity) : null).build();
+        return ResponseData.<VehicleHealthResponse>builder().status(200).messageCode("SUCCESS").data(entity != null ? vehicleHealthMapper.toResponse(entity) : null).build();
     }
 
     @PostMapping("/vehicle-healths/filter")
     @RequireAuth(roles = {RoleType.ALL}, inWorkspace = true)
     public ResponseData<Page<VehicleHealthResponse>> filter(@RequestBody BaseFilterRequest filter) {
         Page<VehicleHealthResponse> page = vehicleHealthService.filter(filter).map(vehicleHealthMapper::toResponse);
-        return ResponseData.<Page<VehicleHealthResponse>>builder().status(200).message("Thành công").data(page).build();
+        return ResponseData.<Page<VehicleHealthResponse>>builder().status(200).messageCode("SUCCESS").data(page).build();
     }
 
     @PatchMapping("/vehicle-health/change-status/{id}")
     @RequireAuth(roles = {RoleType.SYSTEM_ADMIN, RoleType.FLEET_MANAGER}, rolesLogic = RequireAuth.LogicType.OR, inWorkspace = true)
     public ResponseData<VehicleHealthResponse> changeStatus(@PathVariable UUID id, @RequestParam String status) {
         VehicleHealth updated = vehicleHealthService.changeStatus(id, status);
-        return ResponseData.<VehicleHealthResponse>builder().status(200).message("Thành công").data(vehicleHealthMapper.toResponse(updated)).build();
+        return ResponseData.<VehicleHealthResponse>builder().status(200).messageCode("SUCCESS").data(vehicleHealthMapper.toResponse(updated)).build();
     }
 
     @DeleteMapping("/vehicle-health/soft-delete/{id}")
     @RequireAuth(roles = {RoleType.SYSTEM_ADMIN, RoleType.FLEET_MANAGER}, rolesLogic = RequireAuth.LogicType.OR, inWorkspace = true)
     public ResponseData<Void> softDelete(@PathVariable UUID id) {
         vehicleHealthService.changeStatus(id, "deleted");
-        return ResponseData.<Void>builder().status(200).message("Thành công").build();
+        return ResponseData.<Void>builder().status(200).messageCode("SUCCESS").build();
     }
 
     @DeleteMapping("/vehicle-health/hard-delete/{id}")
     @RequireAuth(roles = {RoleType.SYSTEM_ADMIN}, inWorkspace = true)
     public ResponseData<Void> hardDelete(@PathVariable UUID id) {
         vehicleHealthService.delete(id);
-        return ResponseData.<Void>builder().status(200).message("Thành công").build();
+        return ResponseData.<Void>builder().status(200).messageCode("SUCCESS").build();
     }
 
     @GetMapping("/vehicle-health/get-latest/{vehicleId}")
     @RequireAuth(roles = {RoleType.ALL}, inWorkspace = true)
     public ResponseData<VehicleHealthResponse> getLatest(@PathVariable UUID vehicleId) {
         VehicleHealth entity = vehicleHealthService.getLatestHealth(vehicleId).orElse(null);
-        return ResponseData.<VehicleHealthResponse>builder().status(200).message("Thành công").data(entity != null ? vehicleHealthMapper.toResponse(entity) : null).build();
+        return ResponseData.<VehicleHealthResponse>builder().status(200).messageCode("SUCCESS").data(entity != null ? vehicleHealthMapper.toResponse(entity) : null).build();
     }
 
     @GetMapping("/vehicle-healths/get-history/{vehicleId}")
@@ -103,6 +103,6 @@ public class VehicleHealthController {
         // Should also probably add sort by createdAt desc if we implement sorting in BaseFilterRequest
         java.util.List<VehicleHealthResponse> list = vehicleHealthService.filter(filter).getContent().stream()
                 .map(vehicleHealthMapper::toResponse).toList();
-        return ResponseData.<java.util.List<VehicleHealthResponse>>builder().status(200).message("Thành công").data(list).build();
+        return ResponseData.<java.util.List<VehicleHealthResponse>>builder().status(200).messageCode("SUCCESS").data(list).build();
     }
 }

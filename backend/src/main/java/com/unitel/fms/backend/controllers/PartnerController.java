@@ -29,20 +29,20 @@ public class PartnerController {
         List<PartnerResponse> responses = partnerService.getAll().stream()
                 .map(partnerMapper::toResponse)
                 .collect(Collectors.toList());
-        return ResponseData.<List<PartnerResponse>>builder().status(200).message("Thành công").data(responses).build();
+        return ResponseData.<List<PartnerResponse>>builder().status(200).messageCode("SUCCESS").data(responses).build();
     }
 
     @GetMapping("/{id}")
     public ResponseData<PartnerResponse> getById(@PathVariable UUID id) {
         Partner partner = partnerService.getOne(id).orElseThrow(() -> new RuntimeException("Partner not found"));
-        return ResponseData.<PartnerResponse>builder().status(200).message("Thành công").data(partnerMapper.toResponse(partner)).build();
+        return ResponseData.<PartnerResponse>builder().status(200).messageCode("SUCCESS").data(partnerMapper.toResponse(partner)).build();
     }
 
     @PostMapping
     public ResponseData<PartnerResponse> create(@RequestBody @Valid PartnerRequest request) {
         Partner entity = partnerMapper.toEntity(request);
         Partner saved = partnerService.create(entity);
-        return ResponseData.<PartnerResponse>builder().status(200).message("Thành công").data(partnerMapper.toResponse(saved)).build();
+        return ResponseData.<PartnerResponse>builder().status(200).messageCode("SUCCESS").data(partnerMapper.toResponse(saved)).build();
     }
 
     @PutMapping("/{id}")
@@ -50,13 +50,13 @@ public class PartnerController {
         Partner entity = partnerService.getOne(id).orElseThrow(() -> new RuntimeException("Partner not found"));
         partnerMapper.updateEntityFromRequest(request, entity);
         Partner saved = partnerService.update(entity);
-        return ResponseData.<PartnerResponse>builder().status(200).message("Thành công").data(partnerMapper.toResponse(saved)).build();
+        return ResponseData.<PartnerResponse>builder().status(200).messageCode("SUCCESS").data(partnerMapper.toResponse(saved)).build();
     }
 
     @DeleteMapping("/{id}")
     public ResponseData<Void> delete(@PathVariable UUID id) {
         partnerService.delete(id);
-        return ResponseData.<Void>builder().status(200).message("Thành công").data(null).build();
+        return ResponseData.<Void>builder().status(200).messageCode("SUCCESS").data(null).build();
     }
 
     @PostMapping("/compare")
@@ -64,6 +64,6 @@ public class PartnerController {
         List<PartnerResponse> responses = partnerService.compareForCriteria(criteria).stream()
                 .map(partnerMapper::toResponse)
                 .collect(Collectors.toList());
-        return ResponseData.<List<PartnerResponse>>builder().status(200).message("Thành công").data(responses).build();
+        return ResponseData.<List<PartnerResponse>>builder().status(200).messageCode("SUCCESS").data(responses).build();
     }
 }

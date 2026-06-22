@@ -38,7 +38,7 @@ public class CustomerService extends BaseServiceImpl<Customer, UUID> {
     @Transactional
     public Customer create(Customer entity) {
         if (customerRepository.existsByCode(entity.getCode())) {
-            throw new ConflictException("Mã khách hàng '" + entity.getCode() + "' đã tồn tại trong hệ thống");
+            throw new ConflictException("CUSTOMER_EXISTS");
         }
         return super.create(entity);
     }
@@ -50,7 +50,7 @@ public class CustomerService extends BaseServiceImpl<Customer, UUID> {
         Customer existing = getOne(id).orElseThrow();
         if (!existing.getCode().equals(newEntity.getCode())) {
             if (customerRepository.existsByCode(newEntity.getCode())) {
-                throw new ConflictException("Mã khách hàng '" + newEntity.getCode() + "' đã tồn tại trong hệ thống");
+                throw new ConflictException("CUSTOMER_EXISTS");
             }
         }
         return super.update(id, newEntity);
@@ -60,7 +60,7 @@ public class CustomerService extends BaseServiceImpl<Customer, UUID> {
     @Transactional
     public void delete(UUID id) {
         if (dispatchRequestRepository.existsByCustomerId(id)) {
-            throw new ConflictException("Không thể xoá cứng: khách hàng còn yêu cầu điều xe liên quan. Dùng soft-delete.");
+            throw new ConflictException("CANNOT_HARD_DELETE_CUSTOMER");
         }
         super.delete(id);
     }

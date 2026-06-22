@@ -60,7 +60,7 @@ public class OrganizationService extends BaseServiceImpl<Organization, UUID> {
         if (entity.getParent() != null && entity.getParent().getId() != null) {
             organizationRepository.findById(entity.getParent().getId())
                     .filter(p -> "active".equals(p.getStatus()))
-                    .orElseThrow(() -> new com.unitel.fms.backend.exceptions.customize.InvalidFieldException("Tổ chức cha không tồn tại hoặc không active"));
+                    .orElseThrow(() -> new com.unitel.fms.backend.exceptions.customize.InvalidFieldException("PARENT_ORG_NOT_ACTIVE"));
         }
         return super.create(entity);
     }

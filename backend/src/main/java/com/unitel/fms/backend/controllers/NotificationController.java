@@ -32,14 +32,14 @@ public class NotificationController {
     public ResponseData<NotificationResponse> create(@RequestBody NotificationRequest request) {
         Notification entity = notificationMapper.toEntity(request);
         Notification saved = notificationService.create(entity);
-        return ResponseData.<NotificationResponse>builder().status(200).message("Thành công").data(notificationMapper.toResponse(saved)).build();
+        return ResponseData.<NotificationResponse>builder().status(200).messageCode("SUCCESS").data(notificationMapper.toResponse(saved)).build();
     }
 
     @GetMapping("/notification/get-by-id/{id}")
     @RequireAuth(roles = {RoleType.ALL})
     public ResponseData<NotificationResponse> getById(@PathVariable UUID id) {
         Notification entity = notificationService.getOne(id).orElse(null);
-        return ResponseData.<NotificationResponse>builder().status(200).message("Thành công").data(entity != null ? notificationMapper.toResponse(entity) : null).build();
+        return ResponseData.<NotificationResponse>builder().status(200).messageCode("SUCCESS").data(entity != null ? notificationMapper.toResponse(entity) : null).build();
     }
 
     @PatchMapping("/notification/mark-read/{id}")
@@ -49,7 +49,7 @@ public class NotificationController {
         // TODO: Validate that the notification belongs to the current user
         entity.setIsRead(true);
         Notification updated = notificationService.update(entity);
-        return ResponseData.<NotificationResponse>builder().status(200).message("Thành công").data(notificationMapper.toResponse(updated)).build();
+        return ResponseData.<NotificationResponse>builder().status(200).messageCode("SUCCESS").data(notificationMapper.toResponse(updated)).build();
     }
 
     @GetMapping("/notifications/my")
@@ -57,7 +57,7 @@ public class NotificationController {
     public ResponseData<List<NotificationResponse>> getMyNotifications() {
         // Mock implementation, should call service with user ID
         UUID userId = com.unitel.fms.backend.contexts.SecurityContextHolder.getAuthInfo().getId();
-        return ResponseData.<List<NotificationResponse>>builder().status(200).message("Thành công").data(List.of()).build();
+        return ResponseData.<List<NotificationResponse>>builder().status(200).messageCode("SUCCESS").data(List.of()).build();
     }
 
     @PostMapping("/notifications/my-filter")
@@ -65,6 +65,6 @@ public class NotificationController {
     public ResponseData<Page<NotificationResponse>> filterMyNotifications(@RequestBody BaseFilterRequest filter) {
         // Mock implementation
         UUID userId = com.unitel.fms.backend.contexts.SecurityContextHolder.getAuthInfo().getId();
-        return ResponseData.<Page<NotificationResponse>>builder().status(200).message("Thành công").data(Page.empty()).build();
+        return ResponseData.<Page<NotificationResponse>>builder().status(200).messageCode("SUCCESS").data(Page.empty()).build();
     }
 }

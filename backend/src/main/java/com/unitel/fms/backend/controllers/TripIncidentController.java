@@ -31,7 +31,7 @@ public class TripIncidentController {
         TripIncident entity = tripIncidentMapper.toEntity(request);
         TripIncident saved = tripIncidentService.create(entity);
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseData.<TripIncidentResponse>builder()
-                .status(201).message("Created").data(tripIncidentMapper.toResponse(saved)).build());
+                .status(201).messageCode("CREATED").data(tripIncidentMapper.toResponse(saved)).build());
     }
 
     @RequireAuth(roles = {"OPS_MANAGER", "DISPATCHER", "DRIVER", "SYSTEM_ADMIN"}, inWorkspace = true)
@@ -39,7 +39,7 @@ public class TripIncidentController {
     public ResponseEntity<ResponseData<TripIncidentResponse>> get(@PathVariable UUID id) {
         TripIncident entity = tripIncidentService.getOne(id).orElseThrow();
         return ResponseEntity.ok(ResponseData.<TripIncidentResponse>builder()
-                .status(200).message("Success").data(tripIncidentMapper.toResponse(entity)).build());
+                .status(200).messageCode("SUCCESS").data(tripIncidentMapper.toResponse(entity)).build());
     }
 
     @RequireAuth(roles = {"OPS_MANAGER", "DISPATCHER"}, inWorkspace = true)
@@ -49,6 +49,6 @@ public class TripIncidentController {
             @RequestParam String resolutionNotes) {
         TripIncident resolved = tripIncidentService.resolve(id, resolutionNotes);
         return ResponseEntity.ok(ResponseData.<TripIncidentResponse>builder()
-                .status(200).message("Resolved").data(tripIncidentMapper.toResponse(resolved)).build());
+                .status(200).messageCode("RESOLVED").data(tripIncidentMapper.toResponse(resolved)).build());
     }
 }

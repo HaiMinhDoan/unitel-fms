@@ -28,20 +28,20 @@ public class PartnerDriverController {
         List<PartnerDriverResponse> responses = partnerDriverService.getAll().stream()
                 .map(partnerDriverMapper::toResponse)
                 .collect(Collectors.toList());
-        return ResponseData.<List<PartnerDriverResponse>>builder().status(200).message("Thành công").data(responses).build();
+        return ResponseData.<List<PartnerDriverResponse>>builder().status(200).messageCode("SUCCESS").data(responses).build();
     }
 
     @GetMapping("/{id}")
     public ResponseData<PartnerDriverResponse> getById(@PathVariable UUID id) {
         PartnerDriver partnerDriver = partnerDriverService.getOne(id).orElseThrow(() -> new RuntimeException("PartnerDriver not found"));
-        return ResponseData.<PartnerDriverResponse>builder().status(200).message("Thành công").data(partnerDriverMapper.toResponse(partnerDriver)).build();
+        return ResponseData.<PartnerDriverResponse>builder().status(200).messageCode("SUCCESS").data(partnerDriverMapper.toResponse(partnerDriver)).build();
     }
 
     @PostMapping
     public ResponseData<PartnerDriverResponse> create(@RequestBody @Valid PartnerDriverRequest request) {
         PartnerDriver entity = partnerDriverMapper.toEntity(request);
         PartnerDriver saved = partnerDriverService.create(entity);
-        return ResponseData.<PartnerDriverResponse>builder().status(200).message("Thành công").data(partnerDriverMapper.toResponse(saved)).build();
+        return ResponseData.<PartnerDriverResponse>builder().status(200).messageCode("SUCCESS").data(partnerDriverMapper.toResponse(saved)).build();
     }
 
     @PutMapping("/{id}")
@@ -49,12 +49,12 @@ public class PartnerDriverController {
         PartnerDriver entity = partnerDriverService.getOne(id).orElseThrow(() -> new RuntimeException("PartnerDriver not found"));
         partnerDriverMapper.updateEntityFromRequest(request, entity);
         PartnerDriver saved = partnerDriverService.update(entity);
-        return ResponseData.<PartnerDriverResponse>builder().status(200).message("Thành công").data(partnerDriverMapper.toResponse(saved)).build();
+        return ResponseData.<PartnerDriverResponse>builder().status(200).messageCode("SUCCESS").data(partnerDriverMapper.toResponse(saved)).build();
     }
 
     @DeleteMapping("/{id}")
     public ResponseData<Void> delete(@PathVariable UUID id) {
         partnerDriverService.delete(id);
-        return ResponseData.<Void>builder().status(200).message("Thành công").data(null).build();
+        return ResponseData.<Void>builder().status(200).messageCode("SUCCESS").data(null).build();
     }
 }

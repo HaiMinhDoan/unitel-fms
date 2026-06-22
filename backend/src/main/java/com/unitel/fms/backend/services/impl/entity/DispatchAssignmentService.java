@@ -90,7 +90,7 @@ public class DispatchAssignmentService extends BaseServiceImpl<DispatchAssignmen
         }
 
         if (!allPassed && (entity.getOverrideReason() == null || entity.getOverrideReason().isBlank())) {
-            throw new DispatchBlockedException("Không đủ điều kiện điều phối", preCheckDetails);
+            throw new DispatchBlockedException("DISPATCH_NOT_ELIGIBLE", preCheckDetails);
         }
 
         if (!allPassed) {

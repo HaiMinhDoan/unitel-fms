@@ -32,7 +32,7 @@ public class TripStopController {
         TripStop entity = tripStopMapper.toEntity(request);
         TripStop saved = tripStopService.create(entity);
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseData.<TripStopResponse>builder()
-                .status(201).message("Created").data(tripStopMapper.toResponse(saved)).build());
+                .status(201).messageCode("CREATED").data(tripStopMapper.toResponse(saved)).build());
     }
 
     @RequireAuth(roles = {"OPS_MANAGER", "DISPATCHER", "DRIVER", "SYSTEM_ADMIN"}, inWorkspace = true)
@@ -40,7 +40,7 @@ public class TripStopController {
     public ResponseEntity<ResponseData<TripStopResponse>> get(@PathVariable UUID id) {
         TripStop entity = tripStopService.getOne(id).orElseThrow();
         return ResponseEntity.ok(ResponseData.<TripStopResponse>builder()
-                .status(200).message("Success").data(tripStopMapper.toResponse(entity)).build());
+                .status(200).messageCode("SUCCESS").data(tripStopMapper.toResponse(entity)).build());
     }
 
     @RequireAuth(roles = {"OPS_MANAGER", "DISPATCHER"}, inWorkspace = true)
@@ -50,7 +50,7 @@ public class TripStopController {
         tripStopMapper.updateEntity(request, entity);
         TripStop updated = tripStopService.update(id, entity);
         return ResponseEntity.ok(ResponseData.<TripStopResponse>builder()
-                .status(200).message("Updated").data(tripStopMapper.toResponse(updated)).build());
+                .status(200).messageCode("UPDATED").data(tripStopMapper.toResponse(updated)).build());
     }
 
     @RequireAuth(roles = {"OPS_MANAGER", "DISPATCHER"}, inWorkspace = true)
@@ -58,7 +58,7 @@ public class TripStopController {
     public ResponseEntity<ResponseData<Void>> delete(@PathVariable UUID id) {
         tripStopService.delete(id);
         return ResponseEntity.ok(ResponseData.<Void>builder()
-                .status(200).message("Deleted").build());
+                .status(200).messageCode("DELETED").build());
     }
 
     @RequireAuth(roles = {"DRIVER"}, inWorkspace = true)
@@ -69,6 +69,6 @@ public class TripStopController {
             @RequestParam("signature") MultipartFile signature) {
         TripStop submitted = tripStopService.submitEpod(id, photo, signature);
         return ResponseEntity.ok(ResponseData.<TripStopResponse>builder()
-                .status(200).message("ePOD Submitted").data(tripStopMapper.toResponse(submitted)).build());
+                .status(200).messageCode("EPOD_SUBMITTED").data(tripStopMapper.toResponse(submitted)).build());
     }
 }
