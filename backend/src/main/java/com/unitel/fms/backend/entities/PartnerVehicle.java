@@ -35,7 +35,7 @@ public class PartnerVehicle {
 
     @Size(max = 30)
     @NotNull
-    @Column(name = "plate_number", nullable = false, length = 30)
+    @Column(name = "plate_number", nullable = false, length = 30, unique = true)
     private String plateNumber;
 
     @Column(name = "load_capacity_ton", precision = 8, scale = 2)
@@ -56,6 +56,4 @@ public class PartnerVehicle {
     @ColumnDefault("now()")
     @Column(name = "updated_at", nullable = false)
     private OffsetDateTime updatedAt;
-
-
 }

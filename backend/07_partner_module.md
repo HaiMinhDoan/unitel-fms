@@ -8,18 +8,18 @@ Entity: `Partner`, `PartnerVehicle`, `PartnerDriver`, `PartnerPerformance`
 
 **Nhóm cache**: KHÔNG (theo phân loại đã chốt — dù tương đối tĩnh, nhưng `rating`/`on_time_rate` cập nhật định kỳ qua `PartnerPerformance`, giữ nhất quán không cache).
 
-| # | API | Method | URL | Quyền | Logic | Workspace |
-|---|---|---|---|---|---|---|
-| 1 | Tạo | POST | `/api/v1/partner/create` | `PARTNER_MANAGER` | — | Có |
-| 2 | Cập nhật toàn bộ | PUT | `/api/v1/partner/update/{id}` | `PARTNER_MANAGER` | — | Có |
-| 3 | Cập nhật 1 phần | PATCH | `/api/v1/partner/update-partial/{id}` | `PARTNER_MANAGER` | — | Có |
-| 4 | Lấy theo ID | GET | `/api/v1/partner/get-by-id/{id}` | `ALL` | OR | Có |
-| 5 | Lấy toàn bộ | GET | `/api/v1/partners/get-all` | `PARTNER_MANAGER`, `DISPATCHER` | OR | Có |
-| 6 | Lọc/phân trang | POST | `/api/v1/partners/filter` | `ALL` | OR | Có |
-| 7 | Đổi trạng thái | PATCH | `/api/v1/partner/change-status/{id}` | `PARTNER_MANAGER` | — | Có |
-| 8 | Xoá mềm | DELETE | `/api/v1/partner/soft-delete/{id}` | `PARTNER_MANAGER` | — | Có |
-| 9 | Xoá cứng | DELETE | `/api/v1/partner/hard-delete/{id}` | `SYSTEM_ADMIN` | — | Không |
-| 10 | **So sánh phương án đối tác** | POST | `/api/v1/partners/compare` | `PARTNER_MANAGER`, `DISPATCHER` | OR | Có |
+| #   | API                           | Method | URL                                   | Quyền                           | Logic | Workspace |
+| --- | ----------------------------- | ------ | ------------------------------------- | ------------------------------- | ----- | --------- |
+| 1   | Tạo                           | POST   | `/api/v1/partner/create`              | `PARTNER_MANAGER`               | —     | Có        |
+| 2   | Cập nhật toàn bộ              | PUT    | `/api/v1/partner/update/{id}`         | `PARTNER_MANAGER`               | —     | Có        |
+| 3   | Cập nhật 1 phần               | PATCH  | `/api/v1/partner/update-partial/{id}` | `PARTNER_MANAGER`               | —     | Có        |
+| 4   | Lấy theo ID                   | GET    | `/api/v1/partner/get-by-id/{id}`      | `ALL`                           | OR    | Có        |
+| 5   | Lấy toàn bộ                   | GET    | `/api/v1/partners/get-all`            | `PARTNER_MANAGER`, `DISPATCHER` | OR    | Có        |
+| 6   | Lọc/phân trang                | POST   | `/api/v1/partners/filter`             | `ALL`                           | OR    | Có        |
+| 7   | Đổi trạng thái                | PATCH  | `/api/v1/partner/change-status/{id}`  | `PARTNER_MANAGER`               | —     | Có        |
+| 8   | Xoá mềm                       | DELETE | `/api/v1/partner/soft-delete/{id}`    | `PARTNER_MANAGER`               | —     | Có        |
+| 9   | Xoá cứng                      | DELETE | `/api/v1/partner/hard-delete/{id}`    | `SYSTEM_ADMIN`                  | —     | Không     |
+| 10  | **So sánh phương án đối tác** | POST   | `/api/v1/partners/compare`            | `PARTNER_MANAGER`, `DISPATCHER` | OR    | Có        |
 
 ### Chi tiết logic nghiệp vụ đặc thù
 
@@ -62,16 +62,16 @@ public List<PartnerComparisonDto> compareForCriteria(PartnerCompareRequest reque
 
 **Nhóm cache**: KHÔNG
 
-| # | API | Method | URL | Quyền | Logic | Workspace |
-|---|---|---|---|---|---|---|
-| 1 | Tạo | POST | `/api/v1/partner-vehicle/create` | `PARTNER_MANAGER` | — | Có |
-| 2 | Cập nhật | PUT | `/api/v1/partner-vehicle/update/{id}` | `PARTNER_MANAGER` | — | Có |
-| 3 | Lấy theo ID | GET | `/api/v1/partner-vehicle/get-by-id/{id}` | `ALL` | OR | Có |
-| 4 | Lấy theo đối tác | GET | `/api/v1/partner-vehicles/get-by-partner/{partnerId}` | `ALL` | OR | Có |
-| 5 | Lọc/phân trang | POST | `/api/v1/partner-vehicles/filter` | `PARTNER_MANAGER`, `DISPATCHER` | OR | Có |
-| 6 | Đổi trạng thái | PATCH | `/api/v1/partner-vehicle/change-status/{id}` | `PARTNER_MANAGER` | — | Có |
-| 7 | Xoá mềm | DELETE | `/api/v1/partner-vehicle/soft-delete/{id}` | `PARTNER_MANAGER` | — | Có |
-| 8 | Xoá cứng | DELETE | `/api/v1/partner-vehicle/hard-delete/{id}` | `SYSTEM_ADMIN` | — | Không |
+| #   | API              | Method | URL                                                   | Quyền                           | Logic | Workspace |
+| --- | ---------------- | ------ | ----------------------------------------------------- | ------------------------------- | ----- | --------- |
+| 1   | Tạo              | POST   | `/api/v1/partner-vehicle/create`                      | `PARTNER_MANAGER`               | —     | Có        |
+| 2   | Cập nhật         | PUT    | `/api/v1/partner-vehicle/update/{id}`                 | `PARTNER_MANAGER`               | —     | Có        |
+| 3   | Lấy theo ID      | GET    | `/api/v1/partner-vehicle/get-by-id/{id}`              | `ALL`                           | OR    | Có        |
+| 4   | Lấy theo đối tác | GET    | `/api/v1/partner-vehicles/get-by-partner/{partnerId}` | `ALL`                           | OR    | Có        |
+| 5   | Lọc/phân trang   | POST   | `/api/v1/partner-vehicles/filter`                     | `PARTNER_MANAGER`, `DISPATCHER` | OR    | Có        |
+| 6   | Đổi trạng thái   | PATCH  | `/api/v1/partner-vehicle/change-status/{id}`          | `PARTNER_MANAGER`               | —     | Có        |
+| 7   | Xoá mềm          | DELETE | `/api/v1/partner-vehicle/soft-delete/{id}`            | `PARTNER_MANAGER`               | —     | Có        |
+| 8   | Xoá cứng         | DELETE | `/api/v1/partner-vehicle/hard-delete/{id}`            | `SYSTEM_ADMIN`                  | —     | Không     |
 
 ### Chi tiết logic nghiệp vụ đặc thù
 
@@ -85,16 +85,16 @@ public List<PartnerComparisonDto> compareForCriteria(PartnerCompareRequest reque
 
 **Nhóm cache**: KHÔNG
 
-| # | API | Method | URL | Quyền | Logic | Workspace |
-|---|---|---|---|---|---|---|
-| 1 | Tạo | POST | `/api/v1/partner-driver/create` | `PARTNER_MANAGER` | — | Có |
-| 2 | Cập nhật | PUT | `/api/v1/partner-driver/update/{id}` | `PARTNER_MANAGER` | — | Có |
-| 3 | Lấy theo ID | GET | `/api/v1/partner-driver/get-by-id/{id}` | `ALL` | OR | Có |
-| 4 | Lấy theo đối tác | GET | `/api/v1/partner-drivers/get-by-partner/{partnerId}` | `ALL` | OR | Có |
-| 5 | Lọc/phân trang | POST | `/api/v1/partner-drivers/filter` | `PARTNER_MANAGER` | — | Có |
-| 6 | Đổi trạng thái | PATCH | `/api/v1/partner-driver/change-status/{id}` | `PARTNER_MANAGER` | — | Có |
-| 7 | Xoá mềm | DELETE | `/api/v1/partner-driver/soft-delete/{id}` | `PARTNER_MANAGER` | — | Có |
-| 8 | Xoá cứng | DELETE | `/api/v1/partner-driver/hard-delete/{id}` | `SYSTEM_ADMIN` | — | Không |
+| #   | API              | Method | URL                                                  | Quyền             | Logic | Workspace |
+| --- | ---------------- | ------ | ---------------------------------------------------- | ----------------- | ----- | --------- |
+| 1   | Tạo              | POST   | `/api/v1/partner-driver/create`                      | `PARTNER_MANAGER` | —     | Có        |
+| 2   | Cập nhật         | PUT    | `/api/v1/partner-driver/update/{id}`                 | `PARTNER_MANAGER` | —     | Có        |
+| 3   | Lấy theo ID      | GET    | `/api/v1/partner-driver/get-by-id/{id}`              | `ALL`             | OR    | Có        |
+| 4   | Lấy theo đối tác | GET    | `/api/v1/partner-drivers/get-by-partner/{partnerId}` | `ALL`             | OR    | Có        |
+| 5   | Lọc/phân trang   | POST   | `/api/v1/partner-drivers/filter`                     | `PARTNER_MANAGER` | —     | Có        |
+| 6   | Đổi trạng thái   | PATCH  | `/api/v1/partner-driver/change-status/{id}`          | `PARTNER_MANAGER` | —     | Có        |
+| 7   | Xoá mềm          | DELETE | `/api/v1/partner-driver/soft-delete/{id}`            | `PARTNER_MANAGER` | —     | Có        |
+| 8   | Xoá cứng         | DELETE | `/api/v1/partner-driver/hard-delete/{id}`            | `SYSTEM_ADMIN`    | —     | Không     |
 
 Không có logic đặc thù khác biệt — CRUD chuẩn theo `BaseServiceImpl`, validate `license_number` không trùng trong phạm vi cùng `partner_id` khi tạo mới (tránh trùng tài xế nhập 2 lần).
 
@@ -104,16 +104,16 @@ Không có logic đặc thù khác biệt — CRUD chuẩn theo `BaseServiceImpl
 
 **Nhóm cache**: KHÔNG (dữ liệu tổng hợp theo tháng, nhưng vẫn có thể được tính lại/điều chỉnh trong tháng).
 
-| # | API | Method | URL | Quyền | Logic | Workspace |
-|---|---|---|---|---|---|---|
-| 1 | Tạo (thường chạy tự động cuối tháng, nhưng vẫn cho phép tạo thủ công) | POST | `/api/v1/partner-performance/create` | `PARTNER_MANAGER` | — | Có |
-| 2 | Cập nhật | PUT | `/api/v1/partner-performance/update/{id}` | `PARTNER_MANAGER` | — | Có |
-| 3 | Lấy theo ID | GET | `/api/v1/partner-performance/get-by-id/{id}` | `ALL` | OR | Có |
-| 4 | Lấy theo đối tác | GET | `/api/v1/partner-performances/get-by-partner/{partnerId}` | `PARTNER_MANAGER`, `OPS_MANAGER` | OR | Có |
-| 5 | Lọc/phân trang | POST | `/api/v1/partner-performances/filter` | `PARTNER_MANAGER`, `OPS_MANAGER` | OR | Có |
-| 6 | Xoá mềm | DELETE | `/api/v1/partner-performance/soft-delete/{id}` | `PARTNER_MANAGER` | — | Có |
-| 7 | Xoá cứng | DELETE | `/api/v1/partner-performance/hard-delete/{id}` | `SYSTEM_ADMIN` | — | Không |
-| 8 | **Tính toán lại hiệu suất tháng** | POST | `/api/v1/partner-performance/recalculate` | `PARTNER_MANAGER` | — | Có |
+| #   | API                                                                   | Method | URL                                                       | Quyền                            | Logic | Workspace |
+| --- | --------------------------------------------------------------------- | ------ | --------------------------------------------------------- | -------------------------------- | ----- | --------- |
+| 1   | Tạo (thường chạy tự động cuối tháng, nhưng vẫn cho phép tạo thủ công) | POST   | `/api/v1/partner-performance/create`                      | `PARTNER_MANAGER`                | —     | Có        |
+| 2   | Cập nhật                                                              | PUT    | `/api/v1/partner-performance/update/{id}`                 | `PARTNER_MANAGER`                | —     | Có        |
+| 3   | Lấy theo ID                                                           | GET    | `/api/v1/partner-performance/get-by-id/{id}`              | `ALL`                            | OR    | Có        |
+| 4   | Lấy theo đối tác                                                      | GET    | `/api/v1/partner-performances/get-by-partner/{partnerId}` | `PARTNER_MANAGER`, `OPS_MANAGER` | OR    | Có        |
+| 5   | Lọc/phân trang                                                        | POST   | `/api/v1/partner-performances/filter`                     | `PARTNER_MANAGER`, `OPS_MANAGER` | OR    | Có        |
+| 6   | Xoá mềm                                                               | DELETE | `/api/v1/partner-performance/soft-delete/{id}`            | `PARTNER_MANAGER`                | —     | Có        |
+| 7   | Xoá cứng                                                              | DELETE | `/api/v1/partner-performance/hard-delete/{id}`            | `SYSTEM_ADMIN`                   | —     | Không     |
+| 8   | **Tính toán lại hiệu suất tháng**                                     | POST   | `/api/v1/partner-performance/recalculate`                 | `PARTNER_MANAGER`                | —     | Có        |
 
 ### Chi tiết logic nghiệp vụ đặc thù
 

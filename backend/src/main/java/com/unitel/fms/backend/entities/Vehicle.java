@@ -62,6 +62,12 @@ public class Vehicle {
     @Column(name = "current_odometer", precision = 10, scale = 2)
     private BigDecimal currentOdometer;
 
+    @Column(name = "last_known_lat", precision = 10, scale = 7)
+    private BigDecimal lastKnownLat;
+
+    @Column(name = "last_known_lng", precision = 10, scale = 7)
+    private BigDecimal lastKnownLng;
+
     @Size(max = 50)
     @NotNull
     @ColumnDefault("'active'")

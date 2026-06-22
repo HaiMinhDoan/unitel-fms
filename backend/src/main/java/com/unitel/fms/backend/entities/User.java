@@ -33,6 +33,10 @@ public class User {
     private String username;
 
     @Size(max = 255)
+    @Column(name = "password_hash")
+    private String passwordHash;
+
+    @Size(max = 255)
     @NotNull
     @Column(name = "email", nullable = false)
     private String email;

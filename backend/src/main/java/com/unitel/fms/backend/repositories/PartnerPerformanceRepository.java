@@ -8,5 +8,6 @@ import org.springframework.stereotype.Repository;
 import java.util.UUID;
 
 @Repository
-public interface PartnerPerformanceRepository extends JpaRepository<PartnerPerformance, UUID>, JpaSpecificationExecutor<PartnerPerformance> {
+public interface PartnerPerformanceRepository
+        extends JpaRepository<PartnerPerformance, UUID>, JpaSpecificationExecutor<PartnerPerformance> {
 }

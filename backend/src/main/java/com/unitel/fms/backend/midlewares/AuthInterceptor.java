@@ -18,13 +18,27 @@ public class AuthInterceptor implements HandlerInterceptor {
     @Autowired
     private JwtService jwtService;
 
+    @Autowired
+    private com.unitel.fms.backend.services.RedisService redisService;
+
     @Override
-    public boolean preHandle(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler) {
+    public boolean preHandle(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler) throws Exception {
         SecurityContextHolder.setPath(request.getRequestURI());
 
         String authHeader = request.getHeader("Authorization");
         if (authHeader != null) {
             String token = jwtService.getTokenFromAuthHeader(authHeader);
+            
+            if (token != null) {
+                String blacklistKey = redisService.buildKey("token-blacklist", token);
+                if (redisService.exists(blacklistKey)) {
+                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                    response.getWriter().write("{\"status\": 401, \"message\": \"Token has been revoked\"}");
+                    response.setContentType("application/json");
+                    return false;
+                }
+            }
+
             AuthInfo authInfo = jwtService.getAuthInfoFromToken(token);
             SecurityContextHolder.setAuthInfo(authInfo);
         } else {

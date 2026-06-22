@@ -9,4 +9,5 @@ import java.util.UUID;
 
 @Repository
 public interface GpsAlertRepository extends JpaRepository<GpsAlert, UUID>, JpaSpecificationExecutor<GpsAlert> {
+    java.util.List<GpsAlert> findByVehicleOrgIdAndStatusOrderByTriggeredAtDesc(UUID orgId, String status);
 }

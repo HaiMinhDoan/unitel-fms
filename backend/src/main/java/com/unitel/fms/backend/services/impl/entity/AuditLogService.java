@@ -25,4 +25,9 @@ public class AuditLogService extends BaseServiceImpl<AuditLog, UUID> {
     protected EntityManager getEntityManager() {
         return this.entityManager;
     }
+
+    public void record(String action, String module, UUID recordId, String oldValue, Object newValue) {
+        // Dummy implementation for module 2/5 logging
+        System.out.println("AUDIT LOG: " + action + " on " + module + " id " + recordId);
+    }
 }

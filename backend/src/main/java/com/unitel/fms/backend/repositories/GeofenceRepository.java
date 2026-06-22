@@ -9,4 +9,5 @@ import java.util.UUID;
 
 @Repository
 public interface GeofenceRepository extends JpaRepository<Geofence, UUID>, JpaSpecificationExecutor<Geofence> {
+    java.util.List<Geofence> findByOrgIdAndStatus(UUID orgId, String status);
 }

@@ -158,6 +158,12 @@
             <version>8.5.7</version>
         </dependency>
 
+        <!-- Spring Kafka -->
+        <dependency>
+            <groupId>org.springframework.kafka</groupId>
+            <artifactId>spring-kafka</artifactId>
+        </dependency>
+
         <!-- ============================================== -->
         <!--     VALIDATION & UTILITIES                     -->
         <!-- ============================================== -->

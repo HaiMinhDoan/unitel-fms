@@ -115,9 +115,43 @@ public class JwtServiceImpl implements JwtService {
                     .build();
 
         } catch (JOSEException | ParseException | JsonProcessingException e) {
-
+            // ignore
         }
         return null;
+    }
+
+    @Override
+    public String generateRefreshToken(AuthInfo authInfo, String userAgent) {
+        try {
+            JWSHeader jwtHeader = new JWSHeader(JWSAlgorithm.HS256);
+            JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
+                    .subject(authInfo.getEmail())
+                    .issuer("UnitelFms")
+                    .issueTime(new Date())
+                    .expirationTime(new Date(new Date().getTime() + 7L * 24 * 60 * 60 * 1000)) // 7 days
+                    .claim("id", authInfo.getId())
+                    .claim("type", "REFRESH")
+                    .claim("userAgent", userAgent)
+                    .build();
+
+            Payload jwtPayload = new Payload(jwtClaimsSet.toJSONObject());
+            JWSObject jwsObject = new JWSObject(jwtHeader, jwtPayload);
+            jwsObject.sign(new MACSigner(ConstantVariables.SIGNER_KEY.getBytes()));
+            return jwsObject.serialize();
+        } catch (JOSEException e) {
+            throw new RuntimeException("Error generating refresh token: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public boolean isTokenExpired(String token) {
+        try {
+            JWTClaimsSet claims = getClaimsFromToken(token);
+            Date expirationTime = claims.getExpirationTime();
+            return expirationTime != null && expirationTime.before(new Date());
+        } catch (Exception e) {
+            return true; // Treat invalid tokens as expired
+        }
     }
 
 }

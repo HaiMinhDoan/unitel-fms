@@ -68,5 +68,4 @@ public class PartnerPerformance {
     @Column(name = "updated_at", nullable = false)
     private OffsetDateTime updatedAt;
 
-
 }

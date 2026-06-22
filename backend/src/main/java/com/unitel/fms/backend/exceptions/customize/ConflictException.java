@@ -1,0 +1,10 @@
+package com.unitel.fms.backend.exceptions.customize;
+
+import org.springframework.http.HttpStatus;
+
+public class ConflictException extends CommonException {
+    public ConflictException(String message) {
+        super(message);
+        this.setHttpStatus(HttpStatus.CONFLICT);
+    }
+}

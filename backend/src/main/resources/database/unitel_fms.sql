@@ -98,6 +98,7 @@ CREATE TABLE users (
                        id          UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
                        org_id      UUID        REFERENCES organizations(id),
                        username    VARCHAR(100) NOT NULL UNIQUE,
+                       password_hash VARCHAR(255),
                        email       VARCHAR(255) NOT NULL UNIQUE,
                        full_name   VARCHAR(255) NOT NULL,
                        phone       VARCHAR(30),
@@ -150,7 +151,14 @@ CREATE TABLE audit_logs (
 
 SELECT create_updated_at_trigger('audit_logs');
 
-CREATE INDEX idx_audit_log_entity  ON audit_logs (entity_type, entity_id);
+CREATE INDEX idx_audit_log_target ON audit_logs (target_entity, target_id);
+
+-- ============================================================
+-- ADD FOREIGN KEYS FOR PARTNER DISPATCH
+-- ============================================================
+
+ALTER TABLE dispatch_assignments ADD CONSTRAINT fk_da_partner_vehicle FOREIGN KEY (partner_vehicle_id) REFERENCES partner_vehicles(id);
+ALTER TABLE dispatch_assignments ADD CONSTRAINT fk_da_partner_driver FOREIGN KEY (partner_driver_id) REFERENCES partner_drivers(id);
 CREATE INDEX idx_audit_log_user    ON audit_logs (user_id);
 CREATE INDEX idx_audit_log_created ON audit_logs (created_at DESC);
 
@@ -232,6 +240,24 @@ SELECT create_updated_at_trigger('vehicles');
 
 CREATE INDEX idx_vehicle_org    ON vehicles (org_id);
 CREATE INDEX idx_vehicle_status ON vehicles (status);
+
+-- ----
+
+CREATE TABLE odometer_logs (
+                               id                  UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
+                               vehicle_id          UUID        NOT NULL REFERENCES vehicles(id),
+                               recorded_at         TIMESTAMPTZ NOT NULL DEFAULT now(),
+                               odometer_value      NUMERIC(10,2) NOT NULL,
+                               source              VARCHAR(50)  NOT NULL DEFAULT 'manual', -- manual | gps | maintenance
+                               notes               TEXT,
+                               recorded_by         UUID        REFERENCES users(id),
+                               created_at          TIMESTAMPTZ  NOT NULL DEFAULT now(),
+                               updated_at          TIMESTAMPTZ  NOT NULL DEFAULT now()
+);
+
+SELECT create_updated_at_trigger('odometer_logs');
+
+CREATE INDEX idx_odometer_vehicle_time ON odometer_logs (vehicle_id, recorded_at DESC);
 
 -- ----
 
@@ -353,6 +379,78 @@ CREATE INDEX idx_driver_doc_driver ON driver_documents (driver_id);
 CREATE INDEX idx_driver_doc_expiry ON driver_documents (expiry_date) WHERE status != 'expired';
 
 -- ============================================================
+-- MODULE: Đối tác vận tải
+-- ============================================================
+
+CREATE TABLE partners (
+                          id              UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
+                          org_id          UUID        NOT NULL REFERENCES organizations(id),
+                          code            VARCHAR(50)  NOT NULL UNIQUE,
+                          name            VARCHAR(255) NOT NULL,
+                          contact_person  VARCHAR(255),
+                          phone           VARCHAR(30),
+                          email           VARCHAR(255),
+                          address         TEXT,
+                          rating          VARCHAR(20)  DEFAULT 'unrated',  -- unrated | bronze | silver | gold
+                          on_time_rate    NUMERIC(5,2),                    -- %
+                          status          VARCHAR(50)  NOT NULL DEFAULT 'active',
+                          created_at      TIMESTAMPTZ  NOT NULL DEFAULT now(),
+                          updated_at      TIMESTAMPTZ  NOT NULL DEFAULT now()
+);
+
+SELECT create_updated_at_trigger('partners');
+
+-- ----
+
+CREATE TABLE partner_vehicles (
+                                  id                  UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
+                                  partner_id          UUID        NOT NULL REFERENCES partners(id),
+                                  vehicle_type_id     UUID        NOT NULL REFERENCES vehicle_types(id),
+                                  plate_number        VARCHAR(30)  NOT NULL UNIQUE,
+                                  load_capacity_ton   NUMERIC(8,2),
+                                  status              VARCHAR(50)  NOT NULL DEFAULT 'available',  -- available | on_trip | inactive
+                                  created_at          TIMESTAMPTZ  NOT NULL DEFAULT now(),
+                                  updated_at          TIMESTAMPTZ  NOT NULL DEFAULT now()
+);
+
+SELECT create_updated_at_trigger('partner_vehicles');
+
+-- ----
+
+CREATE TABLE partner_drivers (
+                                 id              UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
+                                 partner_id      UUID        NOT NULL REFERENCES partners(id),
+                                 full_name       VARCHAR(255) NOT NULL,
+                                 phone           VARCHAR(30),
+                                 license_class   VARCHAR(20),
+                                 license_number  VARCHAR(50),
+                                 status          VARCHAR(50)  NOT NULL DEFAULT 'active',
+                                 created_at      TIMESTAMPTZ  NOT NULL DEFAULT now(),
+                                 updated_at      TIMESTAMPTZ  NOT NULL DEFAULT now()
+);
+
+SELECT create_updated_at_trigger('partner_drivers');
+
+-- ----
+
+CREATE TABLE partner_performances (
+                                      id              UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
+                                      partner_id      UUID        NOT NULL REFERENCES partners(id),
+                                      period_month    CHAR(7)     NOT NULL,       -- YYYY-MM
+                                      total_trips     INT         NOT NULL DEFAULT 0,
+                                      on_time_trips   INT         NOT NULL DEFAULT 0,
+                                      avg_cost        NUMERIC(15,2),
+                                      total_revenue   NUMERIC(15,2),
+                                      notes           TEXT,
+                                      status          VARCHAR(50)  NOT NULL DEFAULT 'final',  -- draft | final
+                                      created_at      TIMESTAMPTZ  NOT NULL DEFAULT now(),
+                                      updated_at      TIMESTAMPTZ  NOT NULL DEFAULT now(),
+                                      UNIQUE (partner_id, period_month)
+);
+
+SELECT create_updated_at_trigger('partner_performances');
+
+-- ============================================================
 -- MODULE: Khách hàng
 -- ============================================================
 
@@ -411,8 +509,11 @@ CREATE INDEX idx_dispatch_req_number ON dispatch_requests (req_number);
 CREATE TABLE dispatch_assignments (
                                       id                  UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
                                       dispatch_request_id UUID        NOT NULL REFERENCES dispatch_requests(id),
-                                      vehicle_id          UUID        NOT NULL REFERENCES vehicles(id),
-                                      driver_id           UUID        NOT NULL REFERENCES drivers(id),
+                                      trip_type           VARCHAR(50)  NOT NULL DEFAULT 'internal', -- internal | partner
+                                      vehicle_id          UUID        REFERENCES vehicles(id),
+                                      driver_id           UUID        REFERENCES drivers(id),
+                                      partner_vehicle_id  UUID        REFERENCES partner_vehicles(id),
+                                      partner_driver_id   UUID        REFERENCES partner_drivers(id),
                                       assigned_by         UUID        REFERENCES users(id),
                                       assignment_type     VARCHAR(30)  NOT NULL DEFAULT 'manual',  -- manual | auto | partners
                                       pre_check_passed    BOOLEAN     NOT NULL DEFAULT false,
@@ -589,77 +690,7 @@ CREATE TABLE geofences (
 
 SELECT create_updated_at_trigger('geofences');
 
--- ============================================================
--- MODULE: Đối tác vận tải
--- ============================================================
 
-CREATE TABLE partners (
-                          id              UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
-                          org_id          UUID        NOT NULL REFERENCES organizations(id),
-                          code            VARCHAR(50)  NOT NULL UNIQUE,
-                          name            VARCHAR(255) NOT NULL,
-                          contact_person  VARCHAR(255),
-                          phone           VARCHAR(30),
-                          email           VARCHAR(255),
-                          address         TEXT,
-                          rating          VARCHAR(20)  DEFAULT 'unrated',  -- unrated | bronze | silver | gold
-                          on_time_rate    NUMERIC(5,2),                    -- %
-                          status          VARCHAR(50)  NOT NULL DEFAULT 'active',
-                          created_at      TIMESTAMPTZ  NOT NULL DEFAULT now(),
-                          updated_at      TIMESTAMPTZ  NOT NULL DEFAULT now()
-);
-
-SELECT create_updated_at_trigger('partners');
-
--- ----
-
-CREATE TABLE partner_vehicles (
-                                  id                  UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
-                                  partner_id          UUID        NOT NULL REFERENCES partners(id),
-                                  vehicle_type_id     UUID        NOT NULL REFERENCES vehicle_types(id),
-                                  plate_number        VARCHAR(30)  NOT NULL UNIQUE,
-                                  load_capacity_ton   NUMERIC(8,2),
-                                  status              VARCHAR(50)  NOT NULL DEFAULT 'available',  -- available | on_trip | inactive
-                                  created_at          TIMESTAMPTZ  NOT NULL DEFAULT now(),
-                                  updated_at          TIMESTAMPTZ  NOT NULL DEFAULT now()
-);
-
-SELECT create_updated_at_trigger('partner_vehicles');
-
--- ----
-
-CREATE TABLE partner_drivers (
-                                 id              UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
-                                 partner_id      UUID        NOT NULL REFERENCES partners(id),
-                                 full_name       VARCHAR(255) NOT NULL,
-                                 phone           VARCHAR(30),
-                                 license_class   VARCHAR(20),
-                                 license_number  VARCHAR(50),
-                                 status          VARCHAR(50)  NOT NULL DEFAULT 'active',
-                                 created_at      TIMESTAMPTZ  NOT NULL DEFAULT now(),
-                                 updated_at      TIMESTAMPTZ  NOT NULL DEFAULT now()
-);
-
-SELECT create_updated_at_trigger('partner_drivers');
-
--- ----
-
-CREATE TABLE partner_performances (
-                                      id              UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
-                                      partner_id      UUID        NOT NULL REFERENCES partners(id),
-                                      period_month    CHAR(7)     NOT NULL,       -- YYYY-MM
-                                      total_trips     INT         NOT NULL DEFAULT 0,
-                                      on_time_trips   INT         NOT NULL DEFAULT 0,
-                                      avg_cost        NUMERIC(15,2),
-                                      total_revenue   NUMERIC(15,2),
-                                      notes           TEXT,
-                                      status          VARCHAR(50)  NOT NULL DEFAULT 'final',  -- draft | final
-                                      created_at      TIMESTAMPTZ  NOT NULL DEFAULT now(),
-                                      updated_at      TIMESTAMPTZ  NOT NULL DEFAULT now(),
-                                      UNIQUE (partner_id, period_month)
-);
-
-SELECT create_updated_at_trigger('partner_performances');
 
 INSERT INTO roles (code, name, description) VALUES
                                                 ('SYSTEM_ADMIN',   'Quản trị hệ thống',           'Cấu hình hệ thống, phân quyền, quản lý tổ chức, danh mục, nhật ký'),

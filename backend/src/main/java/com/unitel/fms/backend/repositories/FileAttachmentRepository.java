@@ -9,4 +9,5 @@ import java.util.UUID;
 
 @Repository
 public interface FileAttachmentRepository extends JpaRepository<FileAttachment, UUID>, JpaSpecificationExecutor<FileAttachment> {
+    java.util.List<FileAttachment> findByEntityTypeAndEntityId(String entityType, UUID entityId);
 }

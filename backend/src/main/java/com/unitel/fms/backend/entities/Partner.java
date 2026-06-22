@@ -77,5 +77,4 @@ public class Partner {
     @Column(name = "updated_at", nullable = false)
     private OffsetDateTime updatedAt;
 
-
 }

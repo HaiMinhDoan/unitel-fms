@@ -22,11 +22,11 @@ public class GpsPosition {
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "vehicle_id", nullable = false)
+    @JoinColumn(name = "vehicle_id", nullable = false, insertable = false, updatable = false)
     private Vehicle vehicle;
 
     @NotNull
-    @Column(name = "recorded_at", nullable = false)
+    @Column(name = "recorded_at", nullable = false, insertable = false, updatable = false)
     private OffsetDateTime recordedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)

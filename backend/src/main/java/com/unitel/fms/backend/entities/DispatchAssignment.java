@@ -30,15 +30,27 @@ public class DispatchAssignment {
     @JoinColumn(name = "dispatch_request_id", nullable = false)
     private DispatchRequest dispatchRequest;
 
+    @Size(max = 50)
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "vehicle_id", nullable = false)
+    @ColumnDefault("'internal'")
+    @Column(name = "trip_type", nullable = false, length = 50)
+    private String tripType;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "vehicle_id")
     private Vehicle vehicle;
 
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "driver_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "driver_id")
     private Driver driver;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "partner_vehicle_id")
+    private PartnerVehicle partnerVehicle;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "partner_driver_id")
+    private PartnerDriver partnerDriver;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "assigned_by")

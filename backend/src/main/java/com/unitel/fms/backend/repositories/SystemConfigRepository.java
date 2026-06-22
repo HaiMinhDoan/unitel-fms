@@ -9,4 +9,5 @@ import java.util.UUID;
 
 @Repository
 public interface SystemConfigRepository extends JpaRepository<SystemConfig, UUID>, JpaSpecificationExecutor<SystemConfig> {
+    java.util.Optional<SystemConfig> findByConfigKey(String configKey);
 }

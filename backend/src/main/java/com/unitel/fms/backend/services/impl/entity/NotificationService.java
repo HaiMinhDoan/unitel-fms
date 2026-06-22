@@ -25,4 +25,14 @@ public class NotificationService extends BaseServiceImpl<Notification, UUID> {
     protected EntityManager getEntityManager() {
         return this.entityManager;
     }
+
+    public void notifyFleetManagers(UUID vehicleId, String message) {
+        // TODO: Implement actual notification logic
+        System.out.println("NOTIFY FLEET MANAGERS: " + message + " FOR VEHICLE " + vehicleId);
+    }
+
+    public void notifyUrgent(UUID orgId, String message, UUID referenceId) {
+        // TODO: Implement actual notification logic
+        System.out.println("URGENT NOTIFY ORG " + orgId + ": " + message + " (REF: " + referenceId + ")");
+    }
 }

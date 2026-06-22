@@ -18,4 +18,8 @@ public interface JwtService {
     String getTokenFromAuthHeader(String authHeader);
 
     AuthInfo getAuthInfoFromToken(String token);
+
+    String generateRefreshToken(AuthInfo authInfo, String userAgent);
+
+    boolean isTokenExpired(String token);
 }

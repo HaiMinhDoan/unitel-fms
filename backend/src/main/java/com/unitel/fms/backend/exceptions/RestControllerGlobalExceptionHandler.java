@@ -139,6 +139,18 @@ public class RestControllerGlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
     }
 
+    @ExceptionHandler(com.unitel.fms.backend.exceptions.customize.DispatchBlockedException.class)
+    public ResponseEntity<ResponseData<?>> handleDispatchBlocked(com.unitel.fms.backend.exceptions.customize.DispatchBlockedException ex, WebRequest request) {
+        ResponseData<java.util.Map<String, Object>> body = ResponseData.<java.util.Map<String, Object>>builder()
+                .status(HttpStatus.CONFLICT.value())
+                .message(ex.getMessage())
+                .data(ex.getPreCheckDetails())
+                .error("Dispatch Blocked")
+                .path(getPath(request))
+                .build();
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
+    }
+
     @ExceptionHandler(InvalidFieldException.class)
     public ResponseEntity<ResponseData<?>> handleInvalidField(InvalidFieldException ex, WebRequest request) {
         ResponseData<Void> body = ResponseData.<Void>builder()

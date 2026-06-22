@@ -9,4 +9,5 @@ import java.util.UUID;
 
 @Repository
 public interface VehicleTypeRepository extends JpaRepository<VehicleType, UUID>, JpaSpecificationExecutor<VehicleType> {
+    boolean existsByCode(String code);
 }
