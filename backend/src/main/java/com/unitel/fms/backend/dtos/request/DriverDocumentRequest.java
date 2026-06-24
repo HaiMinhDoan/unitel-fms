@@ -27,5 +27,7 @@ public class DriverDocumentRequest {
 
     LocalDate issueDate;
 
-    LocalDate expiryDate;
+    private LocalDate expiryDate;
+    private String status;
+    private java.util.List<org.springframework.web.multipart.MultipartFile> files;
 }

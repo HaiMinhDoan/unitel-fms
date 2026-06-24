@@ -10,6 +10,7 @@ import com.unitel.fms.backend.dtos.request.RoleRequest;
 import com.unitel.fms.backend.dtos.response.RoleResponse;
 import com.unitel.fms.backend.mappers.RoleMapper;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
@@ -28,7 +29,7 @@ public class RoleController {
 
     @PostMapping("/role/create")
     @RequireAuth(roles = {RoleType.SYSTEM_ADMIN})
-    public ResponseData<RoleResponse> create(@RequestBody RoleRequest request) {
+    public ResponseData<RoleResponse> create(@Valid @RequestBody RoleRequest request) {
         Role entity = roleMapper.toEntity(request);
         Role saved = roleService.create(entity);
         return ResponseData.<RoleResponse>builder().status(200).messageCode("SUCCESS").data(roleMapper.toResponse(saved)).build();
@@ -36,7 +37,7 @@ public class RoleController {
 
     @PutMapping("/role/update/{id}")
     @RequireAuth(roles = {RoleType.SYSTEM_ADMIN})
-    public ResponseData<RoleResponse> update(@PathVariable UUID id, @RequestBody RoleRequest request) {
+    public ResponseData<RoleResponse> update(@PathVariable UUID id, @Valid @RequestBody RoleRequest request) {
         Role entity = roleMapper.toEntity(request);
         Role updated = roleService.update(id, entity);
         return ResponseData.<RoleResponse>builder().status(200).messageCode("SUCCESS").data(roleMapper.toResponse(updated)).build();
@@ -44,7 +45,7 @@ public class RoleController {
 
     @PatchMapping("/role/update-partial/{id}")
     @RequireAuth(roles = {RoleType.SYSTEM_ADMIN})
-    public ResponseData<RoleResponse> updatePartial(@PathVariable UUID id, @RequestBody RoleRequest request) {
+    public ResponseData<RoleResponse> updatePartial(@PathVariable UUID id, @Valid @RequestBody RoleRequest request) {
         Role existing = roleService.getOne(id).orElseThrow(() -> new RuntimeException("Not found"));
         roleMapper.updateEntity(request, existing);
         Role updated = roleService.update(existing);
@@ -67,7 +68,7 @@ public class RoleController {
 
     @PostMapping("/roles/filter")
     @RequireAuth(roles = {RoleType.SYSTEM_ADMIN})
-    public ResponseData<Page<RoleResponse>> filter(@RequestBody BaseFilterRequest filter) {
+    public ResponseData<Page<RoleResponse>> filter(@Valid @RequestBody BaseFilterRequest filter) {
         Page<RoleResponse> page = roleService.filter(filter).map(roleMapper::toResponse);
         return ResponseData.<Page<RoleResponse>>builder().status(200).messageCode("SUCCESS").data(page).build();
     }

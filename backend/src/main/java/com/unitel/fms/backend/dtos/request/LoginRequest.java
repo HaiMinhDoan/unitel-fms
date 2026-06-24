@@ -3,6 +3,7 @@ package com.unitel.fms.backend.dtos.request;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AccessLevel;
 import lombok.Data;
+import jakarta.validation.constraints.NotNull;
 import lombok.experimental.FieldDefaults;
 
 @Data

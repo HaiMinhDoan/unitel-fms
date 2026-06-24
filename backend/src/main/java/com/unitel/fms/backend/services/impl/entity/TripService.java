@@ -34,6 +34,7 @@ public class TripService extends BaseServiceImpl<Trip, UUID> {
     private DispatchAssignmentRepository dispatchAssignmentRepository;
 
     @Autowired
+    @org.springframework.context.annotation.Lazy
     private DispatchAssignmentService dispatchAssignmentService;
 
     @Autowired
@@ -91,6 +92,6 @@ public class TripService extends BaseServiceImpl<Trip, UUID> {
     }
 
     public List<GpsPosition> replay(UUID tripId) {
-        return gpsPositionRepository.findById_TripIdOrderById_RecordedAtAsc(tripId);
+        return gpsPositionRepository.findByTrip_IdOrderByRecordedAtAsc(tripId);
     }
 }

@@ -38,4 +38,5 @@ public class TripIncidentRequest {
     String resolutionNotes;
     UUID resolvedBy;
     OffsetDateTime resolvedAt;
+    private java.util.List<org.springframework.web.multipart.MultipartFile> files;
 }

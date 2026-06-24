@@ -335,6 +335,8 @@ public abstract class BaseServiceImpl<T, ID> implements BaseService<T, ID> {
         Object value = filter.getValue();
         if (value == null) return null;
 
+        value = convertValue(value, path.getJavaType());
+
         switch (filter.getOperation()) {
             case EQUALS:
                 return cb.equal(path, value);

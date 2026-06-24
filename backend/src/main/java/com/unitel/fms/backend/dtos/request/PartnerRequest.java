@@ -13,7 +13,8 @@ import java.util.UUID;
 @AllArgsConstructor
 public class PartnerRequest {
     @NotNull(message = "org_id is required")
-    private UUID orgId;
+    @NotNull(message = "orgId is required")
+    private java.util.UUID orgId;
 
     @NotBlank(message = "code is required")
     @Size(max = 50)
@@ -21,6 +22,7 @@ public class PartnerRequest {
 
     @NotBlank(message = "name is required")
     @Size(max = 255)
+    @jakarta.validation.constraints.NotBlank(message = "name is required")
     private String name;
 
     @Size(max = 255)

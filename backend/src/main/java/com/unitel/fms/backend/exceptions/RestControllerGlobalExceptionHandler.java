@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.transaction.TransactionSystemException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -157,6 +158,17 @@ public class RestControllerGlobalExceptionHandler {
 
     @ExceptionHandler(InvalidFieldException.class)
     public ResponseEntity<ResponseData<?>> handleInvalidField(InvalidFieldException ex, WebRequest request) {
+        ResponseData<Void> body = ResponseData.<Void>builder()
+                .status(HttpStatus.BAD_REQUEST.value())
+                .messageCode(ex.getMessage())
+                .error("Bad Request")
+                .path(getPath(request))
+                .build();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+    }
+
+    @ExceptionHandler(TransactionSystemException.class)
+    public ResponseEntity<ResponseData<?>> handleTransactionSystem(TransactionSystemException ex, WebRequest request) {
         ResponseData<Void> body = ResponseData.<Void>builder()
                 .status(HttpStatus.BAD_REQUEST.value())
                 .messageCode(ex.getMessage())

@@ -1,6 +1,7 @@
 package com.unitel.fms.backend.dtos.request;
 
 import lombok.Data;
+import jakarta.validation.constraints.NotNull;
 import java.util.UUID;
 
 @Data
@@ -12,6 +13,7 @@ public class UserRequest {
     private String phone;
     private String ssoSubject;
     private String locale;
-    private UUID orgId;
+    @NotNull(message = "orgId is required")
+    private java.util.UUID orgId;
     private String status;
 }

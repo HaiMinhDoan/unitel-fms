@@ -1,0 +1,128 @@
+{
+  "app": {
+    "searchNotData": "ຍັງບໍ່ມີຜົນການຄົ້ນຫາ",
+    "toSearch": "ເພື່ອຄົ້ນຫາ",
+    "toNavigate": "ເພື່ອນຳທາງ"
+  },
+  "countdown": {
+    "normalText": "ຮັບລະຫັດ SMS",
+    "sendText": "ຮັບໃໝ່ໃນ {0}s"
+  },
+  "cropper": {
+    "selectImage": "ເລືອກຮູບ",
+    "uploadSuccess": "ອັບໂຫຼດສຳເລັດ!",
+    "imageTooBig": "ຮູບໃຫຍ່ເກີນໄປ",
+    "modalTitle": "ອັບໂຫຼດຮູບປະຈຳຕົວ",
+    "okText": "ຢືນຢັນ ແລະອັບໂຫຼດ",
+    "btn_reset": "ຣີເຊັດ",
+    "btn_rotate_left": "ໝຸນຊ້າຍ",
+    "btn_rotate_right": "ໝຸນຂວາ",
+    "btn_scale_x": "ພິກແນວນອນ",
+    "btn_scale_y": "ພິກແນວຕັ້ງ",
+    "btn_zoom_in": "ຊູມເຂົ້າ",
+    "btn_zoom_out": "ຊູມອອກ",
+    "preview": "ເບິ່ງລ່ວງໜ້າ"
+  },
+  "drawer": {
+    "loadingText": "ກຳລັງໂຫຼດ...",
+    "cancelText": "ປິດ",
+    "okText": "ຢືນຢັນ"
+  },
+  "excel": {
+    "exportModalTitle": "ສົ່ງອອກຂໍ້ມູນ",
+    "fileType": "ປະເພດໄຟລ໌",
+    "fileName": "ຊື່ໄຟລ໌"
+  },
+  "form": {
+    "putAway": "ຫຍໍ້ເຂົ້າ",
+    "unfold": "ຂະຫຍາຍອອກ",
+    "maxTip": "ຈຳນວນຕົວອັກສອນຕ້ອງນ້ອຍກວ່າ {0}",
+    "apiSelectNotFound": "ລໍຖ້າການໂຫຼດຂໍ້ມູນ..."
+  },
+  "icon": {
+    "placeholder": "ຄລິກເພື່ອເລືອກໄອຄອນ",
+    "search": "ຄົ້ນຫາໄອຄອນ",
+    "copy": "ສຳເນົາໄອຄອນສຳເລັດແລ້ວ!"
+  },
+  "menu": {
+    "search": "ຄົ້ນຫາເມນູ"
+  },
+  "modal": {
+    "cancelText": "ປິດ",
+    "okText": "ຢືນຢັນ",
+    "close": "ປິດ",
+    "maximize": "ຂະຫຍາຍໃຫຍ່ສຸດ",
+    "restore": "ຄືນຄ່າ"
+  },
+  "table": {
+    "settingDens": "ຄວາມໜາແໜ້ນ",
+    "settingDensDefault": "ຄ່າເລີ່ມຕົ້ນ",
+    "settingDensMiddle": "ປານກາງ",
+    "settingDensSmall": "ນ້ອຍ",
+    "settingColumn": "ຕັ້ງຄ່າຖັນ",
+    "settingColumnShow": "ສະແດງຖັນ",
+    "settingIndexColumnShow": "ຖັນລຳດັບ",
+    "settingSelectColumnShow": "ຖັນເລືອກ",
+    "settingFixedLeft": "ຕິດຂອບຊ້າຍ",
+    "settingFixedRight": "ຕິດຂອບຂວາ",
+    "settingFullScreen": "ເຕັມຈໍ",
+    "index": "ລຳດັບ",
+    "total": "ທັງໝົດ {total}",
+    "selectionBarTips": "ເລືອກແລ້ວ {count} ລາຍການ.",
+    "selectionBarClear": "ລຶບການເລືອກ",
+    "selectionBarEmpty": "ບໍ່ມີລາຍການທີ່ເລືອກ."
+  },
+  "time": {
+    "before": " ກ່ອນ",
+    "after": " ຫຼັງ",
+    "just": "ຫາກໍ່",
+    "seconds": " ວິນາທີ",
+    "minutes": " ນາທີ",
+    "hours": " ຊົ່ວໂມງ",
+    "days": " ມື້"
+  },
+  "tree": {
+    "selectAll": "ເລືອກທັງໝົດ",
+    "unSelectAll": "ຍົກເລີກການເລືອກທັງໝົດ",
+    "expandAll": "ຂະຫຍາຍທັງໝົດ",
+    "unExpandAll": "ຫຍໍ້ທັງໝົດ",
+    "checkStrictly": "ແຍກລຳດັບຊັ້ນ",
+    "checkUnStrictly": "ເຊື່ອມໂຍງລຳດັບຊັ້ນ"
+  },
+  "upload": {
+    "save": "ບັນທຶກ",
+    "upload": "ອັບໂຫຼດ",
+    "imgUpload": "ອັບໂຫຼດຮູບ",
+    "uploaded": "ອັບໂຫຼດແລ້ວ",
+    "operating": "ກຳລັງປະຕິບັດ",
+    "del": "ລຶບ",
+    "download": "ດາວໂຫຼດ",
+    "saveWarn": "ກະລຸນາລໍຖ້າໃຫ້ອັບໂຫຼດສຳເລັດກ່ອນບັນທຶກ!",
+    "saveError": "ບໍ່ມີໄຟລ໌ໃດອັບໂຫຼດສຳເລັດແລະບໍ່ສາມາດບັນທຶກໄດ້!",
+    "preview": "ເບິ່ງລ່ວງໜ້າ",
+    "choose": "ເລືອກໄຟລ໌",
+    "accept": "ຮອງຮັບຮູບແບບ {0}",
+    "acceptUpload": "ອັບໂຫຼດສະເພາະໄຟລ໌ຮູບແບບ {0}",
+    "maxSize": "ໄຟລ໌ດຽວບໍ່ເກີນ {0}MB",
+    "maxSizeMultiple": "ອັບໂຫຼດສະເພາະໄຟລ໌ບໍ່ເກີນ {0}MB!",
+    "maxNumber": "ອັບໂຫຼດໄດ້ສູງສຸດ {0} ໄຟລ໌",
+    "legend": "ຄຳອະທິບາຍ",
+    "fileName": "ຊື່ໄຟລ໌",
+    "fileSize": "ຂະໜາດ",
+    "fileStatue": "ສະຖານະ",
+    "pending": "ລໍຖ້າ",
+    "startUpload": "ເລີ່ມອັບໂຫຼດ",
+    "uploadSuccess": "ອັບໂຫຼດສຳເລັດ",
+    "uploadError": "ອັບໂຫຼດລົ້ມເຫຼວ",
+    "uploading": "ກຳລັງອັບໂຫຼດ",
+    "uploadWait": "ກະລຸນາລໍຖ້າການອັບໂຫຼດສຳເລັດ",
+    "reUploadFailed": "ອັບໂຫຼດໄຟລ໌ທີ່ລົ້ມເຫຼວໃໝ່"
+  },
+  "verify": {
+    "error": "ການຢືນຢັນລົ້ມເຫຼວ!",
+    "time": "ການຢືນຢັນສຳເລັດໃນ {time} ວິນາທີ!",
+    "redoTip": "ຄລິກຮູບເພື່ອໂຫຼດໃໝ່",
+    "dragText": "ກົດແລ້ວລາກລົງ",
+    "successText": "ຢືນຢັນແລ້ວ"
+  }
+}

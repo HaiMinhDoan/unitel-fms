@@ -43,4 +43,5 @@ public class FuelLogRequest {
     BigDecimal telemetryConsumption;
     Boolean anomalyFlagged;
     String anomalyNotes;
+    private java.util.List<org.springframework.web.multipart.MultipartFile> files;
 }

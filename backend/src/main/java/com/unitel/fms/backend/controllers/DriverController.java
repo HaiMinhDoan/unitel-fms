@@ -45,7 +45,7 @@ public class DriverController {
 
     @PatchMapping("/driver/update-partial/{id}")
     @RequireAuth(roles = {RoleType.HR_LEGAL, RoleType.FLEET_MANAGER}, rolesLogic = RequireAuth.LogicType.OR, inWorkspace = true)
-    public ResponseData<DriverResponse> updatePartial(@PathVariable UUID id, @RequestBody Map<String, Object> updates) {
+    public ResponseData<DriverResponse> updatePartial(@PathVariable UUID id, @Valid @RequestBody Map<String, Object> updates) {
         Driver updated = driverService.updateFromMap(id, updates);
         return ResponseData.<DriverResponse>builder().status(200).messageCode("SUCCESS").data(driverMapper.toResponse(updated)).build();
     }
@@ -62,7 +62,7 @@ public class DriverController {
 
     @PostMapping("/drivers/filter")
     @RequireAuth(roles = {RoleType.ALL}, inWorkspace = true)
-    public ResponseData<Page<DriverResponse>> filter(@RequestBody BaseFilterRequest filter) {
+    public ResponseData<Page<DriverResponse>> filter(@Valid @RequestBody BaseFilterRequest filter) {
         Page<DriverResponse> page = driverService.filter(filter).map(driverMapper::toResponse);
         return ResponseData.<Page<DriverResponse>>builder().status(200).messageCode("SUCCESS").data(page).build();
     }

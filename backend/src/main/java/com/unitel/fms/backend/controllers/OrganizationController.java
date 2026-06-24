@@ -10,6 +10,7 @@ import com.unitel.fms.backend.dtos.request.OrganizationRequest;
 import com.unitel.fms.backend.dtos.response.OrganizationResponse;
 import com.unitel.fms.backend.mappers.OrganizationMapper;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
@@ -28,7 +29,7 @@ public class OrganizationController {
 
     @PostMapping("/organization/create")
     @RequireAuth(roles = {RoleType.SYSTEM_ADMIN})
-    public ResponseData<OrganizationResponse> create(@RequestBody OrganizationRequest request) {
+    public ResponseData<OrganizationResponse> create(@Valid @RequestBody OrganizationRequest request) {
         Organization entity = organizationMapper.toEntity(request);
         Organization saved = organizationService.create(entity);
         return ResponseData.<OrganizationResponse>builder().status(200).messageCode("SUCCESS").data(organizationMapper.toResponse(saved)).build();
@@ -36,7 +37,7 @@ public class OrganizationController {
 
     @PutMapping("/organization/update/{id}")
     @RequireAuth(roles = {RoleType.SYSTEM_ADMIN})
-    public ResponseData<OrganizationResponse> update(@PathVariable UUID id, @RequestBody OrganizationRequest request) {
+    public ResponseData<OrganizationResponse> update(@PathVariable UUID id, @Valid @RequestBody OrganizationRequest request) {
         Organization entity = organizationMapper.toEntity(request);
         Organization updated = organizationService.update(id, entity);
         return ResponseData.<OrganizationResponse>builder().status(200).messageCode("SUCCESS").data(organizationMapper.toResponse(updated)).build();
@@ -44,7 +45,7 @@ public class OrganizationController {
 
     @PatchMapping("/organization/update-partial/{id}")
     @RequireAuth(roles = {RoleType.SYSTEM_ADMIN})
-    public ResponseData<OrganizationResponse> updatePartial(@PathVariable UUID id, @RequestBody OrganizationRequest request) {
+    public ResponseData<OrganizationResponse> updatePartial(@PathVariable UUID id, @Valid @RequestBody OrganizationRequest request) {
         Organization existing = organizationService.getOne(id).orElseThrow(() -> new RuntimeException("Not found"));
         organizationMapper.updateEntity(request, existing);
         Organization updated = organizationService.update(existing);
@@ -67,7 +68,7 @@ public class OrganizationController {
 
     @PostMapping("/organizations/filter")
     @RequireAuth(roles = {RoleType.ALL})
-    public ResponseData<Page<OrganizationResponse>> filter(@RequestBody BaseFilterRequest filter) {
+    public ResponseData<Page<OrganizationResponse>> filter(@Valid @RequestBody BaseFilterRequest filter) {
         Page<OrganizationResponse> page = organizationService.filter(filter).map(organizationMapper::toResponse);
         return ResponseData.<Page<OrganizationResponse>>builder().status(200).messageCode("SUCCESS").data(page).build();
     }

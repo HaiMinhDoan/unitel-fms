@@ -10,6 +10,7 @@ public class VehicleResponse {
     private UUID id;
     private UUID orgId;
     private UUID vehicleTypeId;
+    private String vehicleTypeName;
     private String plateNumber;
     private String brand;
     private String model;

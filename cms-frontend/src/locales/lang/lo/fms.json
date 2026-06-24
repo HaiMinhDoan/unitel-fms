@@ -1,0 +1,203 @@
+{
+  "common": {
+    "addNew": "ເພີ່ມໃໝ່",
+    "action": "ການປະຕິບັດ",
+    "status": "ສະຖານະ",
+    "createdAt": "ວັນທີສ້າງ",
+    "updatedAt": "ວັນທີແກ້ໄຂ",
+    "deleteConfirm": "ທ່ານແນ່ໃຈບໍ່ວ່າຕ້ອງການລຶບ?",
+    "id": "ID",
+    "active": "ເຄື່ອນໄຫວ",
+    "inactive": "ບໍ່ເຄື່ອນໄຫວ",
+    "phone": "ເບີໂທລະສັບ",
+    "email": "ອີເມວ",
+    "address": "ທີ່ຢູ່",
+    "name": "ຊື່",
+    "code": "ລະຫັດ",
+    "viewMap": "ເບິ່ງແຜນທີ່",
+    "note": "ໝາຍເຫດ",
+    "publicUrl": "ລິ້ງສາທາລະນະ"
+  },
+  "users": {
+    "title": "ລາຍຊື່ຜູ້ໃຊ້",
+    "username": "ຊື່ຜູ້ໃຊ້",
+    "lastLoginAt": "ເຂົ້າສູ່ລະບົບລ່າສຸດ"
+  },
+  "organizations": {
+    "title": "ອົງກອນ",
+    "parent": "ອົງກອນຫຼັກ",
+    "level": "ລະດັບ",
+    "orgCode": "ລະຫັດອົງກອນ",
+    "orgName": "ຊື່ອົງກອນ",
+    "description": "ລາຍລະອຽດ"
+  },
+  "customers": {
+    "title": "ລາຍຊື່ລູກຄ້າ",
+    "code": "ລະຫັດລູກຄ້າ(ລະຫັດພາສີ)",
+    "contactPerson": "ຜູ້ຕິດຕໍ່",
+    "contactPhone": "ເບີໂທຕິດຕໍ່",
+    "name": "ຊື່ລູກຄ້າ"
+  },
+  "partners": {
+    "title": "ລາຍຊື່ຄູ່ຮ່ວມງານ",
+    "code": "ລະຫັດຄູ່ຮ່ວມງານ(ລະຫັດພາສີ)",
+    "contactPerson": "ຜູ້ຕິດຕໍ່",
+    "contactPhone": "ເບີໂທຕິດຕໍ່",
+    "partnerCode": "ລະຫັດຄູ່ຮ່ວມງານ",
+    "partnerName": "ຊື່ຄູ່ຮ່ວມງານ",
+    "active": "ກຳລັງຮ່ວມມື",
+    "inactive": "ຢຸດຮ່ວມມື"
+  },
+  "vehicles": {
+    "title": "ລາຍຊື່ງຍານພາຫະນະ",
+    "partner": "ຄູ່ຮ່ວມງານ",
+    "licensePlate": "ປ້າຍທະບຽນ",
+    "brand": "ຍີ່ຫໍ້",
+    "location": "ສະຖານທີ່ປະຈຸບັນ",
+    "type": "ປະເພດລົດ",
+    "capacity": "ຄວາມອາດສາມາດ",
+    "documents": "ເອກະສານ",
+    "statusOptions": {
+      "AVAILABLE": "ພ້ອມໃຊ້ງານ",
+      "IN_USE": "ກຳລັງໃຊ້ງານ",
+      "MAINTENANCE": "ບຳລຸງຮັກສາ",
+      "INACTIVE": "ບໍ່ເຄື່ອນໄຫວ"
+    },
+    "docType": "ປະເພດເອກະສານ",
+    "docNumber": "ເລກເອກະສານ",
+    "issueDate": "ວັນທີອອກ",
+    "expiryDate": "ວັນໝົດອາຍຸ",
+    "fileUrl": "ລິ້ງໄຟລ໌",
+    "regDoc": "ທະບຽນລົດ",
+    "insuranceDoc": "ປະກັນໄພ",
+    "inspectionDoc": "ກວດກາເຕັກນິກ",
+    "lat": "ເສັ້ນຂະໜານ",
+    "lng": "ເສັ້ນແວງ",
+    "vehicleType": "ປະເພດພາຫະນະ"
+  },
+  "drivers": {
+    "title": "ລາຍຊື່ຄົນຂັບລົດ",
+    "partner": "ຄູ່ຮ່ວມງານ",
+    "fullName": "ຊື່ເຕັມ",
+    "licenseNumber": "ເລກທີໃບຂັບຂີ່",
+    "licenseClass": "ປະເພດໃບຂັບຂີ່",
+    "statusOptions": {
+      "AVAILABLE": "ພ້ອມໃຊ້ງານ",
+      "ON_TRIP": "ກຳລັງເດີນທາງ",
+      "INACTIVE": "ບໍ່ເຄື່ອນໄຫວ"
+    },
+    "driverCode": "ລະຫັດຄົນຂັບລົດ",
+    "docType": "ປະເພດເອກະສານ",
+    "docNumber": "ໝາຍເລກເອກະສານ",
+    "issueDate": "ວັນທີອອກ",
+    "expiryDate": "ວັນໝົດອາຍຸ",
+    "driverId": "ລະຫັດຄົນຂັບ"
+  },
+  "dispatch": {
+    "title": "ຄໍາຮ້ອງຂໍການປະສານງານ",
+    "customer": "ລູກຄ້າ",
+    "pickupLocation": "ຈຸດຮັບເຄື່ອງ",
+    "dropoffLocation": "ຈຸດສົ່ງເຄື່ອງ",
+    "pickupTime": "ເວລາຮັບເຄື່ອງ",
+    "dropoffTime": "ເວລາສົ່ງເຄື່ອງ",
+    "goodsDescription": "ລາຍລະອຽດສິນຄ້າ",
+    "weight": "ນໍ້າໜັກ (ກິໂລ)",
+    "volume": "ບໍລິມາດ (m3)",
+    "statusOptions": {
+      "DRAFT": "ຮ່າງ",
+      "REQUESTED": "ຮ້ອງຂໍ",
+      "ASSIGNED": "ມອບໝາຍແລ້ວ",
+      "IN_PROGRESS": "ກຳລັງປະຕິບັດ",
+      "COMPLETED": "ສຳເລັດແລ້ວ",
+      "CANCELLED": "ຍົກເລີກ"
+    },
+    "requestCode": "ລະຫັດຄໍາຮ້ອງຂໍ",
+    "requestTime": "ເວລາຄໍາຮ້ອງຂໍ",
+    "customerId": "ID ລູກຄ້າ",
+    "vehicleType": "ປະເພດລົດ",
+    "capacity": "ຄວາມອາດສາມາດ"
+  },
+  "dispatchAssignments": {
+    "title": "ການມອບໝາຍວຽກ",
+    "request": "ຄໍາຮ້ອງຂໍ",
+    "vehicle": "ຍານພາຫະນະ",
+    "driver": "ຄົນຂັບລົດ",
+    "assignedAt": "ເວລາມອບໝາຍ",
+    "assignedBy": "ຜູ້ມອບໝາຍ",
+    "type": "ປະເພດ",
+    "internalVehicle": "ID ລົດພາຍໃນ",
+    "internalDriver": "ID ຄົນຂັບພາຍໃນ",
+    "partner": "ID ຄູ່ຮ່ວມງານ",
+    "externalVehicle": "ID ລົດຄູ່ຮ່ວມງານ",
+    "externalDriver": "ID ຄົນຂັບຄູ່ຮ່ວມງານ",
+    "internal": "ພາຍໃນ",
+    "external": "ພາຍນອກ",
+    "new": "ມອບໝາຍໃໝ່",
+    "running": "ກຳລັງແລ່ນ"
+  },
+  "trips": {
+    "title": "ລາຍຊື່ການເດີນທາງ",
+    "assignment": "ການມອບໝາຍ",
+    "startTime": "ເວລາເລີ່ມຕົ້ນ",
+    "endTime": "ເວລາສິ້ນສຸດ",
+    "startOdometer": "ເລກໄມເລີ່ມຕົ້ນ",
+    "endOdometer": "ເລກໄມສິ້ນສຸດ",
+    "viewRoute": "ເບິ່ງເສັ້ນທາງ",
+    "statusOptions": {
+      "PLANNED": "ວາງແຜນ",
+      "EN_ROUTE": "ກຳລັງເດີນທາງ",
+      "COMPLETED": "ສຳເລັດແລ້ວ",
+      "CANCELLED": "ຍົກເລີກ"
+    },
+    "plannedStart": "ເລີ່ມຕົ້ນ (ແຜນ)",
+    "plannedEnd": "ສິ້ນສຸດ (ແຜນ)",
+    "actualStart": "ເລີ່ມຕົ້ນ (ຕົວຈິງ)",
+    "actualEnd": "ສິ້ນສຸດ (ຕົວຈິງ)",
+    "distance": "ໄລຍະທາງ (ກມ)",
+    "slaRisk": "ຄວາມສ່ຽງ SLA",
+    "incidentType": "ປະເພດເຫດການ",
+    "severity": "ຄວາມຮ້າຍແຮງ",
+    "description": "ລາຍລະອຽດ",
+    "reportedAt": "ລາຍງານເວລາ",
+    "tripId": "ລະຫັດການເດີນທາງ"
+  },
+  "cost": {
+    "title": "ບັນທຶກນໍ້າມັນ",
+    "vehicle": "ຍານພາຫະນະ",
+    "driver": "ຄົນຂັບລົດ",
+    "trip": "ການເດີນທາງ",
+    "fuelType": "ປະເພດນໍ້າມັນ",
+    "volumeLiters": "ຈຳນວນລິດ",
+    "unitPrice": "ລາຄາຕໍ່ໜ່ວຍ",
+    "totalCost": "ຄ່າໃຊ້ຈ່າຍທັງໝົດ",
+    "location": "ສະຖານທີ່",
+    "filledAt": "ເວລາຕື່ມ",
+    "currentOdometer": "ເລກໄມປັດຈຸບັນ",
+    "vehicleId": "ID ຍານພາຫະນະ",
+    "driverId": "ID ຄົນຂັບລົດ",
+    "tripId": "ID ການເດີນທາງ",
+    "gasoline": "ນ້ຳມັນແອັດຊັງ",
+    "diesel": "ກາຊວນ"
+  },
+  "maintenance": {
+    "title": "ການບຳລຸງຮັກສາ",
+    "vehicle": "ຍານພາຫະນະ",
+    "orderNumber": "ເລກບິນ",
+    "maintenanceType": "ປະເພດບຳລຸງຮັກສາ",
+    "description": "ລາຍລະອຽດ",
+    "cost": "ຄ່າໃຊ້ຈ່າຍ",
+    "date": "ວັນທີ",
+    "statusOptions": {
+      "SCHEDULED": "ຈັດຕາຕະລາງແລ້ວ",
+      "IN_PROGRESS": "ກຳລັງປະຕິບັດ",
+      "COMPLETED": "ສຳເລັດແລ້ວ",
+      "CANCELLED": "ຍົກເລີກ"
+    },
+    "completedDate": "ວັນທີສຳເລັດ",
+    "requester": "ຜູ້ຮ້ອງຂໍ"
+  },
+  "routes": {
+    "partnerDrivers": "ຄົນຂັບຄູ່ຮ່ວມງານ",
+    "partnerVehicles": "ຍານພາຫະນະຄູ່ຮ່ວມງານ"
+  }
+}

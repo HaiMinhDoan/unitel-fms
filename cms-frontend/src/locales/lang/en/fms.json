@@ -1,0 +1,203 @@
+{
+  "common": {
+    "addNew": "Add New",
+    "action": "Action",
+    "status": "Status",
+    "createdAt": "Created At",
+    "updatedAt": "Updated At",
+    "deleteConfirm": "Are you sure you want to delete?",
+    "id": "ID",
+    "active": "Active",
+    "inactive": "Inactive",
+    "phone": "Phone",
+    "email": "Email",
+    "address": "Address",
+    "name": "Name",
+    "code": "Code",
+    "viewMap": "View Map",
+    "note": "Note",
+    "publicUrl": "Public URL"
+  },
+  "users": {
+    "title": "User List",
+    "username": "Username",
+    "lastLoginAt": "Last Login At"
+  },
+  "organizations": {
+    "title": "Organization List",
+    "parent": "Parent Organization",
+    "level": "Level",
+    "orgCode": "Org Code",
+    "orgName": "Org Name",
+    "description": "Description"
+  },
+  "customers": {
+    "title": "Customer List",
+    "code": "Customer Code(Tax code)",
+    "contactPerson": "Contact Person",
+    "contactPhone": "Contact Phone",
+    "name": "Customer Name"
+  },
+  "partners": {
+    "title": "Partner List",
+    "code": "Partner Code(Tax code)",
+    "contactPerson": "Contact Person",
+    "contactPhone": "Contact Phone",
+    "partnerCode": "Partner Code",
+    "partnerName": "Partner Name",
+    "active": "Active Partner",
+    "inactive": "Inactive Partner"
+  },
+  "vehicles": {
+    "title": "Vehicle List",
+    "partner": "Partner",
+    "licensePlate": "License Plate",
+    "brand": "Brand",
+    "location": "Current Location",
+    "type": "Vehicle Type",
+    "capacity": "Capacity",
+    "documents": "Documents",
+    "statusOptions": {
+      "AVAILABLE": "Available",
+      "IN_USE": "In Use",
+      "MAINTENANCE": "Maintenance",
+      "INACTIVE": "Inactive"
+    },
+    "docType": "Document Type",
+    "docNumber": "Document Number",
+    "issueDate": "Issue Date",
+    "expiryDate": "Expiry Date",
+    "fileUrl": "File URL",
+    "regDoc": "Registration",
+    "insuranceDoc": "Insurance",
+    "inspectionDoc": "Inspection",
+    "lat": "Latitude",
+    "lng": "Longitude",
+    "vehicleType": "Vehicle Type"
+  },
+  "drivers": {
+    "title": "Driver List",
+    "partner": "Partner",
+    "fullName": "Full Name",
+    "licenseNumber": "License Number",
+    "licenseClass": "License Class",
+    "statusOptions": {
+      "AVAILABLE": "Available",
+      "ON_TRIP": "On Trip",
+      "INACTIVE": "Inactive"
+    },
+    "driverCode": "Driver Code",
+    "docType": "Document Type",
+    "docNumber": "Document Number",
+    "issueDate": "Issue Date",
+    "expiryDate": "Expiry Date",
+    "driverId": "Driver ID"
+  },
+  "dispatch": {
+    "title": "Dispatch Requests",
+    "customer": "Customer",
+    "pickupLocation": "Pickup Location",
+    "dropoffLocation": "Drop-off Location",
+    "pickupTime": "Pickup Time",
+    "dropoffTime": "Drop-off Time",
+    "goodsDescription": "Goods Description",
+    "weight": "Weight (kg)",
+    "volume": "Volume (m3)",
+    "statusOptions": {
+      "DRAFT": "Draft",
+      "REQUESTED": "Requested",
+      "ASSIGNED": "Assigned",
+      "IN_PROGRESS": "In Progress",
+      "COMPLETED": "Completed",
+      "CANCELLED": "Cancelled"
+    },
+    "requestCode": "Request Code",
+    "requestTime": "Request Time",
+    "customerId": "Customer ID",
+    "vehicleType": "Vehicle Type",
+    "capacity": "Capacity"
+  },
+  "dispatchAssignments": {
+    "title": "Dispatch Assignments",
+    "request": "Dispatch Request",
+    "vehicle": "Vehicle",
+    "driver": "Driver",
+    "assignedAt": "Assigned At",
+    "assignedBy": "Assigned By",
+    "type": "Type",
+    "internalVehicle": "Internal Vehicle ID",
+    "internalDriver": "Internal Driver ID",
+    "partner": "Partner ID",
+    "externalVehicle": "Partner Vehicle ID",
+    "externalDriver": "Partner Driver ID",
+    "internal": "Internal",
+    "external": "External Partner",
+    "new": "Newly Assigned",
+    "running": "Running"
+  },
+  "trips": {
+    "title": "Trip List",
+    "assignment": "Assignment",
+    "startTime": "Start Time",
+    "endTime": "End Time",
+    "startOdometer": "Start Odometer",
+    "endOdometer": "End Odometer",
+    "viewRoute": "View Route",
+    "statusOptions": {
+      "PLANNED": "Planned",
+      "EN_ROUTE": "En Route",
+      "COMPLETED": "Completed",
+      "CANCELLED": "Cancelled"
+    },
+    "plannedStart": "Planned Start",
+    "plannedEnd": "Planned End",
+    "actualStart": "Actual Start",
+    "actualEnd": "Actual End",
+    "distance": "Distance (km)",
+    "slaRisk": "SLA Risk",
+    "incidentType": "Incident Type",
+    "severity": "Severity",
+    "description": "Description",
+    "reportedAt": "Reported At",
+    "tripId": "Trip ID"
+  },
+  "cost": {
+    "title": "Fuel Logs",
+    "vehicle": "Vehicle",
+    "driver": "Driver",
+    "trip": "Trip",
+    "fuelType": "Fuel Type",
+    "volumeLiters": "Volume (Liters)",
+    "unitPrice": "Unit Price",
+    "totalCost": "Total Cost",
+    "location": "Location",
+    "filledAt": "Filled At",
+    "currentOdometer": "Current Odometer",
+    "vehicleId": "Vehicle ID",
+    "driverId": "Driver ID",
+    "tripId": "Trip ID",
+    "gasoline": "Gasoline",
+    "diesel": "Diesel"
+  },
+  "maintenance": {
+    "title": "Maintenance Orders",
+    "vehicle": "Vehicle",
+    "orderNumber": "Order Number",
+    "maintenanceType": "Maintenance Type",
+    "description": "Description",
+    "cost": "Cost",
+    "date": "Date",
+    "statusOptions": {
+      "SCHEDULED": "Scheduled",
+      "IN_PROGRESS": "In Progress",
+      "COMPLETED": "Completed",
+      "CANCELLED": "Cancelled"
+    },
+    "completedDate": "Completed Date",
+    "requester": "Requester"
+  },
+  "routes": {
+    "partnerDrivers": "Partner Drivers",
+    "partnerVehicles": "Partner Vehicles"
+  }
+}

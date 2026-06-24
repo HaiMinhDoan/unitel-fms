@@ -44,7 +44,7 @@ public class CustomerController {
 
     @PatchMapping("/customer/update-partial/{id}")
     @RequireAuth(roles = {RoleType.DISPATCHER, RoleType.OPS_MANAGER}, rolesLogic = RequireAuth.LogicType.OR, inWorkspace = true)
-    public ResponseData<CustomerResponse> updatePartial(@PathVariable UUID id, @RequestBody Map<String, Object> updates) {
+    public ResponseData<CustomerResponse> updatePartial(@PathVariable UUID id, @Valid @RequestBody Map<String, Object> updates) {
         Customer updated = customerService.updateFromMap(id, updates);
         return ResponseData.<CustomerResponse>builder().status(200).messageCode("SUCCESS").data(customerMapper.toResponse(updated)).build();
     }
@@ -76,7 +76,7 @@ public class CustomerController {
 
     @PostMapping("/customers/filter")
     @RequireAuth(roles = {RoleType.ALL}, inWorkspace = true)
-    public ResponseData<Page<CustomerResponse>> filter(@RequestBody BaseFilterRequest filter) {
+    public ResponseData<Page<CustomerResponse>> filter(@Valid @RequestBody BaseFilterRequest filter) {
         Page<CustomerResponse> page = customerService.filter(filter).map(customerMapper::toResponse);
         return ResponseData.<Page<CustomerResponse>>builder().status(200).messageCode("SUCCESS").data(page).build();
     }

@@ -17,7 +17,7 @@ import java.util.UUID;
 @Builder
 @Entity
 @Table(name = "driver_documents")
-public class DriverDocument {
+public class DriverDocument{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
@@ -47,17 +47,20 @@ public class DriverDocument {
     @NotNull
     @ColumnDefault("'valid'")
     @Column(name = "status", nullable = false, length = 50)
-    private String status;
+    @Builder.Default
+    private String status = "valid";
 
     @NotNull
     @ColumnDefault("now()")
     @Column(name = "created_at", nullable = false)
-    private OffsetDateTime createdAt;
+    @Builder.Default
+    private OffsetDateTime createdAt = OffsetDateTime.now();
 
     @NotNull
     @ColumnDefault("now()")
     @Column(name = "updated_at", nullable = false)
-    private OffsetDateTime updatedAt;
+    @Builder.Default
+    private OffsetDateTime updatedAt = OffsetDateTime.now();
 
 
 }

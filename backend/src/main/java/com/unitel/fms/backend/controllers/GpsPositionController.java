@@ -21,7 +21,7 @@ public class GpsPositionController {
 
     @PostMapping("/ingest")
     @RequireAuth(roles = {"DRIVER", "SYSTEM_ADMIN", "OPS_MANAGER"})
-    public ResponseEntity<String> ingest(@RequestBody @Valid GpsIngestRequest request) {
+    public ResponseEntity<String> ingest(@Valid @RequestBody GpsIngestRequest request) {
         gpsPositionService.ingest(request);
         return ResponseEntity.accepted().body("Đã tiếp nhận");
     }

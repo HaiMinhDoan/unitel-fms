@@ -5,6 +5,7 @@
     "baseUrl": ".",
     "declaration": false,
     "types": ["vite/client"],
+    "jsx": "preserve",
     "paths": {
       "@/*": ["src/*"],
       "#/*": ["types/*"]

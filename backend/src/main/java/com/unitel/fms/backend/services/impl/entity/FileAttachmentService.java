@@ -1,12 +1,18 @@
 package com.unitel.fms.backend.services.impl.entity;
 
 import com.unitel.fms.backend.entities.FileAttachment;
+import com.unitel.fms.backend.exceptions.customize.CommonException;
+import com.unitel.fms.backend.exceptions.customize.NotFoundException;
 import com.unitel.fms.backend.repositories.FileAttachmentRepository;
 import com.unitel.fms.backend.services.impl.BaseServiceImpl;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -28,7 +34,7 @@ public class FileAttachmentService extends BaseServiceImpl<FileAttachment, UUID>
 
     @Autowired
     private com.unitel.fms.backend.services.MinioService minioService;
-    
+
     @Autowired
     private com.unitel.fms.backend.services.impl.entity.AuditLogService auditLogService;
 
@@ -36,7 +42,7 @@ public class FileAttachmentService extends BaseServiceImpl<FileAttachment, UUID>
         try {
             String objectName = attachmentType + "/" + referenceId + "/" + UUID.randomUUID() + "_" + file.getOriginalFilename();
             String objectKey = minioService.upload(file, objectName);
-            
+
             FileAttachment attachment = new FileAttachment();
             attachment.setBucket(minioService.getBucketName());
             attachment.setObjectKey(objectKey);
@@ -47,7 +53,7 @@ public class FileAttachmentService extends BaseServiceImpl<FileAttachment, UUID>
             attachment.setEntityType(attachmentType);
             attachment.setEntityId(referenceId);
             attachment.setStatus("active");
-            
+
             com.unitel.fms.backend.dtos.AuthInfo auth = com.unitel.fms.backend.contexts.SecurityContextHolder.getAuthInfo();
             if (auth != null && auth.getId() != null) {
                 attachment.setUploadedBy(auth.getId());
@@ -55,15 +61,18 @@ public class FileAttachmentService extends BaseServiceImpl<FileAttachment, UUID>
 
             FileAttachment saved = super.create(attachment);
             auditLogService.record("UPLOAD", "FileAttachment", saved.getId(), null, saved);
-            
+
             return saved;
         } catch (Exception e) {
             throw new RuntimeException("Failed to upload file to MinIO", e);
         }
     }
 
+    @Transactional
     public void deleteAttachment(UUID id) {
-        FileAttachment attachment = getOne(id).orElseThrow();
+        FileAttachment attachment = getOne(id).orElseThrow(
+                EntityNotFoundException::new
+        );
         try {
             minioService.delete(attachment.getBucket(), attachment.getObjectKey());
             super.delete(id);
@@ -73,11 +82,28 @@ public class FileAttachmentService extends BaseServiceImpl<FileAttachment, UUID>
         }
     }
 
-    @org.springframework.transaction.annotation.Transactional
+    @Transactional
     public void deleteAllByEntity(String entityType, UUID entityId) {
-        java.util.List<FileAttachment> attachments = fileAttachmentRepository.findByEntityTypeAndEntityId(entityType, entityId);
+        List<FileAttachment> attachments = fileAttachmentRepository.findByEntityTypeAndEntityId(entityType + "%", entityId);
         for (FileAttachment attachment : attachments) {
-            deleteAttachment(attachment.getId());
+            String typeString = attachment.getEntityType();
+            String[] typePies = typeString.split("/");
+            if (typePies.length > 0) {
+                if (typePies[0].equals(entityType)) {
+                    deleteAttachment(attachment.getId());
+                }
+            }
         }
+    }
+
+    public List<FileAttachment> getByEntity(String entityType, UUID entityId) {
+        return fileAttachmentRepository.findByEntityTypeAndEntityId(entityType + "%", entityId)
+                .stream()
+                .filter(f -> {
+                    String type = f.getEntityType();
+                    if (type == null || type.isBlank()) return false;
+                    return type.split("/")[0].equals(entityType);
+                })
+                .toList();
     }
 }

@@ -22,7 +22,7 @@
   import { onMountedOrActivated } from '@vben/hooks';
   import { getTheme } from './getTheme';
 
-  type Lang = 'zh_CN' | 'en_US' | 'ja_JP' | 'ko_KR' | undefined;
+  type Lang = 'en_US' | 'vi_VN' | 'lo_LA' | 'ja_JP' | 'ko_KR' | undefined;
 
   defineOptions({ inheritAttrs: false });
 
@@ -71,7 +71,7 @@
     },
   );
 
-  const getCurrentLang = computed((): 'zh_CN' | 'en_US' | 'ja_JP' | 'ko_KR' => {
+  const getCurrentLang = computed((): 'en_US' | 'ja_JP' | 'ko_KR' => {
     let lang: Lang;
     switch (unref(getLocale)) {
       case 'en':
@@ -84,7 +84,7 @@
         lang = 'ko_KR';
         break;
       default:
-        lang = 'zh_CN';
+        lang = 'en_US';
     }
     return lang;
   });

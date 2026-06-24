@@ -12,6 +12,7 @@ import com.unitel.fms.backend.constants.enums.RoleType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.util.List;
 import java.util.Map;
@@ -30,7 +31,7 @@ public class VehicleTypeController {
 
     @PostMapping("/vehicle-type/create")
     @RequireAuth(roles = {RoleType.SYSTEM_ADMIN})
-    public ResponseData<VehicleTypeResponse> create(@RequestBody VehicleTypeRequest request) {
+    public ResponseData<VehicleTypeResponse> create(@Valid @RequestBody VehicleTypeRequest request) {
         VehicleType entity = vehicleTypeMapper.toEntity(request);
         VehicleType saved = vehicleTypeService.create(entity);
         return ResponseData.<VehicleTypeResponse>builder().status(200).messageCode("SUCCESS").data(vehicleTypeMapper.toResponse(saved)).build();
@@ -38,7 +39,7 @@ public class VehicleTypeController {
 
     @PutMapping("/vehicle-type/update/{id}")
     @RequireAuth(roles = {RoleType.SYSTEM_ADMIN})
-    public ResponseData<VehicleTypeResponse> update(@PathVariable UUID id, @RequestBody VehicleTypeRequest request) {
+    public ResponseData<VehicleTypeResponse> update(@PathVariable UUID id, @Valid @RequestBody VehicleTypeRequest request) {
         VehicleType entity = vehicleTypeMapper.toEntity(request);
         VehicleType updated = vehicleTypeService.update(id, entity);
         return ResponseData.<VehicleTypeResponse>builder().status(200).messageCode("SUCCESS").data(vehicleTypeMapper.toResponse(updated)).build();
@@ -46,7 +47,7 @@ public class VehicleTypeController {
 
     @PatchMapping("/vehicle-type/update-partial/{id}")
     @RequireAuth(roles = {RoleType.SYSTEM_ADMIN})
-    public ResponseData<VehicleTypeResponse> updatePartial(@PathVariable UUID id, @RequestBody Map<String, Object> updates) {
+    public ResponseData<VehicleTypeResponse> updatePartial(@PathVariable UUID id, @Valid @RequestBody Map<String, Object> updates) {
         VehicleType updated = vehicleTypeService.updateFromMap(id, updates);
         return ResponseData.<VehicleTypeResponse>builder().status(200).messageCode("SUCCESS").data(vehicleTypeMapper.toResponse(updated)).build();
     }
@@ -67,7 +68,7 @@ public class VehicleTypeController {
 
     @PostMapping("/vehicle-types/filter")
     @RequireAuth(roles = {RoleType.ALL})
-    public ResponseData<Page<VehicleTypeResponse>> filter(@RequestBody BaseFilterRequest filter) {
+    public ResponseData<Page<VehicleTypeResponse>> filter(@Valid @RequestBody BaseFilterRequest filter) {
         Page<VehicleTypeResponse> page = vehicleTypeService.filter(filter).map(vehicleTypeMapper::toResponse);
         return ResponseData.<Page<VehicleTypeResponse>>builder().status(200).messageCode("SUCCESS").data(page).build();
     }

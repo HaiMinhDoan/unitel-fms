@@ -26,4 +26,5 @@ public class TripIncidentResponse {
     OffsetDateTime resolvedAt;
     OffsetDateTime createdAt;
     OffsetDateTime updatedAt;
+    java.util.List<FileAttachmentResponse> attachments;
 }

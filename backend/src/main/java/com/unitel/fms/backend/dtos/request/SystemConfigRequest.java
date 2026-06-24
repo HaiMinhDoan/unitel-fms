@@ -1,6 +1,7 @@
 package com.unitel.fms.backend.dtos.request;
 
 import lombok.Data;
+import jakarta.validation.constraints.NotNull;
 import java.util.Map;
 
 @Data

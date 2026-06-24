@@ -14,7 +14,8 @@ import java.util.UUID;
 @AllArgsConstructor
 public class PartnerPerformanceRequest {
     @NotNull(message = "partner_id is required")
-    private UUID partnerId;
+    @NotNull(message = "partnerId is required")
+    private java.util.UUID partnerId;
 
     @NotBlank(message = "period_month is required")
     @Size(min = 7, max = 7, message = "period_month must be YYYY-MM")

@@ -13,7 +13,8 @@ import java.util.UUID;
 @AllArgsConstructor
 public class PartnerDriverRequest {
     @NotNull(message = "partner_id is required")
-    private UUID partnerId;
+    @NotNull(message = "partnerId is required")
+    private java.util.UUID partnerId;
 
     @NotBlank(message = "full_name is required")
     @Size(max = 255)

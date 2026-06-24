@@ -10,6 +10,7 @@ public interface PartnerVehicleMapper {
 
     @Mapping(target = "partnerId", source = "partner.id")
     @Mapping(target = "vehicleTypeId", source = "vehicleType.id")
+    @Mapping(target = "vehicleTypeName", source = "vehicleType.nameEn")
     PartnerVehicleResponse toResponse(PartnerVehicle entity);
 
     @Mapping(target = "partner", ignore = true)

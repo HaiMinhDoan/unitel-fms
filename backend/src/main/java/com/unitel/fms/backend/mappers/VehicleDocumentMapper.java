@@ -8,16 +8,30 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 
-@Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-public interface VehicleDocumentMapper {
+@Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE, nullValueCheckStrategy = org.mapstruct.NullValueCheckStrategy.ALWAYS)
+public abstract class VehicleDocumentMapper {
+
+    @org.springframework.beans.factory.annotation.Autowired
+    protected com.unitel.fms.backend.services.impl.entity.FileAttachmentService fileAttachmentService;
+    
+    @org.springframework.beans.factory.annotation.Autowired
+    protected FileAttachmentMapper fileAttachmentMapper;
 
     @Mapping(target = "vehicle.id", source = "vehicleId")
-    VehicleDocument toEntity(VehicleDocumentRequest request);
+    public abstract VehicleDocument toEntity(VehicleDocumentRequest request);
 
     @Mapping(target = "vehicleId", source = "vehicle.id")
-    VehicleDocumentResponse toResponse(VehicleDocument entity);
+    public abstract VehicleDocumentResponse toResponse(VehicleDocument entity);
+
+    @org.mapstruct.AfterMapping
+    protected void linkAttachments(VehicleDocument entity, @MappingTarget VehicleDocumentResponse response) {
+        if (entity.getId() != null && fileAttachmentService != null && fileAttachmentMapper != null) {
+            java.util.List<com.unitel.fms.backend.entities.FileAttachment> files = fileAttachmentService.getByEntity("vehicle_documents", entity.getId());
+            response.setAttachments(files.stream().map(fileAttachmentMapper::toResponse).collect(java.util.stream.Collectors.toList()));
+        }
+    }
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "vehicle.id", source = "vehicleId")
-    void updateEntity(VehicleDocumentRequest request, @MappingTarget VehicleDocument entity);
+    public abstract void updateEntity(VehicleDocumentRequest request, @MappingTarget VehicleDocument entity);
 }

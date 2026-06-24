@@ -51,12 +51,12 @@ const transform: AxiosTransform = {
       throw new Error(t('sys.api.apiRequestFailed'));
     }
     //  这里 code，result，message为 后台统一的字段，需要在 types.ts内修改为项目自己的接口返回格式
-    const { code, result, message } = data;
+    const { status, messageCode, data: resultData, error } = data as any;
 
     // 这里逻辑可以根据项目进行修改
-    const hasSuccess = data && Reflect.has(data, 'code') && code === ResultEnum.SUCCESS;
+    const hasSuccess = data && Reflect.has(data, 'status') && status === 200;
     if (hasSuccess) {
-      let successMsg = message;
+      let successMsg = messageCode ? t(`sys.api.${messageCode}`) : '';
 
       if (isNull(successMsg) || isUndefined(successMsg) || isEmpty(successMsg)) {
         successMsg = t(`sys.api.operationSuccess`);
@@ -64,25 +64,26 @@ const transform: AxiosTransform = {
 
       if (options.successMessageMode === 'modal') {
         createSuccessModal({ title: t('sys.api.successTip'), content: successMsg });
-      } else if (options.successMessageMode === 'message') {
         createMessage.success(successMsg);
       }
-      return result;
+      return resultData;
     }
 
     // 在此处根据自己项目的实际情况对不同的code执行不同的操作
     // 如果不希望中断当前请求，请return数据，否则直接抛出异常即可
     let timeoutMsg = '';
-    switch (code) {
-      case ResultEnum.TIMEOUT:
-        timeoutMsg = t('sys.api.timeoutMessage');
+    switch (status) {
+      case 401:
+        timeoutMsg = t('sys.api.errMsg401');
         const userStore = useUserStoreWithOut();
         // 被动登出，带redirect地址
         userStore.logout(false);
         break;
       default:
-        if (message) {
-          timeoutMsg = message;
+        if (error) {
+          timeoutMsg = error;
+        } else if (messageCode) {
+          timeoutMsg = t(`sys.api.${messageCode}`);
         }
     }
 
@@ -162,6 +163,8 @@ const transform: AxiosTransform = {
         ? `${options.authenticationScheme} ${token}`
         : token;
     }
+    // Set language header for backend
+    (config as Recordable).headers['lang'] = 'vi';
     return config;
   },
 

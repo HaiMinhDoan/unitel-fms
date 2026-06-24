@@ -5,6 +5,7 @@ import com.unitel.fms.backend.repositories.UserRepository;
 import com.unitel.fms.backend.services.impl.BaseServiceImpl;
 import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -17,7 +18,8 @@ public class UserService extends BaseServiceImpl<User, UUID> {
     @Autowired
     private EntityManager entityManager;
 
-    private final org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder passwordEncoder = new org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder();
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public UserService(UserRepository repository) {
         super(repository);

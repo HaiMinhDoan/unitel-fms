@@ -10,6 +10,7 @@ import com.unitel.fms.backend.dtos.request.UserRoleRequest;
 import com.unitel.fms.backend.dtos.response.UserRoleResponse;
 import com.unitel.fms.backend.mappers.UserRoleMapper;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.util.UUID;
 
@@ -25,7 +26,7 @@ public class UserRoleController {
 
     @PostMapping("/user-role/create")
     @RequireAuth(roles = {RoleType.SYSTEM_ADMIN, RoleType.OPS_MANAGER}, rolesLogic = RequireAuth.LogicType.OR)
-    public ResponseData<UserRoleResponse> create(@RequestBody UserRoleRequest request) {
+    public ResponseData<UserRoleResponse> create(@Valid @RequestBody UserRoleRequest request) {
         UserRole entity = userRoleMapper.toEntity(request);
         UserRole saved = userRoleService.create(entity);
         return ResponseData.<UserRoleResponse>builder().status(200).messageCode("SUCCESS").data(userRoleMapper.toResponse(saved)).build();

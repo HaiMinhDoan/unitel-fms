@@ -1,17 +1,19 @@
 package com.unitel.fms.backend.controllers;
 
+import com.unitel.fms.backend.constants.enums.EntityType;
+import com.unitel.fms.backend.constants.enums.RoleType;
+import com.unitel.fms.backend.customizeanotations.RequireAuth;
 import com.unitel.fms.backend.dtos.request.BaseFilterRequest;
 import com.unitel.fms.backend.dtos.request.VehicleDocumentRequest;
 import com.unitel.fms.backend.dtos.response.ResponseData;
 import com.unitel.fms.backend.dtos.response.VehicleDocumentResponse;
 import com.unitel.fms.backend.entities.VehicleDocument;
-import com.unitel.fms.backend.customizeanotations.RequireAuth;
 import com.unitel.fms.backend.mappers.VehicleDocumentMapper;
 import com.unitel.fms.backend.services.impl.entity.VehicleDocumentService;
-import com.unitel.fms.backend.constants.enums.RoleType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.util.List;
 import java.util.Map;
@@ -27,25 +29,43 @@ public class VehicleDocumentController {
     @Autowired
     private VehicleDocumentMapper vehicleDocumentMapper;
 
-    @PostMapping("/vehicle-document/create")
+    @Autowired
+    private com.unitel.fms.backend.services.impl.entity.FileAttachmentService fileAttachmentService;
+
+    @PostMapping(value = "/vehicle-document/create", consumes = org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE)
     @RequireAuth(roles = {RoleType.SYSTEM_ADMIN, RoleType.FLEET_MANAGER}, rolesLogic = RequireAuth.LogicType.OR, inWorkspace = true)
-    public ResponseData<VehicleDocumentResponse> create(@RequestBody VehicleDocumentRequest request) {
+    public ResponseData<VehicleDocumentResponse> create(@Valid @ModelAttribute VehicleDocumentRequest request) {
+        System.out.println("==================" + request.toString());
         VehicleDocument entity = vehicleDocumentMapper.toEntity(request);
         VehicleDocument saved = vehicleDocumentService.create(entity);
+
+        if (request.getFiles() != null && !request.getFiles().isEmpty()) {
+            for (org.springframework.web.multipart.MultipartFile file : request.getFiles()) {
+                fileAttachmentService.upload(file, EntityType.VEHICLE_DOCUMENT, saved.getId());
+            }
+        }
+
         return ResponseData.<VehicleDocumentResponse>builder().status(200).messageCode("SUCCESS").data(vehicleDocumentMapper.toResponse(saved)).build();
     }
 
-    @PutMapping("/vehicle-document/update/{id}")
+    @PutMapping(value = "/vehicle-document/update/{id}", consumes = org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE)
     @RequireAuth(roles = {RoleType.SYSTEM_ADMIN, RoleType.FLEET_MANAGER}, rolesLogic = RequireAuth.LogicType.OR, inWorkspace = true)
-    public ResponseData<VehicleDocumentResponse> update(@PathVariable UUID id, @RequestBody VehicleDocumentRequest request) {
+    public ResponseData<VehicleDocumentResponse> update(@PathVariable UUID id, @Valid @ModelAttribute VehicleDocumentRequest request) {
         VehicleDocument entity = vehicleDocumentMapper.toEntity(request);
         VehicleDocument updated = vehicleDocumentService.update(id, entity);
+
+        if (request.getFiles() != null && !request.getFiles().isEmpty()) {
+            for (org.springframework.web.multipart.MultipartFile file : request.getFiles()) {
+                fileAttachmentService.upload(file, EntityType.VEHICLE_DOCUMENT, updated.getId());
+            }
+        }
+
         return ResponseData.<VehicleDocumentResponse>builder().status(200).messageCode("SUCCESS").data(vehicleDocumentMapper.toResponse(updated)).build();
     }
 
     @PatchMapping("/vehicle-document/update-partial/{id}")
     @RequireAuth(roles = {RoleType.SYSTEM_ADMIN, RoleType.FLEET_MANAGER}, rolesLogic = RequireAuth.LogicType.OR, inWorkspace = true)
-    public ResponseData<VehicleDocumentResponse> updatePartial(@PathVariable UUID id, @RequestBody Map<String, Object> updates) {
+    public ResponseData<VehicleDocumentResponse> updatePartial(@PathVariable UUID id, @Valid @RequestBody Map<String, Object> updates) {
         VehicleDocument updated = vehicleDocumentService.updateFromMap(id, updates);
         return ResponseData.<VehicleDocumentResponse>builder().status(200).messageCode("SUCCESS").data(vehicleDocumentMapper.toResponse(updated)).build();
     }
@@ -59,7 +79,7 @@ public class VehicleDocumentController {
 
     @PostMapping("/vehicle-documents/filter")
     @RequireAuth(roles = {RoleType.ALL}, inWorkspace = true)
-    public ResponseData<Page<VehicleDocumentResponse>> filter(@RequestBody BaseFilterRequest filter) {
+    public ResponseData<Page<VehicleDocumentResponse>> filter(@Valid @RequestBody BaseFilterRequest filter) {
         Page<VehicleDocumentResponse> page = vehicleDocumentService.filter(filter).map(vehicleDocumentMapper::toResponse);
         return ResponseData.<Page<VehicleDocumentResponse>>builder().status(200).messageCode("SUCCESS").data(page).build();
     }

@@ -40,7 +40,7 @@ public class RequireAuthOperationCustomizer implements OperationCustomizer {
                 description.append(" | `").append(requireAuth.rolesLogic()).append("` |\n");
             }
 
-            // Org
+            // Org and Lang
             if(requireAuth.inWorkspace()){
                 description.append("| **Org Context** | Required | - |\n");
                 Parameter orgIdParam = new Parameter()
@@ -50,7 +50,15 @@ public class RequireAuthOperationCustomizer implements OperationCustomizer {
                         .required(true)
                         .schema(new StringSchema())
                         .example("550e8400-e29b-41d4-a716-446655440000");
+                Parameter langParam = new Parameter()
+                        .in("header")
+                        .name("lang")
+                        .description("Language (en)")
+                        .required(false)
+                        .schema(new StringSchema())
+                        .example("vi");
                 operation.addParametersItem(orgIdParam);
+                operation.addParametersItem(langParam);
             }
             description.append("\n");
             if(roles.length > 0){

@@ -7,10 +7,10 @@ export const LOCALE_KEY = 'LOCALE__';
 export const USER_INFO_KEY = 'USER__INFO__';
 
 // role info key
-export const ROLES_KEY = 'ROLES__KEY__';
+export const ROLES_KEY = 'ROLES__KEY__V2';
 
 // project config key
-export const PROJ_CFG_KEY = 'PROJ__CFG__KEY__';
+export const PROJ_CFG_KEY = 'PROJ__CFG__KEY__V2';
 export const API_ADDRESS = 'API_ADDRESS__';
 
 // lock info

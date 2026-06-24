@@ -17,6 +17,7 @@ public interface VehicleMapper {
 
     @Mapping(target = "orgId", source = "org.id")
     @Mapping(target = "vehicleTypeId", source = "vehicleType.id")
+    @Mapping(target = "vehicleTypeName", source = "vehicleType.name")
     VehicleResponse toResponse(Vehicle entity);
 
     @Mapping(target = "id", ignore = true)

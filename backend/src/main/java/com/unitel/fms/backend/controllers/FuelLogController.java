@@ -1,5 +1,6 @@
 package com.unitel.fms.backend.controllers;
 
+import com.unitel.fms.backend.constants.enums.EntityType;
 import com.unitel.fms.backend.customizeanotations.RequireAuth;
 import com.unitel.fms.backend.dtos.request.FuelLogRequest;
 import com.unitel.fms.backend.dtos.response.FuelLogResponse;
@@ -25,11 +26,21 @@ public class FuelLogController {
     @Autowired
     private FuelLogMapper fuelLogMapper;
 
+    @Autowired
+    private com.unitel.fms.backend.services.impl.entity.FileAttachmentService fileAttachmentService;
+
     @RequireAuth(roles = {"DRIVER", "DISPATCHER", "FLEET_MANAGER"}, inWorkspace = true)
-    @PostMapping
-    public ResponseEntity<ResponseData<FuelLogResponse>> create(@Valid @RequestBody FuelLogRequest request) {
+    @PostMapping(consumes = org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ResponseData<FuelLogResponse>> create(@Valid @ModelAttribute FuelLogRequest request) {
         FuelLog entity = fuelLogMapper.toEntity(request);
         FuelLog saved = fuelLogService.create(entity);
+        
+        if (request.getFiles() != null && !request.getFiles().isEmpty()) {
+            for (org.springframework.web.multipart.MultipartFile file : request.getFiles()) {
+                fileAttachmentService.upload(file, EntityType.FUEL_LOG, saved.getId());
+            }
+        }
+        
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseData.<FuelLogResponse>builder()
                 .status(201).messageCode("CREATED").data(fuelLogMapper.toResponse(saved)).build());
     }
@@ -40,5 +51,13 @@ public class FuelLogController {
         FuelLog entity = fuelLogService.getOne(id).orElseThrow();
         return ResponseEntity.ok(ResponseData.<FuelLogResponse>builder()
                 .status(200).messageCode("SUCCESS").data(fuelLogMapper.toResponse(entity)).build());
+    }
+
+    @RequireAuth(roles = {"OPS_MANAGER", "DISPATCHER", "FLEET_MANAGER", "SYSTEM_ADMIN", "DRIVER"}, rolesLogic = RequireAuth.LogicType.OR, inWorkspace = true)
+    @PostMapping("/filter")
+    public ResponseEntity<ResponseData<org.springframework.data.domain.Page<FuelLogResponse>>> filter(@Valid @RequestBody com.unitel.fms.backend.dtos.request.BaseFilterRequest filterRequest) {
+        org.springframework.data.domain.Page<FuelLogResponse> page = fuelLogService.filter(filterRequest).map(fuelLogMapper::toResponse);
+        return ResponseEntity.ok(ResponseData.<org.springframework.data.domain.Page<FuelLogResponse>>builder()
+                .status(200).messageCode("SUCCESS").data(page).build());
     }
 }

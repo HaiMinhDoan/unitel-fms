@@ -12,5 +12,5 @@ import java.util.UUID;
 
 @Repository
 public interface GpsPositionRepository extends JpaRepository<GpsPosition, GpsPositionId>, JpaSpecificationExecutor<GpsPosition> {
-    List<GpsPosition> findById_TripIdOrderById_RecordedAtAsc(UUID tripId);
+    List<GpsPosition> findByTrip_IdOrderByRecordedAtAsc(UUID tripId);
 }

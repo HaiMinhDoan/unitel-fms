@@ -14,13 +14,16 @@ import java.util.UUID;
 @AllArgsConstructor
 public class PartnerVehicleRequest {
     @NotNull(message = "partner_id is required")
-    private UUID partnerId;
+    @NotNull(message = "partnerId is required")
+    private java.util.UUID partnerId;
 
     @NotNull(message = "vehicle_type_id is required")
-    private UUID vehicleTypeId;
+    @NotNull(message = "vehicleTypeId is required")
+    private java.util.UUID vehicleTypeId;
 
     @NotBlank(message = "plate_number is required")
     @Size(max = 30)
+    @jakarta.validation.constraints.NotBlank(message = "plateNumber is required")
     private String plateNumber;
 
     private BigDecimal loadCapacityTon;

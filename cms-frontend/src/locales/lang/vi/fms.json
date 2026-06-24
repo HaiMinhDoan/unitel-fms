@@ -1,0 +1,203 @@
+{
+  "common": {
+    "addNew": "Thêm mới",
+    "action": "Thao tác",
+    "status": "Trạng thái",
+    "createdAt": "Ngày tạo",
+    "updatedAt": "Ngày cập nhật",
+    "deleteConfirm": "Bạn có chắc chắn muốn xóa?",
+    "id": "ID",
+    "active": "Hoạt động",
+    "inactive": "Bị khóa",
+    "phone": "Số điện thoại",
+    "email": "Email",
+    "address": "Địa chỉ",
+    "name": "Tên",
+    "code": "Mã",
+    "viewMap": "Xem bản đồ",
+    "note": "Ghi chú",
+    "publicUrl": "Đường dẫn công khai"
+  },
+  "users": {
+    "title": "Danh sách Tài khoản",
+    "username": "Tên đăng nhập",
+    "lastLoginAt": "Đăng nhập cuối"
+  },
+  "organizations": {
+    "title": "Danh sách Tổ chức",
+    "parent": "Tổ chức cha",
+    "level": "Cấp độ",
+    "orgCode": "Mã phòng ban",
+    "orgName": "Tên phòng ban",
+    "description": "Mô tả"
+  },
+  "customers": {
+    "title": "Danh sách Khách hàng",
+    "code": "Mã khách hàng(Mã số thuế)",
+    "contactPerson": "Người liên hệ",
+    "contactPhone": "SĐT liên hệ",
+    "name": "Tên Khách hàng"
+  },
+  "partners": {
+    "title": "Danh sách Đối tác",
+    "code": "Mã đối tác(Mã số thuế)",
+    "contactPerson": "Người liên hệ",
+    "contactPhone": "SĐT liên hệ",
+    "partnerCode": "Mã đối tác",
+    "partnerName": "Tên đối tác",
+    "active": "Đang hợp tác",
+    "inactive": "Ngừng hợp tác"
+  },
+  "vehicles": {
+    "title": "Danh sách Phương tiện",
+    "partner": "Đối tác",
+    "licensePlate": "Biển số",
+    "brand": "Hãng xe",
+    "location": "Vị trí hiện tại",
+    "type": "Loại xe",
+    "capacity": "Sức chứa (Tấn/Khối)",
+    "documents": "Giấy tờ",
+    "statusOptions": {
+      "AVAILABLE": "Sẵn sàng",
+      "IN_USE": "Đang sử dụng",
+      "MAINTENANCE": "Bảo trì",
+      "INACTIVE": "Ngưng hoạt động"
+    },
+    "docType": "Loại giấy tờ",
+    "docNumber": "Số giấy tờ",
+    "issueDate": "Ngày cấp",
+    "expiryDate": "Ngày hết hạn",
+    "fileUrl": "Link file",
+    "regDoc": "Đăng ký xe",
+    "insuranceDoc": "Bảo hiểm",
+    "inspectionDoc": "Đăng kiểm",
+    "lat": "Vĩ độ",
+    "lng": "Kinh độ",
+    "vehicleType": "Loại phương tiện"
+  },
+  "drivers": {
+    "title": "Danh sách Tài xế",
+    "partner": "Đối tác",
+    "fullName": "Họ và tên",
+    "licenseNumber": "Số GPLX",
+    "licenseClass": "Hạng GPLX",
+    "statusOptions": {
+      "AVAILABLE": "Sẵn sàng",
+      "ON_TRIP": "Đang đi chuyến",
+      "INACTIVE": "Ngưng hoạt động"
+    },
+    "driverCode": "Mã tài xế",
+    "docType": "Loại tài liệu",
+    "docNumber": "Số tài liệu",
+    "issueDate": "Ngày cấp",
+    "expiryDate": "Ngày hết hạn",
+    "driverId": "Mã tài xế"
+  },
+  "dispatch": {
+    "title": "Danh sách Yêu cầu Điều phối",
+    "customer": "Khách hàng",
+    "pickupLocation": "Điểm lấy hàng",
+    "dropoffLocation": "Điểm giao hàng",
+    "pickupTime": "Thời gian lấy hàng",
+    "dropoffTime": "Thời gian giao hàng",
+    "goodsDescription": "Mô tả hàng hóa",
+    "weight": "Trọng lượng (kg)",
+    "volume": "Thể tích (m3)",
+    "statusOptions": {
+      "DRAFT": "Nháp",
+      "REQUESTED": "Đã yêu cầu",
+      "ASSIGNED": "Đã phân công",
+      "IN_PROGRESS": "Đang thực hiện",
+      "COMPLETED": "Hoàn thành",
+      "CANCELLED": "Đã hủy"
+    },
+    "requestCode": "Mã yêu cầu",
+    "requestTime": "Thời gian yêu cầu",
+    "customerId": "ID Khách hàng",
+    "vehicleType": "Loại xe yêu cầu",
+    "capacity": "Sức chứa yêu cầu"
+  },
+  "dispatchAssignments": {
+    "title": "Danh sách Phân công Điều phối",
+    "request": "Yêu cầu ĐP",
+    "vehicle": "Phương tiện",
+    "driver": "Tài xế",
+    "assignedAt": "Thời gian phân công",
+    "assignedBy": "Người phân công",
+    "type": "Hình thức",
+    "internalVehicle": "Mã Xe (Nội bộ)",
+    "internalDriver": "Mã Tài xế (Nội bộ)",
+    "partner": "Mã Đối tác",
+    "externalVehicle": "Mã Xe (Đối tác)",
+    "externalDriver": "Mã Tài xế (Đối tác)",
+    "internal": "Nội bộ",
+    "external": "Đối tác thuê ngoài",
+    "new": "Mới phân công",
+    "running": "Đang chạy"
+  },
+  "trips": {
+    "title": "Danh sách Chuyến đi",
+    "assignment": "Phân công ĐP",
+    "startTime": "Thời gian bắt đầu",
+    "endTime": "Thời gian kết thúc",
+    "startOdometer": "Số công tơ mét đầu",
+    "endOdometer": "Số công tơ mét cuối",
+    "viewRoute": "Xem Lộ trình",
+    "statusOptions": {
+      "PLANNED": "Kế hoạch",
+      "EN_ROUTE": "Đang đi",
+      "COMPLETED": "Hoàn thành",
+      "CANCELLED": "Đã hủy"
+    },
+    "plannedStart": "K/h Bắt đầu",
+    "plannedEnd": "K/h Kết thúc",
+    "actualStart": "T/tế Bắt đầu",
+    "actualEnd": "T/tế Kết thúc",
+    "distance": "Quãng đường (km)",
+    "slaRisk": "Rủi ro SLA",
+    "incidentType": "Loại sự cố",
+    "severity": "Mức độ nghiêm trọng",
+    "description": "Mô tả",
+    "reportedAt": "Thời gian báo cáo",
+    "tripId": "Mã chuyến đi"
+  },
+  "cost": {
+    "title": "Nhật ký Nhiên liệu",
+    "vehicle": "Phương tiện",
+    "driver": "Tài xế",
+    "trip": "Chuyến đi",
+    "fuelType": "Loại nhiên liệu",
+    "volumeLiters": "Số lít",
+    "unitPrice": "Đơn giá",
+    "totalCost": "Tổng chi phí",
+    "location": "Địa điểm đổ",
+    "filledAt": "Thời gian đổ",
+    "currentOdometer": "Số km hiện tại",
+    "vehicleId": "ID Phương tiện",
+    "driverId": "ID Tài xế",
+    "tripId": "ID Chuyến đi",
+    "gasoline": "Xăng",
+    "diesel": "Dầu Diesel"
+  },
+  "maintenance": {
+    "title": "Đơn Bảo trì",
+    "vehicle": "Phương tiện",
+    "orderNumber": "Mã đơn bảo trì",
+    "maintenanceType": "Loại bảo trì",
+    "description": "Mô tả",
+    "cost": "Chi phí",
+    "date": "Ngày bảo trì",
+    "statusOptions": {
+      "SCHEDULED": "Đã lên lịch",
+      "IN_PROGRESS": "Đang thực hiện",
+      "COMPLETED": "Hoàn thành",
+      "CANCELLED": "Đã hủy"
+    },
+    "completedDate": "Ngày hoàn thành",
+    "requester": "Người yêu cầu"
+  },
+  "routes": {
+    "partnerDrivers": "Tài xế đối tác",
+    "partnerVehicles": "Phương tiện đối tác"
+  }
+}

@@ -1,0 +1,2382 @@
+﻿package com.unitel.fms.backend.entities;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+
+import java.time.OffsetDateTime;
+import java.util.Map;
+import java.util.UUID;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Builder
+@Entity
+@Table(name = "audit_logs")
+public class AuditLog{
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false)
+    private UUID id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @Size(max = 100)
+    @NotNull
+    @Column(name = "action", nullable = false, length = 100)
+    private String action;
+
+    @Size(max = 100)
+    @NotNull
+    @Column(name = "entity_type", nullable = false, length = 100)
+    private String entityType;
+
+    @Column(name = "entity_id")
+    private UUID entityId;
+
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(name = "old_values")
+    private Map<String, Object> oldValues;
+
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(name = "new_values")
+    private Map<String, Object> newValues;
+
+    @Size(max = 45)
+    @Column(name = "ip_address", length = 45)
+    private String ipAddress;
+
+    @Size(max = 50)
+    @NotNull
+    @ColumnDefault("'recorded'")
+    @Column(name = "status", nullable = false, length = 50)
+    private String status;
+
+    @NotNull
+    @ColumnDefault("now()")
+    @Column(name = "created_at", nullable = false)
+    private OffsetDateTime createdAt;
+
+    @NotNull
+    @ColumnDefault("now()")
+    @Column(name = "updated_at", nullable = false)
+    private OffsetDateTime updatedAt;
+
+
+}
+package com.unitel.fms.backend.entities;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+
+import java.time.OffsetDateTime;
+import java.util.UUID;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Builder
+@Entity
+@Table(name = "customers")
+public class Customer{
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false)
+    private UUID id;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "org_id", nullable = false)
+    private Organization org;
+
+    @Size(max = 50)
+    @NotNull
+    @Column(name = "code", nullable = false, length = 50)
+    private String code;
+
+    @Size(max = 255)
+    @NotNull
+    @Column(name = "name", nullable = false)
+    private String name;
+
+    @Size(max = 255)
+    @Column(name = "contact_person")
+    private String contactPerson;
+
+    @Size(max = 30)
+    @Column(name = "phone", length = 30)
+    private String phone;
+
+    @Size(max = 255)
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "address", length = Integer.MAX_VALUE)
+    private String address;
+
+    @Size(max = 50)
+    @NotNull
+    @ColumnDefault("'active'")
+    @Column(name = "status", nullable = false, length = 50)
+    private String status;
+
+    @NotNull
+    @ColumnDefault("now()")
+    @Column(name = "created_at", nullable = false)
+    private OffsetDateTime createdAt;
+
+    @NotNull
+    @ColumnDefault("now()")
+    @Column(name = "updated_at", nullable = false)
+    private OffsetDateTime updatedAt;
+
+
+}
+package com.unitel.fms.backend.entities;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+
+import java.time.OffsetDateTime;
+import java.util.Map;
+import java.util.UUID;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Builder
+@Entity
+@Table(name = "dispatch_assignments")
+public class DispatchAssignment{
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false)
+    private UUID id;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "dispatch_request_id", nullable = false)
+    private DispatchRequest dispatchRequest;
+
+    @Size(max = 50)
+    @NotNull
+    @ColumnDefault("'internal'")
+    @Column(name = "trip_type", nullable = false, length = 50)
+    private String tripType;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "vehicle_id")
+    private Vehicle vehicle;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "driver_id")
+    private Driver driver;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "partner_vehicle_id")
+    private PartnerVehicle partnerVehicle;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "partner_driver_id")
+    private PartnerDriver partnerDriver;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "assigned_by")
+    private User assignedBy;
+
+    @Size(max = 30)
+    @NotNull
+    @ColumnDefault("'manual'")
+    @Column(name = "assignment_type", nullable = false, length = 30)
+    private String assignmentType;
+
+    @NotNull
+    @ColumnDefault("false")
+    @Column(name = "pre_check_passed", nullable = false)
+    private Boolean preCheckPassed;
+
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(name = "pre_check_details")
+    private Map<String, Object> preCheckDetails;
+
+    @Column(name = "override_reason", length = Integer.MAX_VALUE)
+    private String overrideReason;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "override_by")
+    private User overrideBy;
+
+    @Size(max = 50)
+    @NotNull
+    @ColumnDefault("'active'")
+    @Column(name = "status", nullable = false, length = 50)
+    private String status;
+
+    @NotNull
+    @ColumnDefault("now()")
+    @Column(name = "created_at", nullable = false)
+    private OffsetDateTime createdAt;
+
+    @NotNull
+    @ColumnDefault("now()")
+    @Column(name = "updated_at", nullable = false)
+    private OffsetDateTime updatedAt;
+
+
+}
+package com.unitel.fms.backend.entities;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+
+import java.math.BigDecimal;
+import java.time.OffsetDateTime;
+import java.util.UUID;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Builder
+@Entity
+@Table(name = "dispatch_requests")
+public class DispatchRequest{
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false)
+    private UUID id;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "org_id", nullable = false)
+    private Organization org;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "created_by")
+    private User createdBy;
+
+    @Size(max = 50)
+    @NotNull
+    @Column(name = "req_number", nullable = false, length = 50)
+    private String reqNumber;
+
+    @Size(max = 50)
+    @NotNull
+    @ColumnDefault("'manual'")
+    @Column(name = "source_channel", nullable = false, length = 50)
+    private String sourceChannel;
+
+    @NotNull
+    @Column(name = "origin_address", nullable = false, length = Integer.MAX_VALUE)
+    private String originAddress;
+
+    @Column(name = "origin_lat", precision = 10, scale = 7)
+    private BigDecimal originLat;
+
+    @Column(name = "origin_lng", precision = 10, scale = 7)
+    private BigDecimal originLng;
+
+    @NotNull
+    @Column(name = "dest_address", nullable = false, length = Integer.MAX_VALUE)
+    private String destAddress;
+
+    @Column(name = "dest_lat", precision = 10, scale = 7)
+    private BigDecimal destLat;
+
+    @Column(name = "dest_lng", precision = 10, scale = 7)
+    private BigDecimal destLng;
+
+    @Column(name = "cargo_weight_ton", precision = 8, scale = 2)
+    private BigDecimal cargoWeightTon;
+
+    @Size(max = 100)
+    @Column(name = "cargo_type", length = 100)
+    private String cargoType;
+
+    @Column(name = "cargo_notes", length = Integer.MAX_VALUE)
+    private String cargoNotes;
+
+    @Size(max = 20)
+    @NotNull
+    @ColumnDefault("'medium'")
+    @Column(name = "priority", nullable = false, length = 20)
+    private String priority;
+
+    @Column(name = "requested_pickup_at")
+    private OffsetDateTime requestedPickupAt;
+
+    @Column(name = "requested_delivery_at")
+    private OffsetDateTime requestedDeliveryAt;
+
+    @Size(max = 50)
+    @NotNull
+    @ColumnDefault("'new'")
+    @Column(name = "status", nullable = false, length = 50)
+    private String status;
+
+    @NotNull
+    @ColumnDefault("now()")
+    @Column(name = "created_at", nullable = false)
+    private OffsetDateTime createdAt;
+
+    @NotNull
+    @ColumnDefault("now()")
+    @Column(name = "updated_at", nullable = false)
+    private OffsetDateTime updatedAt;
+
+
+}
+package com.unitel.fms.backend.entities;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+
+import java.time.OffsetDateTime;
+import java.util.UUID;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Builder
+@Entity
+@Table(name = "drivers")
+public class Driver{
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false)
+    private UUID id;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "org_id", nullable = false)
+    private Organization org;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @Size(max = 50)
+    @Column(name = "employee_code", length = 50)
+    private String employeeCode;
+
+    @Size(max = 255)
+    @NotNull
+    @Column(name = "full_name", nullable = false)
+    private String fullName;
+
+    @Size(max = 30)
+    @Column(name = "phone", length = 30)
+    private String phone;
+
+    @Size(max = 20)
+    @Column(name = "license_class", length = 20)
+    private String licenseClass;
+
+    @Size(max = 50)
+    @Column(name = "license_number", length = 50)
+    private String licenseNumber;
+
+    @NotNull
+    @ColumnDefault("true")
+    @Column(name = "is_dispatch_eligible", nullable = false)
+    private Boolean isDispatchEligible;
+
+    @Size(max = 50)
+    @NotNull
+    @ColumnDefault("'active'")
+    @Column(name = "status", nullable = false, length = 50)
+    private String status;
+
+    @NotNull
+    @ColumnDefault("now()")
+    @Column(name = "created_at", nullable = false)
+    private OffsetDateTime createdAt;
+
+    @NotNull
+    @ColumnDefault("now()")
+    @Column(name = "updated_at", nullable = false)
+    private OffsetDateTime updatedAt;
+
+
+}
+package com.unitel.fms.backend.entities;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+
+import java.time.LocalDate;
+import java.time.OffsetDateTime;
+import java.util.UUID;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Builder
+@Entity
+@Table(name = "driver_documents")
+public class DriverDocument{
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false)
+    private UUID id;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "driver_id", nullable = false)
+    private Driver driver;
+
+    @Size(max = 50)
+    @NotNull
+    @Column(name = "doc_type", nullable = false, length = 50)
+    private String docType;
+
+    @Size(max = 100)
+    @Column(name = "doc_number", length = 100)
+    private String docNumber;
+
+    @Column(name = "issue_date")
+    private LocalDate issueDate;
+
+    @Column(name = "expiry_date")
+    private LocalDate expiryDate;
+
+    @Size(max = 50)
+    @NotNull
+    @ColumnDefault("'valid'")
+    @Column(name = "status", nullable = false, length = 50)
+    @Builder.Default
+    private String status = "valid";
+
+    @NotNull
+    @ColumnDefault("now()")
+    @Column(name = "created_at", nullable = false)
+    @Builder.Default
+    private OffsetDateTime createdAt = OffsetDateTime.now();
+
+    @NotNull
+    @ColumnDefault("now()")
+    @Column(name = "updated_at", nullable = false)
+    @Builder.Default
+    private OffsetDateTime updatedAt = OffsetDateTime.now();
+
+
+}
+package com.unitel.fms.backend.entities;
+
+import com.unitel.fms.backend.constants.ConstantVariables;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+
+import java.time.OffsetDateTime;
+import java.util.UUID;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Builder
+@Entity
+@Table(name = "file_attachments")
+public class FileAttachment {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false)
+    private UUID id;
+
+    @Size(max = 100)
+    @NotNull
+    @Column(name = "bucket", nullable = false, length = 100)
+    private String bucket;
+
+    @NotNull
+    @Column(name = "object_key", nullable = false, length = Integer.MAX_VALUE)
+    private String objectKey;
+
+    @Size(max = 255)
+    @Column(name = "original_name")
+    private String originalName;
+
+    @Size(max = 100)
+    @Column(name = "mime_type", length = 100)
+    private String mimeType;
+
+    @Size(max = 100)
+    @Column(name = "extension", length = 100)
+    private String extension;
+
+    @Column(name = "size_bytes")
+    private Long sizeBytes;
+
+    @Size(max = 100)
+    @Column(name = "entity_type", length = 100)
+    private String entityType;
+
+    @Column(name = "entity_id")
+    private UUID entityId;
+
+    @Column(name = "uploaded_by")
+    private UUID uploadedBy;
+
+    @Size(max = 50)
+    @NotNull
+    @ColumnDefault("'active'")
+    @Column(name = "status", nullable = false, length = 50)
+    @Builder.Default
+    private String status = "active";
+
+    @NotNull
+    @ColumnDefault("now()")
+    @Column(name = "created_at", nullable = false)
+    @Builder.Default
+    private OffsetDateTime createdAt = OffsetDateTime.now();
+
+    @NotNull
+    @ColumnDefault("now()")
+    @Column(name = "updated_at", nullable = false)
+    @Builder.Default
+    private OffsetDateTime updatedAt = OffsetDateTime.now();
+
+
+
+    public String getPublicUrl(){
+        return ConstantVariables.MINIO_ENDPOINT.endsWith("/")
+                ? ConstantVariables.MINIO_ENDPOINT + getBucket() + "/" + getObjectKey()
+                : ConstantVariables.MINIO_ENDPOINT + "/" + getBucket() + "/" + getObjectKey();
+    }
+
+
+}
+package com.unitel.fms.backend.entities;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+
+import java.math.BigDecimal;
+import java.time.OffsetDateTime;
+import java.util.UUID;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Builder
+@Entity
+@Table(name = "fuel_logs")
+public class FuelLog{
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false)
+    private UUID id;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "vehicle_id", nullable = false)
+    private Vehicle vehicle;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "trip_id")
+    private Trip trip;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "logged_by")
+    private User loggedBy;
+
+    @NotNull
+    @Column(name = "liters_added", nullable = false, precision = 8, scale = 2)
+    private BigDecimal litersAdded;
+
+    @Column(name = "fuel_cost", precision = 15, scale = 2)
+    private BigDecimal fuelCost;
+
+    @Column(name = "odometer_at_fill", precision = 10, scale = 2)
+    private BigDecimal odometerAtFill;
+
+    @Column(name = "reported_consumption", precision = 8, scale = 2)
+    private BigDecimal reportedConsumption;
+
+    @Column(name = "telemetry_consumption", precision = 8, scale = 2)
+    private BigDecimal telemetryConsumption;
+
+    @NotNull
+    @ColumnDefault("false")
+    @Column(name = "anomaly_flagged", nullable = false)
+    @Builder.Default
+    private Boolean anomalyFlagged = false;
+
+    @Column(name = "anomaly_notes", length = Integer.MAX_VALUE)
+    private String anomalyNotes;
+
+    @Size(max = 50)
+    @NotNull
+    @ColumnDefault("'recorded'")
+    @Column(name = "status", nullable = false, length = 50)
+    @Builder.Default
+    private String status = "recorded";
+
+    @NotNull
+    @ColumnDefault("now()")
+    @Column(name = "created_at", nullable = false)
+    @Builder.Default
+    private OffsetDateTime createdAt = OffsetDateTime.now();
+
+    @NotNull
+    @ColumnDefault("now()")
+    @Column(name = "updated_at", nullable = false)
+    @Builder.Default
+    private OffsetDateTime updatedAt = OffsetDateTime.now();
+
+
+}
+package com.unitel.fms.backend.entities;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+
+import java.math.BigDecimal;
+import java.time.OffsetDateTime;
+import java.util.Map;
+import java.util.UUID;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Builder
+@Entity
+@Table(name = "geofences")
+public class Geofence{
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false)
+    private UUID id;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "org_id", nullable = false)
+    private Organization org;
+
+    @Size(max = 255)
+    @NotNull
+    @Column(name = "name", nullable = false)
+    private String name;
+
+    @Size(max = 30)
+    @NotNull
+    @ColumnDefault("'polygon'")
+    @Column(name = "fence_type", nullable = false, length = 30)
+    private String fenceType;
+
+    @NotNull
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(name = "coordinates", nullable = false)
+    private Map<String, Object> coordinates;
+
+    @Column(name = "radius_m", precision = 10, scale = 2)
+    private BigDecimal radiusM;
+
+    @Size(max = 50)
+    @NotNull
+    @ColumnDefault("'active'")
+    @Column(name = "status", nullable = false, length = 50)
+    private String status;
+
+    @NotNull
+    @ColumnDefault("now()")
+    @Column(name = "created_at", nullable = false)
+    private OffsetDateTime createdAt;
+
+    @NotNull
+    @ColumnDefault("now()")
+    @Column(name = "updated_at", nullable = false)
+    private OffsetDateTime updatedAt;
+
+
+}
+package com.unitel.fms.backend.entities;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+
+import java.time.OffsetDateTime;
+import java.util.Map;
+import java.util.UUID;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Builder
+@Entity
+@Table(name = "gps_alerts")
+public class GpsAlert {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false)
+    private UUID id;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "vehicle_id", nullable = false)
+    private Vehicle vehicle;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "trip_id")
+    private Trip trip;
+
+    @Size(max = 50)
+    @NotNull
+    @Column(name = "alert_type", nullable = false, length = 50)
+    private String alertType;
+
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(name = "details")
+    private Map<String, Object> details;
+
+    @NotNull
+    @ColumnDefault("false")
+    @Column(name = "is_acknowledged", nullable = false)
+    private Boolean isAcknowledged;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "acknowledged_by")
+    private User acknowledgedBy;
+
+    @Column(name = "acknowledged_at")
+    private OffsetDateTime acknowledgedAt;
+
+    @NotNull
+    @ColumnDefault("now()")
+    @Column(name = "triggered_at", nullable = false)
+    private OffsetDateTime triggeredAt;
+
+    @Size(max = 50)
+    @NotNull
+    @ColumnDefault("'open'")
+    @Column(name = "status", nullable = false, length = 50)
+    private String status;
+
+    @NotNull
+    @ColumnDefault("now()")
+    @Column(name = "created_at", nullable = false)
+    private OffsetDateTime createdAt;
+
+    @NotNull
+    @ColumnDefault("now()")
+    @Column(name = "updated_at", nullable = false)
+    private OffsetDateTime updatedAt;
+
+
+}
+package com.unitel.fms.backend.entities;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+
+import java.time.OffsetDateTime;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Builder
+@Entity
+@Table(name = "gps_positions")
+public class GpsPosition{
+
+    @EmbeddedId
+    private GpsPositionId id;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "vehicle_id", nullable = false, insertable = false, updatable = false)
+    private Vehicle vehicle;
+
+    @NotNull
+    @Column(name = "recorded_at", nullable = false, insertable = false, updatable = false)
+    private OffsetDateTime recordedAt;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "trip_id")
+    private Trip trip;
+
+    @NotNull
+    @Column(name = "lat", nullable = false)
+    private Double lat;
+
+    @NotNull
+    @Column(name = "lng", nullable = false)
+    private Double lng;
+
+    @Column(name = "speed_kmh")
+    private Float speedKmh;
+
+    @Column(name = "heading")
+    private Float heading;
+
+    @Column(name = "altitude")
+    private Float altitude;
+
+    @Column(name = "accuracy_m")
+    private Float accuracyM;
+
+    @Size(max = 20)
+    @NotNull
+    @ColumnDefault("'device'")
+    @Column(name = "source", nullable = false, length = 20)
+    private String source;
+
+    @Size(max = 50)
+    @NotNull
+    @ColumnDefault("'received'")
+    @Column(name = "status", nullable = false, length = 50)
+    private String status;
+
+    @NotNull
+    @ColumnDefault("now()")
+    @Column(name = "created_at", nullable = false)
+    private OffsetDateTime createdAt;
+
+    @NotNull
+    @ColumnDefault("now()")
+    @Column(name = "updated_at", nullable = false)
+    private OffsetDateTime updatedAt;
+
+
+}
+package com.unitel.fms.backend.entities;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
+import lombok.*;
+
+import java.io.Serializable;
+import java.time.OffsetDateTime;
+import java.util.UUID;
+
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Builder
+@EqualsAndHashCode
+@Embeddable
+public class GpsPositionId implements Serializable {
+
+    @Column(name = "vehicle_id", nullable = false)
+    private UUID vehicleId;
+
+    @Column(name = "recorded_at", nullable = false)
+    private OffsetDateTime recordedAt;
+}
+package com.unitel.fms.backend.entities;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+
+import java.math.BigDecimal;
+import java.time.OffsetDateTime;
+import java.util.UUID;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Builder
+@Entity
+@Table(name = "maintenance_items")
+public class MaintenanceItem{
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false)
+    private UUID id;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "maintenance_order_id", nullable = false)
+    private MaintenanceOrder maintenanceOrder;
+
+    @Size(max = 255)
+    @NotNull
+    @Column(name = "item_name", nullable = false)
+    private String itemName;
+
+    @Size(max = 100)
+    @Column(name = "part_code", length = 100)
+    private String partCode;
+
+    @NotNull
+    @ColumnDefault("1")
+    @Column(name = "quantity", nullable = false)
+    private Short quantity;
+
+    @Column(name = "unit_cost", precision = 15, scale = 2)
+    private BigDecimal unitCost;
+
+    @Column(name = "total_cost", precision = 15, scale = 2)
+    private BigDecimal totalCost;
+
+    @Size(max = 50)
+    @NotNull
+    @ColumnDefault("'pending'")
+    @Column(name = "status", nullable = false, length = 50)
+    private String status;
+
+    @NotNull
+    @ColumnDefault("now()")
+    @Column(name = "created_at", nullable = false)
+    private OffsetDateTime createdAt;
+
+    @NotNull
+    @ColumnDefault("now()")
+    @Column(name = "updated_at", nullable = false)
+    private OffsetDateTime updatedAt;
+
+
+}
+package com.unitel.fms.backend.entities;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.OffsetDateTime;
+import java.util.UUID;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Builder
+@Entity
+@Table(name = "maintenance_orders")
+public class MaintenanceOrder{
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false)
+    private UUID id;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "vehicle_id", nullable = false)
+    private Vehicle vehicle;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "created_by")
+    private User createdBy;
+
+    @Size(max = 50)
+    @NotNull
+    @Column(name = "order_type", nullable = false, length = 50)
+    private String orderType;
+
+    @Column(name = "scheduled_date")
+    private LocalDate scheduledDate;
+
+    @Column(name = "completed_date")
+    private LocalDate completedDate;
+
+    @Column(name = "total_cost", precision = 15, scale = 2)
+    private BigDecimal totalCost;
+
+    @Column(name = "notes", length = Integer.MAX_VALUE)
+    private String notes;
+
+    @Size(max = 50)
+    @NotNull
+    @ColumnDefault("'pending'")
+    @Column(name = "status", nullable = false, length = 50)
+    private String status;
+
+    @NotNull
+    @ColumnDefault("now()")
+    @Column(name = "created_at", nullable = false)
+    private OffsetDateTime createdAt;
+
+    @NotNull
+    @ColumnDefault("now()")
+    @Column(name = "updated_at", nullable = false)
+    private OffsetDateTime updatedAt;
+
+
+}
+package com.unitel.fms.backend.entities;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+
+import java.time.OffsetDateTime;
+import java.util.UUID;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Builder
+@Entity
+@Table(name = "notifications")
+public class Notification{
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false)
+    private UUID id;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    @Size(max = 50)
+    @NotNull
+    @ColumnDefault("'in_app'")
+    @Column(name = "channel", nullable = false, length = 50)
+    private String channel;
+
+    @Size(max = 255)
+    @NotNull
+    @Column(name = "title", nullable = false)
+    private String title;
+
+    @NotNull
+    @Column(name = "body", nullable = false, length = Integer.MAX_VALUE)
+    private String body;
+
+    @Size(max = 100)
+    @Column(name = "entity_type", length = 100)
+    private String entityType;
+
+    @Column(name = "entity_id")
+    private UUID entityId;
+
+    @NotNull
+    @ColumnDefault("false")
+    @Column(name = "is_read", nullable = false)
+    private Boolean isRead;
+
+    @Size(max = 50)
+    @NotNull
+    @ColumnDefault("'sent'")
+    @Column(name = "status", nullable = false, length = 50)
+    private String status;
+
+    @NotNull
+    @ColumnDefault("now()")
+    @Column(name = "created_at", nullable = false)
+    private OffsetDateTime createdAt;
+
+    @NotNull
+    @ColumnDefault("now()")
+    @Column(name = "updated_at", nullable = false)
+    private OffsetDateTime updatedAt;
+
+
+}
+package com.unitel.fms.backend.entities;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+
+import java.math.BigDecimal;
+import java.time.OffsetDateTime;
+import java.util.UUID;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Builder
+@Entity
+@Table(name = "odometer_logs")
+public class OdometerLog{
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false)
+    private UUID id;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "vehicle_id", nullable = false)
+    private Vehicle vehicle;
+
+    @NotNull
+    @ColumnDefault("now()")
+    @Column(name = "recorded_at", nullable = false)
+    private OffsetDateTime recordedAt;
+
+    @NotNull
+    @Column(name = "odometer_value", nullable = false, precision = 10, scale = 2)
+    private BigDecimal odometerValue;
+
+    @Size(max = 50)
+    @NotNull
+    @ColumnDefault("'manual'")
+    @Column(name = "source", nullable = false, length = 50)
+    private String source;
+
+    @Column(name = "notes")
+    private String notes;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "recorded_by")
+    private User recordedBy;
+
+    @NotNull
+    @ColumnDefault("now()")
+    @Column(name = "created_at", nullable = false)
+    private OffsetDateTime createdAt;
+
+    @NotNull
+    @ColumnDefault("now()")
+    @Column(name = "updated_at", nullable = false)
+    private OffsetDateTime updatedAt;
+}
+package com.unitel.fms.backend.entities;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+
+import java.time.OffsetDateTime;
+import java.util.UUID;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Builder
+@Entity
+@Table(name = "organizations")
+public class Organization{
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false)
+    private UUID id;
+
+    @Size(max = 50)
+    @NotNull
+    @Column(name = "code", nullable = false, length = 50)
+    private String code;
+
+    @Size(max = 255)
+    @NotNull
+    @Column(name = "name_en", nullable = false)
+    private String nameEn;
+
+    @Size(max = 255)
+    @Column(name = "name_vi")
+    private String nameVi;
+
+    @Size(max = 255)
+    @Column(name = "name_lo")
+    private String nameLo;
+
+    @Size(max = 50)
+    @NotNull
+    @Column(name = "org_type", nullable = false, length = 50)
+    private String orgType;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_id")
+    private Organization parent;
+
+    @Size(max = 100)
+    @Column(name = "region", length = 100)
+    private String region;
+
+    @Size(max = 50)
+    @NotNull
+    @ColumnDefault("'Asia/Vientiane'")
+    @Column(name = "timezone", nullable = false, length = 50)
+    private String timezone;
+
+    @Size(max = 50)
+    @NotNull
+    @ColumnDefault("'active'")
+    @Column(name = "status", nullable = false, length = 50)
+    private String status;
+
+    @NotNull
+    @ColumnDefault("now()")
+    @Column(name = "created_at", nullable = false)
+    private OffsetDateTime createdAt;
+
+    @NotNull
+    @ColumnDefault("now()")
+    @Column(name = "updated_at", nullable = false)
+    private OffsetDateTime updatedAt;
+
+
+}
+package com.unitel.fms.backend.entities;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+
+import java.math.BigDecimal;
+import java.time.OffsetDateTime;
+import java.util.UUID;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Builder
+@Entity
+@Table(name = "partners")
+public class Partner {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false)
+    private UUID id;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "org_id", nullable = false)
+    private Organization org;
+
+    @Size(max = 50)
+    @NotNull
+    @Column(name = "code", nullable = false, length = 50)
+    private String code;
+
+    @Size(max = 255)
+    @NotNull
+    @Column(name = "name", nullable = false)
+    private String name;
+
+    @Size(max = 255)
+    @Column(name = "contact_person")
+    private String contactPerson;
+
+    @Size(max = 30)
+    @Column(name = "phone", length = 30)
+    private String phone;
+
+    @Size(max = 255)
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "address", length = Integer.MAX_VALUE)
+    private String address;
+
+    @Size(max = 20)
+    @ColumnDefault("'unrated'")
+    @Column(name = "rating", length = 20)
+    private String rating;
+
+    @Column(name = "on_time_rate", precision = 5, scale = 2)
+    private BigDecimal onTimeRate;
+
+    @Size(max = 50)
+    @NotNull
+    @ColumnDefault("'active'")
+    @Column(name = "status", nullable = false, length = 50)
+    private String status;
+
+    @NotNull
+    @ColumnDefault("now()")
+    @Column(name = "created_at", nullable = false)
+    private OffsetDateTime createdAt;
+
+    @NotNull
+    @ColumnDefault("now()")
+    @Column(name = "updated_at", nullable = false)
+    private OffsetDateTime updatedAt;
+
+}
+package com.unitel.fms.backend.entities;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+
+import java.time.OffsetDateTime;
+import java.util.UUID;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Builder
+@Entity
+@Table(name = "partner_drivers")
+public class PartnerDriver {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false)
+    private UUID id;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "partner_id", nullable = false)
+    private Partner partner;
+
+    @Size(max = 255)
+    @NotNull
+    @Column(name = "full_name", nullable = false)
+    private String fullName;
+
+    @Size(max = 30)
+    @Column(name = "phone", length = 30)
+    private String phone;
+
+    @Size(max = 20)
+    @Column(name = "license_class", length = 20)
+    private String licenseClass;
+
+    @Size(max = 50)
+    @Column(name = "license_number", length = 50)
+    private String licenseNumber;
+
+    @Size(max = 50)
+    @NotNull
+    @ColumnDefault("'active'")
+    @Column(name = "status", nullable = false, length = 50)
+    private String status;
+
+    @NotNull
+    @ColumnDefault("now()")
+    @Column(name = "created_at", nullable = false)
+    private OffsetDateTime createdAt;
+
+    @NotNull
+    @ColumnDefault("now()")
+    @Column(name = "updated_at", nullable = false)
+    private OffsetDateTime updatedAt;
+}
+package com.unitel.fms.backend.entities;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+
+import java.math.BigDecimal;
+import java.time.OffsetDateTime;
+import java.util.UUID;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Builder
+@Entity
+@Table(name = "partner_performances")
+public class PartnerPerformance {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false)
+    private UUID id;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "partner_id", nullable = false)
+    private Partner partner;
+
+    @Size(max = 7)
+    @NotNull
+    @Column(name = "period_month", nullable = false, length = 7)
+    private String periodMonth;
+
+    @NotNull
+    @ColumnDefault("0")
+    @Column(name = "total_trips", nullable = false)
+    private Integer totalTrips;
+
+    @NotNull
+    @ColumnDefault("0")
+    @Column(name = "on_time_trips", nullable = false)
+    private Integer onTimeTrips;
+
+    @Column(name = "avg_cost", precision = 15, scale = 2)
+    private BigDecimal avgCost;
+
+    @Column(name = "total_revenue", precision = 15, scale = 2)
+    private BigDecimal totalRevenue;
+
+    @Column(name = "notes", length = Integer.MAX_VALUE)
+    private String notes;
+
+    @Size(max = 50)
+    @NotNull
+    @ColumnDefault("'final'")
+    @Column(name = "status", nullable = false, length = 50)
+    private String status;
+
+    @NotNull
+    @ColumnDefault("now()")
+    @Column(name = "created_at", nullable = false)
+    private OffsetDateTime createdAt;
+
+    @NotNull
+    @ColumnDefault("now()")
+    @Column(name = "updated_at", nullable = false)
+    private OffsetDateTime updatedAt;
+
+}
+package com.unitel.fms.backend.entities;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+
+import java.math.BigDecimal;
+import java.time.OffsetDateTime;
+import java.util.UUID;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Builder
+@Entity
+@Table(name = "partner_vehicles")
+public class PartnerVehicle {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false)
+    private UUID id;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "partner_id", nullable = false)
+    private Partner partner;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "vehicle_type_id", nullable = false)
+    private VehicleType vehicleType;
+
+    @Size(max = 30)
+    @NotNull
+    @Column(name = "plate_number", nullable = false, length = 30, unique = true)
+    private String plateNumber;
+
+    @Column(name = "load_capacity_ton", precision = 8, scale = 2)
+    private BigDecimal loadCapacityTon;
+
+    @Size(max = 50)
+    @NotNull
+    @ColumnDefault("'available'")
+    @Column(name = "status", nullable = false, length = 50)
+    private String status;
+
+    @NotNull
+    @ColumnDefault("now()")
+    @Column(name = "created_at", nullable = false)
+    private OffsetDateTime createdAt;
+
+    @NotNull
+    @ColumnDefault("now()")
+    @Column(name = "updated_at", nullable = false)
+    private OffsetDateTime updatedAt;
+}
+package com.unitel.fms.backend.entities;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+
+import java.time.OffsetDateTime;
+import java.util.UUID;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Builder
+@Entity
+@Table(name = "roles")
+public class Role {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false)
+    private UUID id;
+
+    @Size(max = 50)
+    @NotNull
+    @Column(name = "code", nullable = false, length = 50)
+    private String code;
+
+    @Size(max = 100)
+    @NotNull
+    @Column(name = "name", nullable = false, length = 100)
+    private String name;
+
+    @Column(name = "description", length = Integer.MAX_VALUE)
+    private String description;
+
+    @Size(max = 50)
+    @NotNull
+    @ColumnDefault("'active'")
+    @Column(name = "status", nullable = false, length = 50)
+    private String status;
+
+    @NotNull
+    @ColumnDefault("now()")
+    @Column(name = "created_at", nullable = false)
+    private OffsetDateTime createdAt;
+
+    @NotNull
+    @ColumnDefault("now()")
+    @Column(name = "updated_at", nullable = false)
+    private OffsetDateTime updatedAt;
+
+}
+package com.unitel.fms.backend.entities;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.Size;
+import lombok.*;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Builder
+@Entity
+@Table(name = "spatial_ref_sys")
+public class SpatialRefSy {
+    @Id
+    @Column(name = "srid", nullable = false)
+    private Integer id;
+
+    @Size(max = 256)
+    @Column(name = "auth_name", length = 256)
+    private String authName;
+
+    @Column(name = "auth_srid")
+    private Integer authSrid;
+
+    @Size(max = 2048)
+    @Column(name = "srtext", length = 2048)
+    private String srtext;
+
+    @Size(max = 2048)
+    @Column(name = "proj4text", length = 2048)
+    private String proj4text;
+
+
+}
+package com.unitel.fms.backend.entities;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+
+import java.time.OffsetDateTime;
+import java.util.Map;
+import java.util.UUID;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Builder
+@Entity
+@Table(name = "system_configs")
+public class SystemConfig {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false)
+    private UUID id;
+
+    @Size(max = 100)
+    @NotNull
+    @Column(name = "config_key", nullable = false, length = 100)
+    private String configKey;
+
+    @NotNull
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(name = "config_value", nullable = false)
+    private Map<String, Object> configValue;
+
+    @Column(name = "description", length = Integer.MAX_VALUE)
+    private String description;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "updated_by")
+    private User updatedBy;
+
+    @Size(max = 50)
+    @NotNull
+    @ColumnDefault("'active'")
+    @Column(name = "status", nullable = false, length = 50)
+    private String status;
+
+    @NotNull
+    @ColumnDefault("now()")
+    @Column(name = "created_at", nullable = false)
+    private OffsetDateTime createdAt;
+
+    @NotNull
+    @ColumnDefault("now()")
+    @Column(name = "updated_at", nullable = false)
+    private OffsetDateTime updatedAt;
+
+}
+package com.unitel.fms.backend.entities;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+
+import java.math.BigDecimal;
+import java.time.OffsetDateTime;
+import java.util.UUID;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Builder
+@Entity
+@Table(name = "trips")
+public class Trip {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false)
+    private UUID id;
+
+    @NotNull
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "dispatch_assignment_id", nullable = false)
+    private DispatchAssignment dispatchAssignment;
+
+    @Size(max = 50)
+    @NotNull
+    @Column(name = "trip_number", nullable = false, length = 50)
+    private String tripNumber;
+
+    @NotNull
+    @ColumnDefault("0")
+    @Column(name = "progress_pct", nullable = false)
+    private Short progressPct;
+
+    @Column(name = "planned_start_at")
+    private OffsetDateTime plannedStartAt;
+
+    @Column(name = "planned_end_at")
+    private OffsetDateTime plannedEndAt;
+
+    @Column(name = "actual_start_at")
+    private OffsetDateTime actualStartAt;
+
+    @Column(name = "actual_end_at")
+    private OffsetDateTime actualEndAt;
+
+    @Column(name = "eta")
+    private OffsetDateTime eta;
+
+    @NotNull
+    @ColumnDefault("false")
+    @Column(name = "sla_at_risk", nullable = false)
+    private Boolean slaAtRisk;
+
+    @Column(name = "total_distance_km", precision = 10, scale = 2)
+    private BigDecimal totalDistanceKm;
+
+    @Column(name = "total_cost", precision = 15, scale = 2)
+    private BigDecimal totalCost;
+
+    @Size(max = 50)
+    @NotNull
+    @ColumnDefault("'pending'")
+    @Column(name = "status", nullable = false, length = 50)
+    private String status;
+
+    @NotNull
+    @ColumnDefault("now()")
+    @Column(name = "created_at", nullable = false)
+    private OffsetDateTime createdAt;
+
+    @NotNull
+    @ColumnDefault("now()")
+    @Column(name = "updated_at", nullable = false)
+    private OffsetDateTime updatedAt;
+
+}
+package com.unitel.fms.backend.entities;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+
+import java.time.OffsetDateTime;
+import java.util.Map;
+import java.util.UUID;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Builder
+@Entity
+@Table(name = "trip_incidents")
+public class TripIncident {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false)
+    private UUID id;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "trip_id", nullable = false)
+    private Trip trip;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "reported_by")
+    private User reportedBy;
+
+    @Size(max = 50)
+    @NotNull
+    @Column(name = "incident_type", nullable = false, length = 50)
+    private String incidentType;
+
+    @Column(name = "description", length = Integer.MAX_VALUE)
+    private String description;
+
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(name = "metadata")
+    private Map<String, Object> metadata;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "resolved_by")
+    private User resolvedBy;
+
+    @Column(name = "resolved_at")
+    private OffsetDateTime resolvedAt;
+
+    @Size(max = 50)
+    @NotNull
+    @ColumnDefault("'open'")
+    @Column(name = "status", nullable = false, length = 50)
+    @Builder.Default
+    private String status = "open";
+
+    @NotNull
+    @ColumnDefault("now()")
+    @Column(name = "created_at", nullable = false)
+    @Builder.Default
+    private OffsetDateTime createdAt = OffsetDateTime.now();
+
+    @NotNull
+    @ColumnDefault("now()")
+    @Column(name = "updated_at", nullable = false)
+    @Builder.Default
+    private OffsetDateTime updatedAt = OffsetDateTime.now();
+
+}
+package com.unitel.fms.backend.entities;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+
+import java.math.BigDecimal;
+import java.time.OffsetDateTime;
+import java.util.UUID;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Builder
+@Entity
+@Table(name = "trip_stops")
+public class TripStop {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false)
+    private UUID id;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "trip_id", nullable = false)
+    private Trip trip;
+
+    @NotNull
+    @Column(name = "stop_order", nullable = false)
+    private Short stopOrder;
+
+    @Size(max = 30)
+    @NotNull
+    @Column(name = "stop_type", nullable = false, length = 30)
+    private String stopType;
+
+    @NotNull
+    @Column(name = "address", nullable = false, length = Integer.MAX_VALUE)
+    private String address;
+
+    @Column(name = "lat", precision = 10, scale = 7)
+    private BigDecimal lat;
+
+    @Column(name = "lng", precision = 10, scale = 7)
+    private BigDecimal lng;
+
+    @Column(name = "planned_arrival")
+    private OffsetDateTime plannedArrival;
+
+    @Column(name = "actual_arrival")
+    private OffsetDateTime actualArrival;
+
+    @Column(name = "notes", length = Integer.MAX_VALUE)
+    private String notes;
+
+    @Size(max = 50)
+    @NotNull
+    @ColumnDefault("'pending'")
+    @Column(name = "status", nullable = false, length = 50)
+    private String status;
+
+    @NotNull
+    @ColumnDefault("now()")
+    @Column(name = "created_at", nullable = false)
+    private OffsetDateTime createdAt;
+
+    @NotNull
+    @ColumnDefault("now()")
+    @Column(name = "updated_at", nullable = false)
+    private OffsetDateTime updatedAt;
+
+}
+package com.unitel.fms.backend.entities;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+
+import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Builder
+@Entity
+@Table(name = "users")
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false)
+    private UUID id;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "org_id")
+    private Organization org;
+
+    @Size(max = 100)
+    @NotNull
+    @Column(name = "username", nullable = false, length = 100)
+    private String username;
+
+    @Size(max = 255)
+    @Column(name = "password_hash")
+    private String passwordHash;
+
+    @Size(max = 255)
+    @NotNull
+    @Column(name = "email", nullable = false)
+    private String email;
+
+    @Size(max = 255)
+    @NotNull
+    @Column(name = "full_name", nullable = false)
+    private String fullName;
+
+    @Size(max = 30)
+    @Column(name = "phone", length = 30)
+    private String phone;
+
+    @Size(max = 255)
+    @Column(name = "sso_subject")
+    private String ssoSubject;
+
+    @Size(max = 10)
+    @NotNull
+    @ColumnDefault("'lo'")
+    @Column(name = "locale", nullable = false, length = 10)
+    private String locale;
+
+    @Size(max = 50)
+    @NotNull
+    @ColumnDefault("'active'")
+    @Column(name = "status", nullable = false, length = 50)
+    private String status;
+
+    @Column(name = "last_login_at")
+    private OffsetDateTime lastLoginAt;
+
+    @NotNull
+    @ColumnDefault("now()")
+    @Column(name = "created_at", nullable = false)
+    private OffsetDateTime createdAt;
+
+    @NotNull
+    @ColumnDefault("now()")
+    @Column(name = "updated_at", nullable = false)
+    private OffsetDateTime updatedAt;
+
+    @Builder.Default
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserRole> userRoles = new ArrayList<>();
+
+}
+package com.unitel.fms.backend.entities;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+
+import java.time.OffsetDateTime;
+import java.util.UUID;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Builder
+@Entity
+@Table(name = "user_roles")
+public class UserRole {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false)
+    private UUID id;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "role_id", nullable = false)
+    private Role role;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "org_id")
+    private Organization org;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "granted_by")
+    private User grantedBy;
+
+    @Size(max = 50)
+    @NotNull
+    @ColumnDefault("'active'")
+    @Column(name = "status", nullable = false, length = 50)
+    private String status;
+
+    @NotNull
+    @ColumnDefault("now()")
+    @Column(name = "created_at", nullable = false)
+    private OffsetDateTime createdAt;
+
+    @NotNull
+    @ColumnDefault("now()")
+    @Column(name = "updated_at", nullable = false)
+    private OffsetDateTime updatedAt;
+
+}
+package com.unitel.fms.backend.entities;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+
+import java.math.BigDecimal;
+import java.time.OffsetDateTime;
+import java.util.UUID;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Builder
+@Entity
+@Table(name = "vehicles")
+public class Vehicle {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false)
+    private UUID id;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "org_id", nullable = false)
+    private Organization org;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "vehicle_type_id", nullable = false)
+    private VehicleType vehicleType;
+
+    @Size(max = 30)
+    @NotNull
+    @Column(name = "plate_number", nullable = false, length = 30)
+    private String plateNumber;
+
+    @Size(max = 100)
+    @Column(name = "brand", length = 100)
+    private String brand;
+
+    @Size(max = 100)
+    @Column(name = "model", length = 100)
+    private String model;
+
+    @Column(name = "manufacture_year")
+    private Short manufactureYear;
+
+    @Size(max = 30)
+    @NotNull
+    @ColumnDefault("'owned'")
+    @Column(name = "ownership_type", nullable = false, length = 30)
+    private String ownershipType;
+
+    @Column(name = "load_capacity_ton", precision = 8, scale = 2)
+    private BigDecimal loadCapacityTon;
+
+    @ColumnDefault("0")
+    @Column(name = "current_odometer", precision = 10, scale = 2)
+    private BigDecimal currentOdometer;
+
+    @Column(name = "last_known_lat", precision = 10, scale = 7)
+    private BigDecimal lastKnownLat;
+
+    @Column(name = "last_known_lng", precision = 10, scale = 7)
+    private BigDecimal lastKnownLng;
+
+    @Size(max = 50)
+    @NotNull
+    @ColumnDefault("'active'")
+    @Column(name = "status", nullable = false, length = 50)
+    private String status;
+
+    @Column(name = "status_changed_at")
+    private OffsetDateTime statusChangedAt;
+
+    @NotNull
+    @ColumnDefault("now()")
+    @Column(name = "created_at", nullable = false)
+    private OffsetDateTime createdAt;
+
+    @NotNull
+    @ColumnDefault("now()")
+    @Column(name = "updated_at", nullable = false)
+    private OffsetDateTime updatedAt;
+
+}
+package com.unitel.fms.backend.entities;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+
+import java.time.LocalDate;
+import java.time.OffsetDateTime;
+import java.util.UUID;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Builder
+@Entity
+@Table(name = "vehicle_documents")
+public class VehicleDocument {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false)
+    private UUID id;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "vehicle_id", nullable = false)
+    private Vehicle vehicle;
+
+    @Size(max = 50)
+    @NotNull
+    @Column(name = "doc_type", nullable = false, length = 50)
+    private String docType;
+
+    @Size(max = 100)
+    @Column(name = "doc_number", length = 100)
+    private String docNumber;
+
+    @Column(name = "issue_date")
+    private LocalDate issueDate;
+
+    @Column(name = "expiry_date")
+    private LocalDate expiryDate;
+
+    @Size(max = 50)
+    @NotNull
+    @ColumnDefault("'valid'")
+    @Column(name = "status", nullable = false, length = 50)
+    @Builder.Default
+    private String status = "valid";
+
+    @NotNull
+    @ColumnDefault("now()")
+    @Column(name = "created_at", nullable = false)
+    @Builder.Default
+    private OffsetDateTime createdAt = OffsetDateTime.now();
+
+    @NotNull
+    @ColumnDefault("now()")
+    @Column(name = "updated_at", nullable = false)
+    @Builder.Default
+    private OffsetDateTime updatedAt = OffsetDateTime.now();
+
+}
+package com.unitel.fms.backend.entities;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+
+import java.time.OffsetDateTime;
+import java.util.Map;
+import java.util.UUID;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Builder
+@Entity
+@Table(name = "vehicle_healths")
+public class VehicleHealth {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false)
+    private UUID id;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "vehicle_id", nullable = false)
+    private Vehicle vehicle;
+
+    @NotNull
+    @Column(name = "health_score", nullable = false)
+    private Short healthScore;
+
+    @Size(max = 20)
+    @NotNull
+    @Column(name = "risk_level", nullable = false, length = 20)
+    private String riskLevel;
+
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(name = "component_scores")
+    private Map<String, Object> componentScores;
+
+    @NotNull
+    @ColumnDefault("false")
+    @Column(name = "is_dispatch_blocked", nullable = false)
+    private Boolean isDispatchBlocked;
+
+    @Column(name = "notes", length = Integer.MAX_VALUE)
+    private String notes;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "assessed_by")
+    private User assessedBy;
+
+    @Size(max = 50)
+    @NotNull
+    @ColumnDefault("'active'")
+    @Column(name = "status", nullable = false, length = 50)
+    private String status;
+
+    @NotNull
+    @ColumnDefault("now()")
+    @Column(name = "created_at", nullable = false)
+    private OffsetDateTime createdAt;
+
+    @NotNull
+    @ColumnDefault("now()")
+    @Column(name = "updated_at", nullable = false)
+    private OffsetDateTime updatedAt;
+
+}
+package com.unitel.fms.backend.entities;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+
+import java.math.BigDecimal;
+import java.time.OffsetDateTime;
+import java.util.UUID;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Builder
+@Entity
+@Table(name = "vehicle_types")
+public class VehicleType {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false)
+    private UUID id;
+
+    @Size(max = 50)
+    @NotNull
+    @Column(name = "code", nullable = false, length = 50)
+    private String code;
+
+    @Size(max = 100)
+    @NotNull
+    @Column(name = "name_en", nullable = false, length = 100)
+    private String nameEn;
+
+    @Size(max = 100)
+    @Column(name = "name_vi", length = 100)
+    private String nameVi;
+
+    @Size(max = 100)
+    @Column(name = "name_lo", length = 100)
+    private String nameLo;
+
+    @Column(name = "max_load_ton", precision = 8, scale = 2)
+    private BigDecimal maxLoadTon;
+
+    @Column(name = "seat_count")
+    private Short seatCount;
+
+    @Size(max = 50)
+    @Column(name = "cargo_type", length = 50)
+    private String cargoType;
+
+    @Size(max = 50)
+    @NotNull
+    @ColumnDefault("'active'")
+    @Column(name = "status", nullable = false, length = 50)
+    private String status;
+
+    @NotNull
+    @ColumnDefault("now()")
+    @Column(name = "created_at", nullable = false)
+    private OffsetDateTime createdAt;
+
+    @NotNull
+    @ColumnDefault("now()")
+    @Column(name = "updated_at", nullable = false)
+    private OffsetDateTime updatedAt;
+
+}

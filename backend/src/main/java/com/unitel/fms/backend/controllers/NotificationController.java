@@ -12,6 +12,7 @@ import com.unitel.fms.backend.constants.enums.RoleType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.util.List;
 import java.util.UUID;
@@ -29,7 +30,7 @@ public class NotificationController {
 
     @PostMapping("/notification/create")
     @RequireAuth(roles = {RoleType.SYSTEM_ADMIN})
-    public ResponseData<NotificationResponse> create(@RequestBody NotificationRequest request) {
+    public ResponseData<NotificationResponse> create(@Valid @RequestBody NotificationRequest request) {
         Notification entity = notificationMapper.toEntity(request);
         Notification saved = notificationService.create(entity);
         return ResponseData.<NotificationResponse>builder().status(200).messageCode("SUCCESS").data(notificationMapper.toResponse(saved)).build();
@@ -62,7 +63,7 @@ public class NotificationController {
 
     @PostMapping("/notifications/my-filter")
     @RequireAuth(roles = {RoleType.ALL})
-    public ResponseData<Page<NotificationResponse>> filterMyNotifications(@RequestBody BaseFilterRequest filter) {
+    public ResponseData<Page<NotificationResponse>> filterMyNotifications(@Valid @RequestBody BaseFilterRequest filter) {
         // Mock implementation
         UUID userId = com.unitel.fms.backend.contexts.SecurityContextHolder.getAuthInfo().getId();
         return ResponseData.<Page<NotificationResponse>>builder().status(200).messageCode("SUCCESS").data(Page.empty()).build();

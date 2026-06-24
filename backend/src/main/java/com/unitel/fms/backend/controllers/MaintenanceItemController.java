@@ -12,6 +12,7 @@ import com.unitel.fms.backend.constants.enums.RoleType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.util.Map;
 import java.util.UUID;
@@ -28,7 +29,7 @@ public class MaintenanceItemController {
 
     @PostMapping("/maintenance-item/create")
     @RequireAuth(roles = {RoleType.SYSTEM_ADMIN, RoleType.FLEET_MANAGER}, rolesLogic = RequireAuth.LogicType.OR, inWorkspace = true)
-    public ResponseData<MaintenanceItemResponse> create(@RequestBody MaintenanceItemRequest request) {
+    public ResponseData<MaintenanceItemResponse> create(@Valid @RequestBody MaintenanceItemRequest request) {
         MaintenanceItem entity = maintenanceItemMapper.toEntity(request);
         MaintenanceItem saved = maintenanceItemService.create(entity);
         return ResponseData.<MaintenanceItemResponse>builder().status(200).messageCode("SUCCESS").data(maintenanceItemMapper.toResponse(saved)).build();
@@ -36,7 +37,7 @@ public class MaintenanceItemController {
 
     @PutMapping("/maintenance-item/update/{id}")
     @RequireAuth(roles = {RoleType.SYSTEM_ADMIN, RoleType.FLEET_MANAGER}, rolesLogic = RequireAuth.LogicType.OR, inWorkspace = true)
-    public ResponseData<MaintenanceItemResponse> update(@PathVariable UUID id, @RequestBody MaintenanceItemRequest request) {
+    public ResponseData<MaintenanceItemResponse> update(@PathVariable UUID id, @Valid @RequestBody MaintenanceItemRequest request) {
         MaintenanceItem entity = maintenanceItemMapper.toEntity(request);
         MaintenanceItem updated = maintenanceItemService.update(id, entity);
         return ResponseData.<MaintenanceItemResponse>builder().status(200).messageCode("SUCCESS").data(maintenanceItemMapper.toResponse(updated)).build();
@@ -44,7 +45,7 @@ public class MaintenanceItemController {
 
     @PatchMapping("/maintenance-item/update-partial/{id}")
     @RequireAuth(roles = {RoleType.SYSTEM_ADMIN, RoleType.FLEET_MANAGER}, rolesLogic = RequireAuth.LogicType.OR, inWorkspace = true)
-    public ResponseData<MaintenanceItemResponse> updatePartial(@PathVariable UUID id, @RequestBody Map<String, Object> updates) {
+    public ResponseData<MaintenanceItemResponse> updatePartial(@PathVariable UUID id, @Valid @RequestBody Map<String, Object> updates) {
         MaintenanceItem updated = maintenanceItemService.updateFromMap(id, updates);
         return ResponseData.<MaintenanceItemResponse>builder().status(200).messageCode("SUCCESS").data(maintenanceItemMapper.toResponse(updated)).build();
     }
@@ -58,7 +59,7 @@ public class MaintenanceItemController {
 
     @PostMapping("/maintenance-items/filter")
     @RequireAuth(roles = {RoleType.ALL}, inWorkspace = true)
-    public ResponseData<Page<MaintenanceItemResponse>> filter(@RequestBody BaseFilterRequest filter) {
+    public ResponseData<Page<MaintenanceItemResponse>> filter(@Valid @RequestBody BaseFilterRequest filter) {
         Page<MaintenanceItemResponse> page = maintenanceItemService.filter(filter).map(maintenanceItemMapper::toResponse);
         return ResponseData.<Page<MaintenanceItemResponse>>builder().status(200).messageCode("SUCCESS").data(page).build();
     }

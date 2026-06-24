@@ -35,11 +35,12 @@ public class TripStopService extends BaseServiceImpl<TripStop, UUID> {
 
     @Transactional
     public TripStop submitEpod(UUID id, MultipartFile photo, MultipartFile signature) {
-        fileAttachmentService.upload(photo, "epod_photo", id);
-        fileAttachmentService.upload(signature, "epod_sign", id);
+        fileAttachmentService.upload(photo, "trip_stops/epod_photo", id);
+        fileAttachmentService.upload(signature, "trip_stops/epod_sign", id);
 
         TripStop stop = changeStatus(id, "completed");
         stop.setActualArrival(OffsetDateTime.now());
         return update(id, stop);
     }
+
 }

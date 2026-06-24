@@ -1,0 +1,17 @@
+{
+  "okText": "ຕົກລົງ",
+  "closeText": "ປິດ",
+  "cancelText": "ຍົກເລີກ",
+  "loadingText": "ກຳລັງໂຫລດ...",
+  "saveText": "ບັນທຶກ",
+  "delText": "ລຶບ",
+  "resetText": "ຣີເຊັດ",
+  "searchText": "ຄົ້ນຫາ",
+  "queryText": "ສອບຖາມ",
+  "inputText": "ກະລຸນາປ້ອນ ",
+  "chooseText": "ກະລຸນາເລືອກ ",
+  "redo": "ໂຫຼດຄືນໃໝ່",
+  "back": "ກັບຄືນ",
+  "light": "ສະຫວ່າງ",
+  "dark": "ມືດ"
+}

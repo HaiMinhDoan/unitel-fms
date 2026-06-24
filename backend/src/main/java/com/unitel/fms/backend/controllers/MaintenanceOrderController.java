@@ -12,6 +12,7 @@ import com.unitel.fms.backend.constants.enums.RoleType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.util.Map;
 import java.util.UUID;
@@ -28,7 +29,7 @@ public class MaintenanceOrderController {
 
     @PostMapping("/maintenance-order/create")
     @RequireAuth(roles = {RoleType.SYSTEM_ADMIN, RoleType.FLEET_MANAGER}, rolesLogic = RequireAuth.LogicType.OR, inWorkspace = true)
-    public ResponseData<MaintenanceOrderResponse> create(@RequestBody MaintenanceOrderRequest request) {
+    public ResponseData<MaintenanceOrderResponse> create(@Valid @RequestBody MaintenanceOrderRequest request) {
         MaintenanceOrder entity = maintenanceOrderMapper.toEntity(request);
         MaintenanceOrder saved = maintenanceOrderService.create(entity);
         return ResponseData.<MaintenanceOrderResponse>builder().status(200).messageCode("SUCCESS").data(maintenanceOrderMapper.toResponse(saved)).build();
@@ -36,7 +37,7 @@ public class MaintenanceOrderController {
 
     @PutMapping("/maintenance-order/update/{id}")
     @RequireAuth(roles = {RoleType.SYSTEM_ADMIN, RoleType.FLEET_MANAGER}, rolesLogic = RequireAuth.LogicType.OR, inWorkspace = true)
-    public ResponseData<MaintenanceOrderResponse> update(@PathVariable UUID id, @RequestBody MaintenanceOrderRequest request) {
+    public ResponseData<MaintenanceOrderResponse> update(@PathVariable UUID id, @Valid @RequestBody MaintenanceOrderRequest request) {
         MaintenanceOrder entity = maintenanceOrderMapper.toEntity(request);
         MaintenanceOrder updated = maintenanceOrderService.update(id, entity);
         return ResponseData.<MaintenanceOrderResponse>builder().status(200).messageCode("SUCCESS").data(maintenanceOrderMapper.toResponse(updated)).build();
@@ -44,7 +45,7 @@ public class MaintenanceOrderController {
 
     @PatchMapping("/maintenance-order/update-partial/{id}")
     @RequireAuth(roles = {RoleType.SYSTEM_ADMIN, RoleType.FLEET_MANAGER}, rolesLogic = RequireAuth.LogicType.OR, inWorkspace = true)
-    public ResponseData<MaintenanceOrderResponse> updatePartial(@PathVariable UUID id, @RequestBody Map<String, Object> updates) {
+    public ResponseData<MaintenanceOrderResponse> updatePartial(@PathVariable UUID id, @Valid @RequestBody Map<String, Object> updates) {
         MaintenanceOrder updated = maintenanceOrderService.updateFromMap(id, updates);
         return ResponseData.<MaintenanceOrderResponse>builder().status(200).messageCode("SUCCESS").data(maintenanceOrderMapper.toResponse(updated)).build();
     }
@@ -58,7 +59,7 @@ public class MaintenanceOrderController {
 
     @PostMapping("/maintenance-orders/filter")
     @RequireAuth(roles = {RoleType.ALL}, inWorkspace = true)
-    public ResponseData<Page<MaintenanceOrderResponse>> filter(@RequestBody BaseFilterRequest filter) {
+    public ResponseData<Page<MaintenanceOrderResponse>> filter(@Valid @RequestBody BaseFilterRequest filter) {
         Page<MaintenanceOrderResponse> page = maintenanceOrderService.filter(filter).map(maintenanceOrderMapper::toResponse);
         return ResponseData.<Page<MaintenanceOrderResponse>>builder().status(200).messageCode("SUCCESS").data(page).build();
     }

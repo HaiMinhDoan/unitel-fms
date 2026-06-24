@@ -16,4 +16,5 @@ public class VehicleDocumentResponse {
     private String status;
     private OffsetDateTime createdAt;
     private OffsetDateTime updatedAt;
+    private java.util.List<FileAttachmentResponse> attachments;
 }

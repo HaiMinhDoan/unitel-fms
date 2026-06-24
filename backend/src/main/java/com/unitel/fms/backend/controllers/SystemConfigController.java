@@ -12,6 +12,7 @@ import com.unitel.fms.backend.constants.enums.RoleType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.util.List;
 import java.util.UUID;
@@ -29,7 +30,7 @@ public class SystemConfigController {
 
     @PostMapping("/system-config/create")
     @RequireAuth(roles = {RoleType.SYSTEM_ADMIN})
-    public ResponseData<SystemConfigResponse> create(@RequestBody SystemConfigRequest request) {
+    public ResponseData<SystemConfigResponse> create(@Valid @RequestBody SystemConfigRequest request) {
         SystemConfig entity = systemConfigMapper.toEntity(request);
         SystemConfig saved = systemConfigService.create(entity);
         return ResponseData.<SystemConfigResponse>builder().status(200).messageCode("SUCCESS").data(systemConfigMapper.toResponse(saved)).build();
@@ -37,7 +38,7 @@ public class SystemConfigController {
 
     @PutMapping("/system-config/update/{id}")
     @RequireAuth(roles = {RoleType.SYSTEM_ADMIN})
-    public ResponseData<SystemConfigResponse> update(@PathVariable UUID id, @RequestBody SystemConfigRequest request) {
+    public ResponseData<SystemConfigResponse> update(@PathVariable UUID id, @Valid @RequestBody SystemConfigRequest request) {
         SystemConfig entity = systemConfigMapper.toEntity(request);
         SystemConfig updated = systemConfigService.update(id, entity);
         return ResponseData.<SystemConfigResponse>builder().status(200).messageCode("SUCCESS").data(systemConfigMapper.toResponse(updated)).build();
@@ -45,7 +46,7 @@ public class SystemConfigController {
 
     @PatchMapping("/system-config/update-partial/{id}")
     @RequireAuth(roles = {RoleType.SYSTEM_ADMIN})
-    public ResponseData<SystemConfigResponse> updatePartial(@PathVariable UUID id, @RequestBody SystemConfigRequest request) {
+    public ResponseData<SystemConfigResponse> updatePartial(@PathVariable UUID id, @Valid @RequestBody SystemConfigRequest request) {
         SystemConfig existing = systemConfigService.getOne(id).orElseThrow(() -> new RuntimeException("Not found"));
         systemConfigMapper.updateEntity(request, existing);
         SystemConfig updated = systemConfigService.update(existing);
@@ -68,7 +69,7 @@ public class SystemConfigController {
 
     @PostMapping("/system-configs/filter")
     @RequireAuth(roles = {RoleType.SYSTEM_ADMIN})
-    public ResponseData<Page<SystemConfigResponse>> filter(@RequestBody BaseFilterRequest filter) {
+    public ResponseData<Page<SystemConfigResponse>> filter(@Valid @RequestBody BaseFilterRequest filter) {
         Page<SystemConfigResponse> page = systemConfigService.filter(filter).map(systemConfigMapper::toResponse);
         return ResponseData.<Page<SystemConfigResponse>>builder().status(200).messageCode("SUCCESS").data(page).build();
     }

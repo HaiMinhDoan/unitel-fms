@@ -1,6 +1,5 @@
 package com.unitel.fms.backend.dtos.response;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 

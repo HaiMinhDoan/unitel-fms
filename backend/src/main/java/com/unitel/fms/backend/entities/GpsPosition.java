@@ -15,7 +15,7 @@ import java.time.OffsetDateTime;
 @Builder
 @Entity
 @Table(name = "gps_positions")
-public class GpsPosition {
+public class GpsPosition{
 
     @EmbeddedId
     private GpsPositionId id;

@@ -1,0 +1,17 @@
+{
+  "title": "Fleet Management",
+  "users": "Users Management",
+  "organizations": "Organizations",
+  "customers": "Customers",
+  "partners": "Partners",
+  "partnerVehicles": "Partner Vehicles",
+  "partnerDrivers": "Partner Drivers",
+  "vehicles": "Vehicles",
+  "drivers": "Drivers",
+  "dispatch": "Dispatch Requests",
+  "dispatchAssignments": "Dispatch Assignments",
+  "trips": "Trips",
+  "cost": "Fuel & Costs",
+  "maintenanceOrders": "Maintenance Orders",
+  "vehicleTypes": "Vehicle Types"
+}

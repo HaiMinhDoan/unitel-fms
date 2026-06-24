@@ -1,0 +1,17 @@
+{
+  "title": "Quản lý Đội xe (FMS)",
+  "users": "Quản lý Tài Khoản",
+  "organizations": "Cơ cấu tổ chức",
+  "customers": "Khách hàng",
+  "partners": "Danh sách Đối tác",
+  "partnerVehicles": "Xe của đối tác",
+  "partnerDrivers": "Tài xế của đối tác",
+  "vehicles": "Phương tiện",
+  "drivers": "Tài xế",
+  "dispatch": "Yêu cầu Điều phối",
+  "dispatchAssignments": "Phân công Điều phối",
+  "trips": "Chuyến đi",
+  "cost": "Nhật ký Nhiên liệu",
+  "maintenanceOrders": "Bảo trì sửa chữa",
+  "vehicleTypes": "Loại phương tiện"
+}

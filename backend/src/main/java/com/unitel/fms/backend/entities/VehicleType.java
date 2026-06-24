@@ -1,5 +1,6 @@
 package com.unitel.fms.backend.entities;
 
+import com.unitel.fms.backend.contexts.SecurityContextHolder;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -67,5 +68,17 @@ public class VehicleType {
     @Column(name = "updated_at", nullable = false)
     private OffsetDateTime updatedAt;
 
-
+    public String getName(){
+        switch (SecurityContextHolder.getLang()){
+            case "vi" -> {
+                return  this.nameVi;
+            }
+            case "lo" -> {
+                return  this.nameLo;
+            }
+            default -> {
+                return  this.nameEn;
+            }
+        }
+    }
 }

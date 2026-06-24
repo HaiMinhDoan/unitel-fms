@@ -67,7 +67,8 @@ public class JwtServiceImpl implements JwtService {
 
     @Override
     public UUID getUserId(String token) {
-        return (UUID) getClaimsFromToken(token).getClaims().get("id");
+        String idStr = (String) getClaimsFromToken(token).getClaims().get("id");
+        return idStr != null ? UUID.fromString(idStr) : null;
     }
 
     @Override

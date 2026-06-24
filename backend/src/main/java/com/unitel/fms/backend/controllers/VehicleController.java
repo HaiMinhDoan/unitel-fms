@@ -12,6 +12,7 @@ import com.unitel.fms.backend.constants.enums.RoleType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.util.List;
 import java.util.Map;
@@ -29,7 +30,7 @@ public class VehicleController {
 
     @PostMapping("/vehicle/create")
     @RequireAuth(roles = {RoleType.SYSTEM_ADMIN, RoleType.FLEET_MANAGER}, rolesLogic = RequireAuth.LogicType.OR, inWorkspace = true)
-    public ResponseData<VehicleResponse> create(@RequestBody VehicleRequest request) {
+    public ResponseData<VehicleResponse> create(@Valid @RequestBody VehicleRequest request) {
         Vehicle entity = vehicleMapper.toEntity(request);
         Vehicle saved = vehicleService.create(entity);
         return ResponseData.<VehicleResponse>builder().status(200).messageCode("SUCCESS").data(vehicleMapper.toResponse(saved)).build();
@@ -37,7 +38,7 @@ public class VehicleController {
 
     @PutMapping("/vehicle/update/{id}")
     @RequireAuth(roles = {RoleType.SYSTEM_ADMIN, RoleType.FLEET_MANAGER}, rolesLogic = RequireAuth.LogicType.OR, inWorkspace = true)
-    public ResponseData<VehicleResponse> update(@PathVariable UUID id, @RequestBody VehicleRequest request) {
+    public ResponseData<VehicleResponse> update(@PathVariable UUID id, @Valid @RequestBody VehicleRequest request) {
         Vehicle entity = vehicleMapper.toEntity(request);
         Vehicle updated = vehicleService.update(id, entity);
         return ResponseData.<VehicleResponse>builder().status(200).messageCode("SUCCESS").data(vehicleMapper.toResponse(updated)).build();
@@ -45,7 +46,7 @@ public class VehicleController {
 
     @PatchMapping("/vehicle/update-partial/{id}")
     @RequireAuth(roles = {RoleType.SYSTEM_ADMIN, RoleType.FLEET_MANAGER}, rolesLogic = RequireAuth.LogicType.OR, inWorkspace = true)
-    public ResponseData<VehicleResponse> updatePartial(@PathVariable UUID id, @RequestBody Map<String, Object> updates) {
+    public ResponseData<VehicleResponse> updatePartial(@PathVariable UUID id, @Valid @RequestBody Map<String, Object> updates) {
         Vehicle updated = vehicleService.updateFromMap(id, updates);
         return ResponseData.<VehicleResponse>builder().status(200).messageCode("SUCCESS").data(vehicleMapper.toResponse(updated)).build();
     }
@@ -59,7 +60,7 @@ public class VehicleController {
 
     @PostMapping("/vehicles/filter")
     @RequireAuth(roles = {RoleType.ALL}, inWorkspace = true)
-    public ResponseData<Page<VehicleResponse>> filter(@RequestBody BaseFilterRequest filter) {
+    public ResponseData<Page<VehicleResponse>> filter(@Valid @RequestBody BaseFilterRequest filter) {
         Page<VehicleResponse> page = vehicleService.filter(filter).map(vehicleMapper::toResponse);
         return ResponseData.<Page<VehicleResponse>>builder().status(200).messageCode("SUCCESS").data(page).build();
     }

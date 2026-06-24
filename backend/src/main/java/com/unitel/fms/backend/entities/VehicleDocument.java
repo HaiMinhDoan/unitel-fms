@@ -47,17 +47,19 @@ public class VehicleDocument {
     @NotNull
     @ColumnDefault("'valid'")
     @Column(name = "status", nullable = false, length = 50)
-    private String status;
+    @Builder.Default
+    private String status = "valid";
 
     @NotNull
     @ColumnDefault("now()")
     @Column(name = "created_at", nullable = false)
-    private OffsetDateTime createdAt;
+    @Builder.Default
+    private OffsetDateTime createdAt = OffsetDateTime.now();
 
     @NotNull
     @ColumnDefault("now()")
     @Column(name = "updated_at", nullable = false)
-    private OffsetDateTime updatedAt;
-
+    @Builder.Default
+    private OffsetDateTime updatedAt = OffsetDateTime.now();
 
 }

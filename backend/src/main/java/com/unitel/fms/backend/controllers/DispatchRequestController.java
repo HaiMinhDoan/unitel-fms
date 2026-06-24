@@ -74,10 +74,18 @@ public class DispatchRequestController {
 
     @RequireAuth(roles = {"OPS_MANAGER", "DISPATCHER"}, inWorkspace = true)
     @PostMapping("/bulk-update")
-    public ResponseEntity<ResponseData<List<DispatchRequestResponse>>> bulkUpdate(@RequestBody List<BulkUpdateItem> items) {
+    public ResponseEntity<ResponseData<List<DispatchRequestResponse>>> bulkUpdate(@Valid @RequestBody List<BulkUpdateItem> items) {
         List<DispatchRequest> updated = dispatchRequestService.bulkUpdate(items);
         List<DispatchRequestResponse> data = updated.stream().map(dispatchRequestMapper::toResponse).collect(Collectors.toList());
         return ResponseEntity.ok(ResponseData.<List<DispatchRequestResponse>>builder()
                 .status(200).messageCode("UPDATED").data(data).build());
+    }
+
+    @RequireAuth(roles = {"OPS_MANAGER", "DISPATCHER", "SYSTEM_ADMIN", "FLEET_MANAGER"}, rolesLogic = RequireAuth.LogicType.OR, inWorkspace = true)
+    @PostMapping("/filter")
+    public ResponseEntity<ResponseData<org.springframework.data.domain.Page<DispatchRequestResponse>>> filter(@Valid @RequestBody com.unitel.fms.backend.dtos.request.BaseFilterRequest filterRequest) {
+        org.springframework.data.domain.Page<DispatchRequestResponse> page = dispatchRequestService.filter(filterRequest).map(dispatchRequestMapper::toResponse);
+        return ResponseEntity.ok(ResponseData.<org.springframework.data.domain.Page<DispatchRequestResponse>>builder()
+                .status(200).messageCode("SUCCESS").data(page).build());
     }
 }

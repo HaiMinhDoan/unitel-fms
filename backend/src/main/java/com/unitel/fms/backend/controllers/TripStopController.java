@@ -71,4 +71,12 @@ public class TripStopController {
         return ResponseEntity.ok(ResponseData.<TripStopResponse>builder()
                 .status(200).messageCode("EPOD_SUBMITTED").data(tripStopMapper.toResponse(submitted)).build());
     }
+
+    @RequireAuth(roles = {"OPS_MANAGER", "DISPATCHER", "DRIVER", "SYSTEM_ADMIN", "FLEET_MANAGER"}, rolesLogic = RequireAuth.LogicType.OR, inWorkspace = true)
+    @PostMapping("/filter")
+    public ResponseEntity<ResponseData<org.springframework.data.domain.Page<TripStopResponse>>> filter(@Valid @RequestBody com.unitel.fms.backend.dtos.request.BaseFilterRequest filterRequest) {
+        org.springframework.data.domain.Page<TripStopResponse> page = tripStopService.filter(filterRequest).map(tripStopMapper::toResponse);
+        return ResponseEntity.ok(ResponseData.<org.springframework.data.domain.Page<TripStopResponse>>builder()
+                .status(200).messageCode("SUCCESS").data(page).build());
+    }
 }

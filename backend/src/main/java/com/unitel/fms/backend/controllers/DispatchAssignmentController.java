@@ -50,4 +50,12 @@ public class DispatchAssignmentController {
         return ResponseEntity.ok(ResponseData.<DispatchAssignmentResponse>builder()
                 .status(200).messageCode("OVERRIDDEN").data(dispatchAssignmentMapper.toResponse(overridden)).build());
     }
+
+    @RequireAuth(roles = {"OPS_MANAGER", "DISPATCHER", "SYSTEM_ADMIN", "FLEET_MANAGER"}, rolesLogic = RequireAuth.LogicType.OR, inWorkspace = true)
+    @PostMapping("/filter")
+    public ResponseEntity<ResponseData<org.springframework.data.domain.Page<DispatchAssignmentResponse>>> filter(@Valid @RequestBody com.unitel.fms.backend.dtos.request.BaseFilterRequest filterRequest) {
+        org.springframework.data.domain.Page<DispatchAssignmentResponse> page = dispatchAssignmentService.filter(filterRequest).map(dispatchAssignmentMapper::toResponse);
+        return ResponseEntity.ok(ResponseData.<org.springframework.data.domain.Page<DispatchAssignmentResponse>>builder()
+                .status(200).messageCode("SUCCESS").data(page).build());
+    }
 }

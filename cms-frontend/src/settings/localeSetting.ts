@@ -2,28 +2,33 @@ import type { DropMenu } from '../components/Dropdown';
 import type { LocaleSetting, LocaleType } from '#/config';
 
 export const LOCALE: { [key: string]: LocaleType } = {
-  ZH_CN: 'zh_CN',
+  VI_VN: 'vi',
   EN_US: 'en',
+  LO_LA: 'lo',
 };
 
 export const localeSetting: LocaleSetting = {
   showPicker: true,
   // Locale
-  locale: LOCALE.ZH_CN,
+  locale: LOCALE.VI_VN,
   // Default locale
-  fallback: LOCALE.ZH_CN,
+  fallback: LOCALE.VI_VN,
   // available Locales
-  availableLocales: [LOCALE.ZH_CN, LOCALE.EN_US],
+  availableLocales: [LOCALE.VI_VN, LOCALE.EN_US, LOCALE.LO_LA],
 };
 
 // locale list
 export const localeList: DropMenu[] = [
   {
-    text: '简体中文',
-    event: LOCALE.ZH_CN,
+    text: 'Tiếng Việt',
+    event: LOCALE.VI_VN,
   },
   {
     text: 'English',
     event: LOCALE.EN_US,
+  },
+  {
+    text: 'ພາສາລາວ',
+    event: LOCALE.LO_LA,
   },
 ];

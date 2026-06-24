@@ -1,0 +1,17 @@
+{
+  "title": "ການຄຸ້ມຄອງລົດ (FMS)",
+  "users": "ການຄຸ້ມຄອງຜູ້ໃຊ້",
+  "organizations": "ອົງກອນ",
+  "customers": "ລູກຄ້າ",
+  "partners": "ຄູ່ຮ່ວມງານ",
+  "partnerVehicles": "ລົດຂອງຄູ່ຮ່ວມງານ",
+  "partnerDrivers": "ຄົນຂັບລົດຂອງຄູ່ຮ່ວມງານ",
+  "vehicles": "ຍານພາຫະນະ",
+  "drivers": "ຄົນຂັບລົດ",
+  "dispatch": "ຄໍາຮ້ອງຂໍການປະສານງານ",
+  "dispatchAssignments": "ການມອບໝາຍວຽກ",
+  "trips": "ການເດີນທາງ",
+  "cost": "ບັນທຶກນໍ້າມັນ",
+  "maintenanceOrders": "ການບຳລຸງຮັກສາ",
+  "vehicleTypes": "ປະເພດພາຫະນະ"
+}

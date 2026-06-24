@@ -1,5 +1,6 @@
 package com.unitel.fms.backend.dtos.response;
 
+import com.unitel.fms.backend.contexts.SecurityContextHolder;
 import lombok.Data;
 import java.time.OffsetDateTime;
 import java.util.UUID;
@@ -18,4 +19,12 @@ public class OrganizationResponse {
     private String status;
     private OffsetDateTime createdAt;
     private OffsetDateTime updatedAt;
+
+    public String getName(){
+        return switch (SecurityContextHolder.getLang()){
+            case "vi" -> nameVi;
+            case "lo" -> nameLo;
+            default -> nameEn;
+        };
+    }
 }

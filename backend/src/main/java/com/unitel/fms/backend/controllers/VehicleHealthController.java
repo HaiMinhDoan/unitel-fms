@@ -12,6 +12,7 @@ import com.unitel.fms.backend.constants.enums.RoleType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.util.Map;
 import java.util.UUID;
@@ -28,7 +29,7 @@ public class VehicleHealthController {
 
     @PostMapping("/vehicle-health/create")
     @RequireAuth(roles = {RoleType.SYSTEM_ADMIN, RoleType.FLEET_MANAGER}, rolesLogic = RequireAuth.LogicType.OR, inWorkspace = true)
-    public ResponseData<VehicleHealthResponse> create(@RequestBody VehicleHealthRequest request) {
+    public ResponseData<VehicleHealthResponse> create(@Valid @RequestBody VehicleHealthRequest request) {
         VehicleHealth entity = vehicleHealthMapper.toEntity(request);
         VehicleHealth saved = vehicleHealthService.create(entity);
         return ResponseData.<VehicleHealthResponse>builder().status(200).messageCode("SUCCESS").data(vehicleHealthMapper.toResponse(saved)).build();
@@ -36,7 +37,7 @@ public class VehicleHealthController {
 
     @PutMapping("/vehicle-health/update/{id}")
     @RequireAuth(roles = {RoleType.SYSTEM_ADMIN, RoleType.FLEET_MANAGER}, rolesLogic = RequireAuth.LogicType.OR, inWorkspace = true)
-    public ResponseData<VehicleHealthResponse> update(@PathVariable UUID id, @RequestBody VehicleHealthRequest request) {
+    public ResponseData<VehicleHealthResponse> update(@PathVariable UUID id, @Valid @RequestBody VehicleHealthRequest request) {
         VehicleHealth entity = vehicleHealthMapper.toEntity(request);
         VehicleHealth updated = vehicleHealthService.update(id, entity);
         return ResponseData.<VehicleHealthResponse>builder().status(200).messageCode("SUCCESS").data(vehicleHealthMapper.toResponse(updated)).build();
@@ -44,7 +45,7 @@ public class VehicleHealthController {
 
     @PatchMapping("/vehicle-health/update-partial/{id}")
     @RequireAuth(roles = {RoleType.SYSTEM_ADMIN, RoleType.FLEET_MANAGER}, rolesLogic = RequireAuth.LogicType.OR, inWorkspace = true)
-    public ResponseData<VehicleHealthResponse> updatePartial(@PathVariable UUID id, @RequestBody Map<String, Object> updates) {
+    public ResponseData<VehicleHealthResponse> updatePartial(@PathVariable UUID id, @Valid @RequestBody Map<String, Object> updates) {
         VehicleHealth updated = vehicleHealthService.updateFromMap(id, updates);
         return ResponseData.<VehicleHealthResponse>builder().status(200).messageCode("SUCCESS").data(vehicleHealthMapper.toResponse(updated)).build();
     }
@@ -58,7 +59,7 @@ public class VehicleHealthController {
 
     @PostMapping("/vehicle-healths/filter")
     @RequireAuth(roles = {RoleType.ALL}, inWorkspace = true)
-    public ResponseData<Page<VehicleHealthResponse>> filter(@RequestBody BaseFilterRequest filter) {
+    public ResponseData<Page<VehicleHealthResponse>> filter(@Valid @RequestBody BaseFilterRequest filter) {
         Page<VehicleHealthResponse> page = vehicleHealthService.filter(filter).map(vehicleHealthMapper::toResponse);
         return ResponseData.<Page<VehicleHealthResponse>>builder().status(200).messageCode("SUCCESS").data(page).build();
     }

@@ -1,5 +1,6 @@
 package com.unitel.fms.backend.controllers;
 
+import com.unitel.fms.backend.constants.enums.EntityType;
 import com.unitel.fms.backend.customizeanotations.RequireAuth;
 import com.unitel.fms.backend.constants.enums.RoleType;
 import com.unitel.fms.backend.dtos.request.BaseFilterRequest;
@@ -25,26 +26,41 @@ public class DriverDocumentController {
 
     private final DriverDocumentService driverDocumentService;
     private final DriverDocumentMapper driverDocumentMapper;
+    private final com.unitel.fms.backend.services.impl.entity.FileAttachmentService fileAttachmentService;
 
-    @PostMapping("/driver-document/create")
+    @PostMapping(value = "/driver-document/create", consumes = org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE)
     @RequireAuth(roles = {RoleType.HR_LEGAL}, inWorkspace = true)
-    public ResponseData<DriverDocumentResponse> create(@Valid @RequestBody DriverDocumentRequest request) {
+    public ResponseData<DriverDocumentResponse> create(@Valid @ModelAttribute DriverDocumentRequest request) {
         DriverDocument entity = driverDocumentMapper.toEntity(request);
         DriverDocument saved = driverDocumentService.create(entity);
+        
+        if (request.getFiles() != null && !request.getFiles().isEmpty()) {
+            for (org.springframework.web.multipart.MultipartFile file : request.getFiles()) {
+                fileAttachmentService.upload(file, EntityType.DRIVER_DOCUMENT, saved.getId());
+            }
+        }
+        
         return ResponseData.<DriverDocumentResponse>builder().status(200).messageCode("SUCCESS").data(driverDocumentMapper.toResponse(saved)).build();
     }
 
-    @PutMapping("/driver-document/update/{id}")
+    @PutMapping(value = "/driver-document/update/{id}", consumes = org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE)
     @RequireAuth(roles = {RoleType.HR_LEGAL}, inWorkspace = true)
-    public ResponseData<DriverDocumentResponse> update(@PathVariable UUID id, @Valid @RequestBody DriverDocumentRequest request) {
+    public ResponseData<DriverDocumentResponse> update(@PathVariable UUID id, @Valid @ModelAttribute DriverDocumentRequest request) {
         DriverDocument entity = driverDocumentMapper.toEntity(request);
         DriverDocument updated = driverDocumentService.update(id, entity);
+        
+        if (request.getFiles() != null && !request.getFiles().isEmpty()) {
+            for (org.springframework.web.multipart.MultipartFile file : request.getFiles()) {
+                fileAttachmentService.upload(file, EntityType.DRIVER_DOCUMENT, updated.getId());
+            }
+        }
+        
         return ResponseData.<DriverDocumentResponse>builder().status(200).messageCode("SUCCESS").data(driverDocumentMapper.toResponse(updated)).build();
     }
 
     @PatchMapping("/driver-document/update-partial/{id}")
     @RequireAuth(roles = {RoleType.HR_LEGAL}, inWorkspace = true)
-    public ResponseData<DriverDocumentResponse> updatePartial(@PathVariable UUID id, @RequestBody Map<String, Object> updates) {
+    public ResponseData<DriverDocumentResponse> updatePartial(@PathVariable UUID id, @Valid @RequestBody Map<String, Object> updates) {
         DriverDocument updated = driverDocumentService.updateFromMap(id, updates);
         return ResponseData.<DriverDocumentResponse>builder().status(200).messageCode("SUCCESS").data(driverDocumentMapper.toResponse(updated)).build();
     }
@@ -61,7 +77,7 @@ public class DriverDocumentController {
 
     @PostMapping("/driver-documents/filter")
     @RequireAuth(roles = {RoleType.HR_LEGAL}, inWorkspace = true)
-    public ResponseData<Page<DriverDocumentResponse>> filter(@RequestBody BaseFilterRequest filter) {
+    public ResponseData<Page<DriverDocumentResponse>> filter(@Valid @RequestBody BaseFilterRequest filter) {
         Page<DriverDocumentResponse> page = driverDocumentService.filter(filter).map(driverDocumentMapper::toResponse);
         return ResponseData.<Page<DriverDocumentResponse>>builder().status(200).messageCode("SUCCESS").data(page).build();
     }

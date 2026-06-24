@@ -29,4 +29,5 @@ public class FuelLogResponse {
     String anomalyNotes;
     OffsetDateTime createdAt;
     OffsetDateTime updatedAt;
+    java.util.List<FileAttachmentResponse> attachments;
 }

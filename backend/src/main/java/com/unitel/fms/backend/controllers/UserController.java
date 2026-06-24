@@ -11,6 +11,7 @@ import com.unitel.fms.backend.dtos.request.UserRequest;
 import com.unitel.fms.backend.dtos.response.UserResponse;
 import com.unitel.fms.backend.mappers.UserMapper;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
@@ -30,7 +31,7 @@ public class UserController {
 
     @PostMapping("/user/create")
     @RequireAuth(roles = {RoleType.SYSTEM_ADMIN})
-    public ResponseData<UserResponse> create(@RequestBody UserRequest request) {
+    public ResponseData<UserResponse> create(@Valid @RequestBody UserRequest request) {
         User entity = userMapper.toEntity(request);
         User saved = userService.create(entity);
         return ResponseData.<UserResponse>builder().status(200).messageCode("SUCCESS").data(userMapper.toResponse(saved)).build();
@@ -38,7 +39,7 @@ public class UserController {
 
     @PutMapping("/user/update/{id}")
     @RequireAuth(roles = {RoleType.ALL})
-    public ResponseData<UserResponse> update(@PathVariable UUID id, @RequestBody UserRequest request) {
+    public ResponseData<UserResponse> update(@PathVariable UUID id, @Valid @RequestBody UserRequest request) {
         verifySelfOrAdmin(id);
         if (!SecurityContextHolder.getAuthInfo().hasAnyRole(RoleType.SYSTEM_ADMIN)) {
             request.setOrgId(null);
@@ -51,7 +52,7 @@ public class UserController {
 
     @PatchMapping("/user/update-partial/{id}")
     @RequireAuth(roles = {RoleType.ALL})
-    public ResponseData<UserResponse> updatePartial(@PathVariable UUID id, @RequestBody UserRequest request) {
+    public ResponseData<UserResponse> updatePartial(@PathVariable UUID id, @Valid @RequestBody UserRequest request) {
         verifySelfOrAdmin(id);
         if (!SecurityContextHolder.getAuthInfo().hasAnyRole(RoleType.SYSTEM_ADMIN)) {
             request.setOrgId(null);
@@ -79,7 +80,7 @@ public class UserController {
 
     @PostMapping("/users/filter")
     @RequireAuth(roles = {RoleType.ALL}, inWorkspace = true)
-    public ResponseData<Page<UserResponse>> filter(@RequestBody BaseFilterRequest filter) {
+    public ResponseData<Page<UserResponse>> filter(@Valid @RequestBody BaseFilterRequest filter) {
         Page<UserResponse> page = userService.filter(filter).map(userMapper::toResponse);
         return ResponseData.<Page<UserResponse>>builder().status(200).messageCode("SUCCESS").data(page).build();
     }

@@ -14,6 +14,7 @@ public class PartnerVehicleResponse {
     private UUID id;
     private UUID partnerId;
     private UUID vehicleTypeId;
+    private String vehicleTypeName;
     private String plateNumber;
     private BigDecimal loadCapacityTon;
     private String status;
